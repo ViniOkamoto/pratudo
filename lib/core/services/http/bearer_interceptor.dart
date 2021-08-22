@@ -12,13 +12,14 @@ class BearerInterceptor extends Interceptor {
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
-    String token = await _storageService.read(key: 'accessToken') ?? "";
+    String? token = await _storageService.read(key: 'accessToken') ?? "";
     _dio.lock();
     Map<dynamic, dynamic> json = options.data ?? {};
     options.data = json;
-    options.headers.addAll({
-      "Authorization": "Bearer " + token,
-    });
+    if (token != null && token.isNotEmpty)
+      options.headers.addAll({
+        "Authorization": "Bearer " + token,
+      });
 
     _dio.unlock();
     return super.onRequest(options, handler);

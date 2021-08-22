@@ -7,7 +7,6 @@ import 'package:pratudo/core/resources/constants.dart';
 class HttpService {
   late Dio _dio;
   final List<Interceptor>? interceptors;
-  late String baseUrl;
 
   HttpService({required Dio dio, this.interceptors}) {
     this._dio = dio;
@@ -17,7 +16,8 @@ class HttpService {
       ..httpClientAdapter
       ..options.headers = {'Content-Type': 'application/json; charset=UTF-8'};
 
-    baseUrl = Constants.baseUrl;
+    _dio.options.baseUrl = Constants.baseUrl;
+
     _dio.interceptors.clear();
 
     if (interceptors != null) _dio.interceptors.addAll(interceptors!);
