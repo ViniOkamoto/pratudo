@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
+import 'package:pratudo/core/services/di/features/authentication_service_locator.dart';
 import 'package:pratudo/core/services/http/bearer_interceptor.dart';
 import 'package:pratudo/core/services/http/http_service.dart';
 import 'package:pratudo/core/services/storage_service.dart';
@@ -9,6 +10,8 @@ final GetIt serviceLocator = GetIt.I;
 
 Future<void> setupLocator() async {
   _setupServices();
+
+  setupAuthenticationLocator();
 }
 
 Future<void> _setupServices() async {
