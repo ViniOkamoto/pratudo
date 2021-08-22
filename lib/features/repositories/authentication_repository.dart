@@ -7,6 +7,7 @@ import 'package:pratudo/features/models/register_user_model.dart';
 abstract class AuthenticationRepository {
   Future<Either<Failure, void>> register(RegisterUserModel registerUserModel);
   Future<Either<Failure, void>> login({required String email, required String password});
+  Future<Either<Failure, bool>> checkIfUserLogged();
 }
 
 class AuthenticationRepositoryImpl implements AuthenticationRepository {
@@ -40,6 +41,25 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       await _localDatasource.saveAuthentication(token);
 
       return Right(null);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(errorText: e.errorText));
+    } on LocalCacheException catch (e) {
+      return Left(LocalFailure(errorText: e.errorText));
+    } on Exception catch (e) {
+      return Left(
+        ServerFailure(
+          errorText: e.toString(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> checkIfUserLogged() async {
+    try {
+      final result = await _localDatasource.getToken();
+
+      return Right(result != null ? true : false);
     } on ServerException catch (e) {
       return Left(ServerFailure(errorText: e.errorText));
     } on LocalCacheException catch (e) {

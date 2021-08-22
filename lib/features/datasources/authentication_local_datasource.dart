@@ -14,4 +14,12 @@ class AuthenticationLocalDatasource {
       throw LocalCacheException(errorText: e.toString());
     }
   }
+
+  Future<String?> getToken() async {
+    try {
+      return await _storageService.read(key: "accessToken");
+    } catch (e) {
+      throw LocalCacheException(errorText: e.toString());
+    }
+  }
 }
