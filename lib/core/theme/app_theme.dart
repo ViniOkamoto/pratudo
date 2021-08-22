@@ -19,17 +19,9 @@ final ThemeData appTheme = ThemeData(
       ),
       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
         RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0),
+          borderRadius: BorderRadius.circular(50.0),
         ),
       ),
     ),
   ),
 );
-
-final List<BoxShadow> blueCardShadow = [
-  BoxShadow(
-    color: Color(0xBFC1D6F5),
-    blurRadius: 10,
-    offset: Offset(2, 4),
-  ),
-];

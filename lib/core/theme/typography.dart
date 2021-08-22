@@ -93,4 +93,15 @@ class AppTypo {
       fontWeight: fontWeight,
     );
   }
+
+  static TextStyle buttonText({
+    color = Colors.black,
+  }) {
+    return TextStyle(
+      color: color,
+      fontSize: SizeConverter.fontSize(16),
+      letterSpacing: 0.8,
+      fontWeight: FontWeight.w500,
+    );
+  }
 }
