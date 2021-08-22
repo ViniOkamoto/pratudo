@@ -133,10 +133,22 @@ abstract class _RegisterStoreBase with Store {
       RegisterUserModel(name: name!, email: email!, password: password!),
     );
 
-    return result.fold((l) {
-      FlutterToastHelper.showToast(text: l.errorText);
-      isLoading = false;
-      return false;
-    }, (r) => true);
+    return result.fold(
+      (l) {
+        FlutterToastHelper.showToast(text: l.errorText);
+        isLoading = false;
+        return false;
+      },
+      (r) => true,
+    );
+  }
+
+  Future<bool> login() async {
+    final result = await _repository.login(email: email!, password: password!);
+
+    return result.fold(
+      (l) => false,
+      (r) => true,
+    );
   }
 }

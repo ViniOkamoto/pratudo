@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:pratudo/core/resources/routes.dart';
 import 'package:pratudo/core/services/di/service_locator.dart';
 import 'package:pratudo/core/theme/colors.dart';
 import 'package:pratudo/core/theme/typography.dart';
@@ -28,6 +31,15 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController passwordController = TextEditingController();
 
   final TextEditingController confirmPasswordController = TextEditingController();
+
+  late FToast fToast;
+  @override
+  void initState() {
+    fToast = FToast();
+    fToast.init(context);
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +104,39 @@ class _RegisterPageState extends State<RegisterPage> {
                     text: "Cadastrar",
                     onPressed: _registerStore.isValid
                         ? () async {
-                            if (!_registerStore.isLoading) await _registerStore.registerUser();
+                            if (!_registerStore.isLoading) {
+                              final isRegistered = await _registerStore.registerUser();
+                              if (isRegistered) {
+                                final result = await _registerStore.login();
+                                if (result) {
+                                  Navigator.pushNamedAndRemoveUntil(context, Routes.main, (route) => false);
+                                  return;
+                                }
+                                fToast.showToast(
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: SizeConverter.relativeWidth(24),
+                                      vertical: SizeConverter.relativeHeight(12),
+                                    ),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(25.0),
+                                      color: Colors.greenAccent,
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Icon(LineAwesomeIcons.check),
+                                        Spacing(width: 8),
+                                        Text("Usuário criado com sucesso!"),
+                                      ],
+                                    ),
+                                  ),
+                                  gravity: ToastGravity.BOTTOM,
+                                  toastDuration: Duration(seconds: 3),
+                                );
+                                return Navigator.pop(context);
+                              }
+                            }
                           }
                         : null,
                   ),
