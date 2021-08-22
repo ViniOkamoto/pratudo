@@ -13,7 +13,8 @@ class AuthenticationDatasource {
       await _httpService.post('/user', data: userModel.toJson());
       return null;
     } on DioError catch (e) {
-      throw ServerException(errorText: e.response?.data['message'] ?? "Erro Inesperado");
+      throw ServerException(
+          errorText: e.response?.data['message'] != null ? e.response?.data['message'] : "Erro Inesperado");
     } catch (e) {
       throw ServerException(errorText: e.toString());
     }
