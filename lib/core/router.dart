@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pratudo/core/resources/routes.dart';
 import 'package:pratudo/features/screens/login/login_page.dart';
+import 'package:pratudo/features/screens/main/main_page.dart';
 import 'package:pratudo/features/screens/register/register_page.dart';
 import 'package:pratudo/features/screens/splash/splash_page.dart';
 
@@ -13,6 +14,8 @@ class Router {
         return MaterialPageRoute(builder: (_) => LoginPage(), settings: settings);
       case Routes.register:
         return MaterialPageRoute(builder: (_) => RegisterPage(), settings: settings);
+      case Routes.main:
+        return MaterialPageRoute(builder: (_) => MainPage(), settings: settings);
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
