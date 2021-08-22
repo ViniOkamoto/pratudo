@@ -33,7 +33,8 @@ class BearerInterceptor extends Interceptor {
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) {
-    print('ERROR[${err.response?.statusCode}] => PATH: ${err.requestOptions.path}, BODY : ${err.response!.data}');
+    print(
+        'ERROR[${err.response?.statusCode}] => PATH: ${err.requestOptions.path}, BODY : ${err.response!.data}, request : ${err.requestOptions.data}');
     if (err.response!.statusCode == 401) {
       ///TODO: implement token refresh
     }

@@ -18,4 +18,17 @@ class AuthenticationDatasource {
       throw ServerException(errorText: e.toString());
     }
   }
+
+  Future<String> login(String email, String password) async {
+    try {
+      final result = await _httpService.post('/auth', data: {"email": email, "password": password});
+      return result.data["token"];
+    } on DioError catch (e) {
+      throw ServerException(
+        errorText: e.response?.statusCode == 400 ? "Usuário ou senha inválidos" : "Erro Inesperado",
+      );
+    } catch (e) {
+      throw ServerException(errorText: e.toString());
+    }
+  }
 }
