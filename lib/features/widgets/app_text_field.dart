@@ -37,7 +37,9 @@ class AppTextField extends StatelessWidget {
         if (labelText != null) ...[
           Text(
             labelText!,
-            style: AppTypo.p3(color: AppColors.darkColor),
+            style: AppTypo.p3(
+              color: errorText != null ? AppColors.redProgressColor : AppColors.darkColor,
+            ),
           ),
           Spacing(height: 8)
         ],
@@ -46,6 +48,7 @@ class AppTextField extends StatelessWidget {
           onChanged: onChanged,
           inputFormatters: inputFormatters,
           obscureText: isObscure,
+          textAlignVertical: TextAlignVertical.center,
           style: AppTypo.p2(color: AppColors.darkestColor),
           decoration: InputDecoration(
             fillColor: AppColors.lightestGrayColor,
