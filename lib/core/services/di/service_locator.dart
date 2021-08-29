@@ -3,6 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:pratudo/core/services/di/features/authentication_service_locator.dart';
 import 'package:pratudo/core/services/di/features/main_service_locator.dart';
+import 'package:pratudo/core/services/di/features/recipe_service_locator.dart';
 import 'package:pratudo/core/services/di/features/stores_service_locator.dart';
 import 'package:pratudo/core/services/http/bearer_interceptor.dart';
 import 'package:pratudo/core/services/http/http_service.dart';
@@ -14,6 +15,7 @@ Future<void> setupLocator() async {
   _setupServices();
 
   setupAuthenticationLocator();
+  setupRecipeLocator();
   setupMainServiceLocator();
   setupStoresLocator();
 }

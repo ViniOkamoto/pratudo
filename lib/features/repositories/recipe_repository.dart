@@ -4,7 +4,7 @@ import 'package:pratudo/features/datasources/recipe/recipe_datasource.dart';
 import 'package:pratudo/features/models/summary_recipe.dart';
 
 abstract class RecipeRepository {
-  Future<Either<Failure, void>> getLatestRecipes();
+  Future<Either<Failure, List<SummaryRecipe>>> getLatestRecipes();
 }
 
 class RecipeRepositoryImpl implements RecipeRepository {

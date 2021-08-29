@@ -32,17 +32,6 @@ class AppTypo {
     );
   }
 
-  static TextStyle h4({
-    color = Colors.black,
-    FontWeight fontWeight = FontWeight.w600,
-  }) {
-    return TextStyle(
-      color: color,
-      fontSize: SizeConverter.fontSize(16),
-      fontWeight: fontWeight,
-    );
-  }
-
   static TextStyle p1({
     color = Colors.black,
   }) {
@@ -79,6 +68,26 @@ class AppTypo {
     return TextStyle(
       color: color,
       fontSize: SizeConverter.fontSize(12),
+      fontWeight: FontWeight.w400,
+    );
+  }
+
+  static TextStyle a1({
+    color = Colors.black,
+  }) {
+    return TextStyle(
+      color: color,
+      fontSize: SizeConverter.fontSize(12),
+      fontWeight: FontWeight.w400,
+    );
+  }
+
+  static TextStyle a2({
+    color = Colors.black,
+  }) {
+    return TextStyle(
+      color: color,
+      fontSize: SizeConverter.fontSize(8),
       fontWeight: FontWeight.w400,
     );
   }

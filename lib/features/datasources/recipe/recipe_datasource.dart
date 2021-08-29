@@ -10,7 +10,7 @@ class RecipeDatasource {
 
   Future<List<SummaryRecipe>> getLatestRecipes() async {
     try {
-      final response = await _httpService.get('/recipes/latest');
+      final response = await _httpService.get('/recipe/latest');
 
       return SummaryRecipe.fromJsonList(response.data["content"]);
     } on DioError catch (e) {

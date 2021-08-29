@@ -33,6 +33,8 @@ dependencies:
   mobx: ^2.0.4
   transparent_image: ^2.0.0
   percent_indicator: ^3.0.1
+  shimmer: ^2.0.0
+
 
   flutter:
     sdk: flutter
@@ -67,6 +69,8 @@ flutter:
   fonts:
     - family: Worksans
       fonts:
+        - asset: assets/fonts/worksans_light.ttf
+          weight: 300
         - asset: assets/fonts/worksans_regular.ttf
           weight: 400
         - asset: assets/fonts/worksans_medium.ttf
