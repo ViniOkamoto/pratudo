@@ -22,4 +22,12 @@ class AuthenticationLocalDatasource {
       throw LocalCacheException(errorText: e.toString());
     }
   }
+
+  Future<void> deleteToken() async {
+    try {
+      return await _storageService.delete(key: "accessToken");
+    } catch (e) {
+      throw LocalCacheException(errorText: e.toString());
+    }
+  }
 }

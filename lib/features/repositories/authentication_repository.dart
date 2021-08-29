@@ -8,6 +8,7 @@ abstract class AuthenticationRepository {
   Future<Either<Failure, void>> register(RegisterUserModel registerUserModel);
   Future<Either<Failure, void>> login({required String email, required String password});
   Future<Either<Failure, bool>> checkIfUserLogged();
+  Future<Either<Failure, void>> deleteToken();
 }
 
 class AuthenticationRepositoryImpl implements AuthenticationRepository {
@@ -47,7 +48,24 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       return Left(LocalFailure(errorText: e.errorText));
     } on Exception catch (e) {
       return Left(
-        ServerFailure(
+        Failure(
+          errorText: e.toString(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> deleteToken() async {
+    try {
+      await _localDatasource.deleteToken();
+
+      return Right(null);
+    } on LocalCacheException catch (e) {
+      return Left(LocalFailure(errorText: e.errorText));
+    } on Exception catch (e) {
+      return Left(
+        Failure(
           errorText: e.toString(),
         ),
       );
@@ -66,7 +84,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       return Left(LocalFailure(errorText: e.errorText));
     } on Exception catch (e) {
       return Left(
-        ServerFailure(
+        Failure(
           errorText: e.toString(),
         ),
       );

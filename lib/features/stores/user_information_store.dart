@@ -14,4 +14,10 @@ abstract class _UserInformationStoreBase with Store {
 
     return result.fold((l) => false, (r) => r);
   }
+
+  Future<bool> logout() async {
+    final result = await _repository.deleteToken();
+
+    return result.fold((l) => false, (r) => true);
+  }
 }
