@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:pratudo/core/resources/common_exceptions.dart';
-import 'package:pratudo/features/datasources/authentication_datasource.dart';
-import 'package:pratudo/features/datasources/authentication_local_datasource.dart';
+import 'package:pratudo/features/datasources/authentication/authentication_datasource.dart';
+import 'package:pratudo/features/datasources/authentication/authentication_local_datasource.dart';
 import 'package:pratudo/features/models/register_user_model.dart';
 
 abstract class AuthenticationRepository {

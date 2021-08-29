@@ -1,8 +1,8 @@
 import 'package:pratudo/core/services/di/service_locator.dart';
 import 'package:pratudo/core/services/http/http_service.dart';
 import 'package:pratudo/core/services/storage_service.dart';
-import 'package:pratudo/features/datasources/authentication_datasource.dart';
-import 'package:pratudo/features/datasources/authentication_local_datasource.dart';
+import 'package:pratudo/features/datasources/authentication/authentication_datasource.dart';
+import 'package:pratudo/features/datasources/authentication/authentication_local_datasource.dart';
 import 'package:pratudo/features/repositories/authentication_repository.dart';
 import 'package:pratudo/features/screens/login/login_store.dart';
 import 'package:pratudo/features/screens/register/register_store.dart';
