@@ -6,7 +6,7 @@ import 'package:pratudo/core/utils/size_converter.dart';
 class FlutterToastHelper {
   static showToast({
     String? text,
-    Color? backgroundColor = AppColors.redProgressColor,
+    Color? backgroundColor = AppColors.redColor,
     Color? textColor = AppColors.whiteColor,
   }) {
     return Fluttertoast.showToast(

@@ -12,7 +12,8 @@ class AppColors {
   static const Color lightGrayColor = Color(0xFFC4C4C4);
   static const Color lightestGrayColor = Color(0xFFF3F3F3);
   static const Color whiteColor = Color(0xFFFFFFFF);
-  static const Color greenProgressColor = Color(0xFF5FF46E);
-  static const Color yellowProgressColor = Color(0xFFFF8E3C);
-  static const Color redProgressColor = Color(0xFFF45F5F);
+  static const Color yellowColor = Color(0xFFF2C94C);
+  static const Color redColor = Color(0xFFF45F5F);
+  static const Color orangeColor = Color(0xFFFF7A00);
+  static const Color blueColor = Color(0xFF3772FF);
 }

@@ -10,7 +10,8 @@ class AppSearchField extends StatelessWidget {
   final TextEditingController textEditingController;
   final Function(String) onChanged;
   final List<TextInputFormatter>? inputFormatters;
-  final Function()? onPressedIcon;
+  final VoidCallback? onPressedIcon;
+  final Function(String)? onSubmitted;
 
   const AppSearchField({
     required this.hintText,
@@ -18,6 +19,7 @@ class AppSearchField extends StatelessWidget {
     required this.onChanged,
     this.onPressedIcon,
     this.inputFormatters,
+    this.onSubmitted,
   });
 
   @override
@@ -25,6 +27,8 @@ class AppSearchField extends StatelessWidget {
     return TextField(
       controller: textEditingController,
       onChanged: onChanged,
+      textInputAction: TextInputAction.search,
+      onSubmitted: onSubmitted,
       inputFormatters: inputFormatters,
       textAlignVertical: TextAlignVertical.center,
       style: AppTypo.p2(color: AppColors.darkestColor),
@@ -61,7 +65,7 @@ class AppSearchField extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
         errorStyle: AppTypo.p3(
-          color: AppColors.redProgressColor,
+          color: AppColors.redColor,
         ),
       ),
     );

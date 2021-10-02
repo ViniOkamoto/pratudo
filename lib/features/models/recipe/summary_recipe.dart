@@ -1,4 +1,5 @@
-import 'package:pratudo/features/models/owner_recipe.dart';
+import 'package:pratudo/features/models/recipe/owner_recipe.dart';
+import 'package:pratudo/features/models/recipe/preparation_time.dart';
 
 class SummaryRecipe {
   final String id;
@@ -7,6 +8,9 @@ class SummaryRecipe {
   final String difficulty;
   final double rate;
   final List<String> images;
+  final PreparationTime preparationTime;
+  final List<String>? tags;
+  final bool isNew;
 
   SummaryRecipe({
     required this.id,
@@ -15,6 +19,9 @@ class SummaryRecipe {
     required this.difficulty,
     required this.rate,
     required this.images,
+    required this.preparationTime,
+    required this.isNew,
+    required this.tags,
   });
 
   static SummaryRecipe fromJson(Map<String, dynamic> json) => SummaryRecipe(
@@ -24,6 +31,9 @@ class SummaryRecipe {
         recipeOwner: RecipeOwner.fromJson(json['owner']),
         difficulty: json['difficulty'],
         rate: json['rate'],
+        preparationTime: PreparationTime.fromJson(json['totalMethodOfPreparationTime']),
+        tags: json['tags']?.cast<String>(),
+        isNew: json['isNew'],
       );
 
   static List<SummaryRecipe> fromJsonList(List<dynamic> json) {

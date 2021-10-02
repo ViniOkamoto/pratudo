@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pratudo/core/resources/routes.dart';
 import 'package:pratudo/core/services/di/service_locator.dart';
 import 'package:pratudo/core/theme/colors.dart';
@@ -16,6 +17,12 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> {
   final UserInformationStore _userInformationStore = serviceLocator<UserInformationStore>();
   double _opacity = 0;
+
+  @override
+  void dispose() {
+    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+    super.dispose();
+  }
 
   @override
   void initState() {

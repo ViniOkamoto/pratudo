@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:pratudo/core/services/di/service_locator.dart';
 import 'package:pratudo/core/theme/colors.dart';
-import 'package:pratudo/core/utils/enums/nav_bar_items.dart';
+import 'package:pratudo/core/utils/enums/nav_bar_items_enum.dart';
 import 'package:pratudo/core/utils/size_converter.dart';
 import 'package:pratudo/features/screens/main/main_store.dart';
 import 'package:pratudo/features/widgets/app_nav_bar.dart';
@@ -23,6 +23,7 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: AppColors.whiteColor,
         body: NestedScrollView(
           physics: BouncingScrollPhysics(),
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -43,7 +44,7 @@ class _MainPageState extends State<MainPage> {
                   IconButton(
                     onPressed: () {},
                     icon: Icon(LineAwesomeIcons.trophy),
-                    color: AppColors.yellowProgressColor,
+                    color: AppColors.yellowColor,
                     iconSize: SizeConverter.fontSize(24),
                   )
                 ],

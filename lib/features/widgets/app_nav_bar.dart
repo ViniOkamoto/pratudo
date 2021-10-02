@@ -3,7 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:pratudo/core/theme/colors.dart';
 import 'package:pratudo/core/theme/typography.dart';
-import 'package:pratudo/core/utils/enums/nav_bar_items.dart';
+import 'package:pratudo/core/utils/enums/nav_bar_items_enum.dart';
 import 'package:pratudo/core/utils/size_converter.dart';
 import 'package:pratudo/features/screens/main/main_store.dart';
 import 'package:pratudo/features/widgets/spacing.dart';
@@ -39,24 +39,24 @@ class AppNavBar extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   _NavButton(
-                    item: NavBarItem.EXPLORE,
+                    item: NavBarItemEnum.EXPLORE,
                     currentItem: mainStore.pageSelected,
-                    onTap: () => mainStore.selectPage(NavBarItem.EXPLORE),
+                    onTap: () => mainStore.selectPage(NavBarItemEnum.EXPLORE),
                   ),
                   _NavButton(
-                    item: NavBarItem.SEARCH,
+                    item: NavBarItemEnum.SEARCH,
                     currentItem: mainStore.pageSelected,
-                    onTap: () => mainStore.selectPage(NavBarItem.SEARCH),
+                    onTap: () => mainStore.selectPage(NavBarItemEnum.SEARCH),
                   ),
                   _NavButton(
-                    item: NavBarItem.FAVORITES,
+                    item: NavBarItemEnum.FAVORITES,
                     currentItem: mainStore.pageSelected,
-                    onTap: () => mainStore.selectPage(NavBarItem.FAVORITES),
+                    onTap: () => mainStore.selectPage(NavBarItemEnum.FAVORITES),
                   ),
                   _NavButton(
-                    item: NavBarItem.PROFILE,
+                    item: NavBarItemEnum.PROFILE,
                     currentItem: mainStore.pageSelected,
-                    onTap: () => mainStore.selectPage(NavBarItem.PROFILE),
+                    onTap: () => mainStore.selectPage(NavBarItemEnum.PROFILE),
                   ),
                 ],
               ),
@@ -102,8 +102,8 @@ class _UserLevel extends StatelessWidget {
 }
 
 class _NavButton extends StatelessWidget {
-  final NavBarItem item;
-  final NavBarItem currentItem;
+  final NavBarItemEnum item;
+  final NavBarItemEnum currentItem;
   final VoidCallback onTap;
 
   const _NavButton({

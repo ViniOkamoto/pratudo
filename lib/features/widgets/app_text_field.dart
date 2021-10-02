@@ -38,7 +38,7 @@ class AppTextField extends StatelessWidget {
           Text(
             labelText!,
             style: AppTypo.p3(
-              color: errorText != null ? AppColors.redProgressColor : AppColors.darkColor,
+              color: errorText != null ? AppColors.redColor : AppColors.darkColor,
             ),
           ),
           Spacing(height: 8)
@@ -94,7 +94,7 @@ class AppTextField extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
             ),
             errorStyle: AppTypo.p3(
-              color: AppColors.redProgressColor,
+              color: AppColors.redColor,
             ),
           ),
         ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
-import 'package:pratudo/core/utils/enums/nav_bar_items.dart';
+import 'package:pratudo/core/utils/enums/nav_bar_items_enum.dart';
 
 part 'main_store.g.dart';
 
@@ -12,10 +12,10 @@ abstract class _MainStoreBase with Store {
   );
 
   @observable
-  NavBarItem pageSelected = NavBarItem.EXPLORE;
+  NavBarItemEnum pageSelected = NavBarItemEnum.EXPLORE;
 
   @action
-  selectPage(NavBarItem item) {
+  selectPage(NavBarItemEnum item) {
     pageSelected = item;
     navigationController.jumpToPage(item.index);
   }
