@@ -7,7 +7,7 @@ import 'package:pratudo/core/services/di/service_locator.dart';
 import 'package:pratudo/core/theme/colors.dart';
 import 'package:pratudo/core/theme/typography.dart';
 import 'package:pratudo/core/utils/size_converter.dart';
-import 'package:pratudo/features/stores/user_information_store.dart';
+import 'package:pratudo/features/stores/shared/user_information_store.dart';
 
 class SplashPage extends StatefulWidget {
   @override
