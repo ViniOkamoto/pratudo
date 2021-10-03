@@ -6,6 +6,7 @@ import 'package:pratudo/core/theme/colors.dart';
 import 'package:pratudo/core/utils/enums/nav_bar_items_enum.dart';
 import 'package:pratudo/core/utils/size_converter.dart';
 import 'package:pratudo/features/screens/main/main_store.dart';
+import 'package:pratudo/features/stores/shared/user_progress_store.dart';
 import 'package:pratudo/features/widgets/app_nav_bar.dart';
 
 class MainPage extends StatefulWidget {
@@ -17,8 +18,15 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   final MainStore _mainStore = serviceLocator<MainStore>();
+  final UserProgressStore _userProgressStore = serviceLocator<UserProgressStore>();
 
   List<Widget> pages = navPage.entries.map((e) => e.value).toList();
+
+  @override
+  void initState() {
+    super.initState();
+    _userProgressStore.getUserProgress();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,22 +45,22 @@ class _MainPageState extends State<MainPage> {
                       width: SizeConverter.relativeWidth(70),
                       child: Image.asset('assets/images/letters.png'),
                     ),
-                    actions: _mainStore.pageSelected.checkIfIsType(NavBarItemEnum.PROFILE)
-                        ? []
-                        : [
-                            IconButton(
-                              onPressed: () {},
-                              icon: Icon(LineAwesomeIcons.list),
-                              color: AppColors.lightHighlightColor,
-                              iconSize: SizeConverter.fontSize(24),
-                            ),
-                            IconButton(
-                              onPressed: () {},
-                              icon: Icon(LineAwesomeIcons.trophy),
-                              color: AppColors.yellowColor,
-                              iconSize: SizeConverter.fontSize(24),
-                            )
-                          ],
+                    actions: [
+                      if (_mainStore.pageSelected != NavBarItemEnum.PROFILE) ...[
+                        IconButton(
+                          onPressed: () {},
+                          icon: Icon(LineAwesomeIcons.list),
+                          color: AppColors.lightHighlightColor,
+                          iconSize: SizeConverter.fontSize(24),
+                        ),
+                        IconButton(
+                          onPressed: () {},
+                          icon: Icon(LineAwesomeIcons.trophy),
+                          color: AppColors.yellowColor,
+                          iconSize: SizeConverter.fontSize(24),
+                        )
+                      ]
+                    ],
                   );
                 },
               ),
@@ -64,7 +72,10 @@ class _MainPageState extends State<MainPage> {
             controller: _mainStore.navigationController,
           ),
         ),
-        bottomNavigationBar: AppNavBar(mainStore: _mainStore),
+        bottomNavigationBar: AppNavBar(
+          mainStore: _mainStore,
+          userProgressStore: _userProgressStore,
+        ),
       ),
     );
   }

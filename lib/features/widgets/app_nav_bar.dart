@@ -6,11 +6,16 @@ import 'package:pratudo/core/theme/typography.dart';
 import 'package:pratudo/core/utils/enums/nav_bar_items_enum.dart';
 import 'package:pratudo/core/utils/size_converter.dart';
 import 'package:pratudo/features/screens/main/main_store.dart';
+import 'package:pratudo/features/stores/shared/user_progress_store.dart';
 import 'package:pratudo/features/widgets/spacing.dart';
 
 class AppNavBar extends StatelessWidget {
   final MainStore mainStore;
-  AppNavBar({required this.mainStore});
+  final UserProgressStore userProgressStore;
+  AppNavBar({
+    required this.mainStore,
+    required this.userProgressStore,
+  });
   @override
   Widget build(BuildContext context) {
     return Observer(builder: (context) {
@@ -61,7 +66,15 @@ class AppNavBar extends StatelessWidget {
                 ],
               ),
             ),
-            _UserLevel(),
+            Observer(
+              builder: (context) {
+                if (userProgressStore.isLoading || userProgressStore.hasError) return Container();
+                return _UserLevel(
+                  level: userProgressStore.userProgress!.level,
+                  percentage: userProgressStore.userProgress!.experience.percentage,
+                );
+              },
+            ),
           ],
         ),
       );
@@ -72,7 +85,12 @@ class AppNavBar extends StatelessWidget {
 class _UserLevel extends StatelessWidget {
   const _UserLevel({
     Key? key,
+    required this.level,
+    required this.percentage,
   }) : super(key: key);
+
+  final int level;
+  final double percentage;
 
   @override
   Widget build(BuildContext context) {
@@ -85,13 +103,13 @@ class _UserLevel extends StatelessWidget {
             radius: SizeConverter.fontSize(30),
             animation: true,
             animationDuration: 1200,
-            backgroundColor: Colors.white,
+            backgroundColor: AppColors.lightestGrayColor,
             lineWidth: 4,
             circularStrokeCap: CircularStrokeCap.round,
-            percent: 0.9,
+            percent: percentage,
             progressColor: AppColors.highlightColor,
             center: Text(
-              "10",
+              "$level",
               style: AppTypo.p3(color: AppColors.highlightColor),
             ),
           ),

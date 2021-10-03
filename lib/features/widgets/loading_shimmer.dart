@@ -13,8 +13,8 @@ class LoadingShimmer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
       enabled: true,
-      highlightColor: AppColors.lightestGrayColor,
-      baseColor: AppColors.lightGrayColor,
+      highlightColor: AppColors.whiteColor,
+      baseColor: AppColors.lightestGrayColor,
       child: child,
     );
   }

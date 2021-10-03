@@ -8,38 +8,42 @@ class CarouselShimmer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LoadingShimmer(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+      child: Column(
         children: [
-          Spacing(height: 8),
-          Expanded(
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                Positioned(
-                  right: SizeConverter.relativeWidth(316),
-                  child: _LoadingCard(
-                    width: 223,
-                    height: 200,
-                  ),
-                ),
-                Positioned(
-                  left: SizeConverter.relativeWidth(316),
-                  child: _LoadingCard(
-                    width: 223,
-                    height: 200,
-                  ),
-                ),
-                Align(
+          Spacing(height: 24),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Stack(
                   alignment: Alignment.center,
-                  child: _LoadingCard(
-                    width: 223,
-                    height: 269,
-                  ),
+                  children: [
+                    Positioned(
+                      right: SizeConverter.relativeWidth(316),
+                      child: _LoadingCard(
+                        width: 223,
+                        height: 200,
+                      ),
+                    ),
+                    Positioned(
+                      left: SizeConverter.relativeWidth(316),
+                      child: _LoadingCard(
+                        width: 223,
+                        height: 200,
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.center,
+                      child: _LoadingCard(
+                        width: 223,
+                        height: 269,
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ],
       ),
