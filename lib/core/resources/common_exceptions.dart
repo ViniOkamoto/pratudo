@@ -21,9 +21,6 @@ class LocalCacheException implements Exception {
 class Failure implements Exception {
   Failure({this.errorText});
   final String? errorText;
-
-  @override
-  List<Object?> get props => [errorText];
 }
 
 class ServerFailure extends Failure {

@@ -80,9 +80,8 @@ class _RecipeTileState extends State<RecipeTile> with AutomaticKeepAliveClientMi
                       ),
                       Spacing(width: 4),
                       Text(
-                        "${widget.recipe.preparationTime.value} ${convertEnumToShortTimeString(
-                          widget.recipe.preparationTime.unit,
-                        )}",
+                        "${widget.recipe.preparationTime.value} "
+                        "${parseStringToEnum(widget.recipe.preparationTime.unit)!.parseToStringFront}",
                         style: AppTypo.a2(color: AppColors.blueColor),
                       ),
                     ],

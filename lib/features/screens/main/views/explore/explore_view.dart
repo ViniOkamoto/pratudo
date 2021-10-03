@@ -335,9 +335,8 @@ class _CarrouselItemState extends State<CarrouselItem> with AutomaticKeepAliveCl
                         ),
                         Spacing(width: 4),
                         Text(
-                          "${widget.recipe.preparationTime.value} ${convertEnumToShortTimeString(
-                            widget.recipe.preparationTime.unit,
-                          )}",
+                          "${widget.recipe.preparationTime.value} "
+                          "${parseStringToEnum(widget.recipe.preparationTime.unit)!.parseToStringFront}",
                           style: AppTypo.p5(color: AppColors.whiteColor),
                         ),
                       ],

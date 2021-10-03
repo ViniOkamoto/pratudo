@@ -15,8 +15,6 @@ abstract class _ExploreStoreBase with Store {
   @observable
   String? searchText;
 
-  Timer? _debounceSearchText;
-
   @action
   setSearchText(String value) => _setSearchText(value);
 
