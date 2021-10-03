@@ -119,14 +119,14 @@ class _NavButton extends StatelessWidget {
       child: Column(
         children: [
           Icon(
-            navIcon[item],
+            item.icon,
             color: currentItem == item ? AppColors.highlightColor : AppColors.lightGrayColor,
             size: SizeConverter.fontSize(35),
           ),
           Spacing(height: 4),
           Flexible(
             child: Text(
-              navText[item]!,
+              item.enumToString,
               style: AppTypo.smallText(
                 color: currentItem == item ? AppColors.highlightColor : AppColors.lightGrayColor,
               ),

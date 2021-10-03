@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:pratudo/core/services/di/service_locator.dart';
 import 'package:pratudo/core/theme/colors.dart';
@@ -28,26 +29,32 @@ class _MainPageState extends State<MainPage> {
           physics: BouncingScrollPhysics(),
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
-              SliverAppBar(
-                backgroundColor: AppColors.whiteColor,
-                title: SizedBox(
-                  width: SizeConverter.relativeWidth(70),
-                  child: Image.asset('assets/images/letters.png'),
-                ),
-                actions: [
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(LineAwesomeIcons.list),
-                    color: AppColors.lightHighlightColor,
-                    iconSize: SizeConverter.fontSize(24),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(LineAwesomeIcons.trophy),
-                    color: AppColors.yellowColor,
-                    iconSize: SizeConverter.fontSize(24),
-                  )
-                ],
+              Observer(
+                builder: (context) {
+                  return SliverAppBar(
+                    backgroundColor: AppColors.whiteColor,
+                    title: SizedBox(
+                      width: SizeConverter.relativeWidth(70),
+                      child: Image.asset('assets/images/letters.png'),
+                    ),
+                    actions: _mainStore.pageSelected.checkIfIsType(NavBarItemEnum.PROFILE)
+                        ? []
+                        : [
+                            IconButton(
+                              onPressed: () {},
+                              icon: Icon(LineAwesomeIcons.list),
+                              color: AppColors.lightHighlightColor,
+                              iconSize: SizeConverter.fontSize(24),
+                            ),
+                            IconButton(
+                              onPressed: () {},
+                              icon: Icon(LineAwesomeIcons.trophy),
+                              color: AppColors.yellowColor,
+                              iconSize: SizeConverter.fontSize(24),
+                            )
+                          ],
+                  );
+                },
               ),
             ];
           },
