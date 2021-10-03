@@ -15,7 +15,6 @@ import 'package:pratudo/features/screens/main/views/explore/widgets/empty_recipe
 import 'package:pratudo/features/screens/main/widgets/list_shimmer.dart';
 import 'package:pratudo/features/screens/main/widgets/recipe_tile.dart';
 import 'package:pratudo/features/widgets/app_search_field.dart';
-import 'package:pratudo/features/widgets/loading_shimmer.dart';
 import 'package:pratudo/features/widgets/spacing.dart';
 
 class ExploreView extends StatefulWidget {
@@ -85,9 +84,7 @@ class _ExploreViewState extends State<ExploreView> {
                   ),
                   Visibility(
                     visible: _exploreStore.isLoading,
-                    child: LoadingShimmer(
-                      child: CarouselShimmer(),
-                    ),
+                    child: CarouselShimmer(),
                     replacement: Column(
                       children: [
                         Spacing(height: 8),

@@ -10,8 +10,10 @@ class SearchView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding:
-          EdgeInsets.symmetric(horizontal: SizeConverter.relativeWidth(16), vertical: SizeConverter.relativeHeight(16)),
+      padding: EdgeInsets.symmetric(
+        horizontal: SizeConverter.relativeWidth(16),
+        vertical: SizeConverter.relativeHeight(16),
+      ),
       physics: BouncingScrollPhysics(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
