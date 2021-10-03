@@ -8,18 +8,18 @@ import 'package:pratudo/core/utils/size_converter.dart';
 import 'package:pratudo/features/models/recipe/summary_recipe.dart';
 import 'package:pratudo/features/widgets/spacing.dart';
 
-class CarrouselItem extends StatefulWidget {
-  const CarrouselItem({
+class CarouselItem extends StatefulWidget {
+  const CarouselItem({
     required this.recipe,
   });
 
   final SummaryRecipe recipe;
 
   @override
-  _CarrouselItemState createState() => _CarrouselItemState();
+  _CarouselItemState createState() => _CarouselItemState();
 }
 
-class _CarrouselItemState extends State<CarrouselItem> with AutomaticKeepAliveClientMixin {
+class _CarouselItemState extends State<CarouselItem> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -39,7 +39,7 @@ class _CarrouselItemState extends State<CarrouselItem> with AutomaticKeepAliveCl
         ),
         boxShadow: [
           BoxShadow(
-            color: Color(0x40000000),
+            color: AppColors.blackWith25Opacity,
             offset: Offset(0, 4),
             blurRadius: 10,
           ),
@@ -95,9 +95,7 @@ class _CarrouselItemState extends State<CarrouselItem> with AutomaticKeepAliveCl
                       ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),
-                        color: Color(
-                          0x660000000,
-                        ),
+                        color: Color(0x660000000),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,

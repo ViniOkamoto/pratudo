@@ -10,7 +10,7 @@ import 'package:pratudo/core/utils/size_converter.dart';
 import 'package:pratudo/features/models/recipe/summary_recipe.dart';
 import 'package:pratudo/features/screens/main/views/explore/explore_store.dart';
 import 'package:pratudo/features/screens/main/views/explore/widgets/carousel_item.dart';
-import 'package:pratudo/features/screens/main/views/explore/widgets/carrousel_shimmer.dart';
+import 'package:pratudo/features/screens/main/views/explore/widgets/carousel_shimmer.dart';
 import 'package:pratudo/features/screens/main/views/explore/widgets/empty_recipe.dart';
 import 'package:pratudo/features/screens/main/widgets/list_shimmer.dart';
 import 'package:pratudo/features/screens/main/widgets/recipe_tile.dart';
@@ -86,7 +86,7 @@ class _ExploreViewState extends State<ExploreView> {
                   Visibility(
                     visible: _exploreStore.isLoading,
                     child: LoadingShimmer(
-                      child: CarrouselShimmer(),
+                      child: CarouselShimmer(),
                     ),
                     replacement: Column(
                       children: [
@@ -106,7 +106,7 @@ class _ExploreViewState extends State<ExploreView> {
                           ),
                           itemBuilder: (BuildContext context, int index, int pageViewIndex) {
                             SummaryRecipe recipe = _exploreStore.recipes[index];
-                            return CarrouselItem(
+                            return CarouselItem(
                               recipe: recipe,
                             );
                           },

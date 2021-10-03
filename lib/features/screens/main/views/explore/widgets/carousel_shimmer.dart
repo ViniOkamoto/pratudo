@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pratudo/core/theme/colors.dart';
 import 'package:pratudo/core/utils/size_converter.dart';
 
-class CarrouselShimmer extends StatelessWidget {
+class CarouselShimmer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
