@@ -3,7 +3,7 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:pratudo/features/screens/main/views/explore/explore_view.dart';
 import 'package:pratudo/features/screens/main/views/favorites_view.dart';
 import 'package:pratudo/features/screens/main/views/profile_view.dart';
-import 'package:pratudo/features/screens/main/views/search_view.dart';
+import 'package:pratudo/features/screens/main/views/search/search_view.dart';
 
 enum NavBarItemEnum {
   EXPLORE,
