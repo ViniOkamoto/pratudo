@@ -53,7 +53,7 @@ class EmptyRecipe extends StatelessWidget {
             text: "Criar receita",
             icon: LineAwesomeIcons.alternate_pencil,
             onPressed: () {},
-          )
+          ),
         ],
       ),
     );

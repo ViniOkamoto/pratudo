@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:pratudo/core/resources/routes.dart';
 import 'package:pratudo/core/theme/colors.dart';
 import 'package:pratudo/core/theme/typography.dart';
 import 'package:pratudo/core/utils/size_converter.dart';
@@ -51,7 +52,7 @@ class SearchByIngredientsCard extends StatelessWidget {
                 ),
                 Spacing(height: 8),
                 InkWell(
-                  onTap: () {},
+                  onTap: () => Navigator.pushNamed(context, Routes.searchByIngredient),
                   child: Container(
                     height: SizeConverter.relativeWidth(16),
                     child: Row(

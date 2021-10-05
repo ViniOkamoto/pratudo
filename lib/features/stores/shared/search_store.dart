@@ -42,7 +42,7 @@ abstract class _SearchStoreBase with Store {
 
   @action
   getFilteredRecipes() async {
-    if (searchText!.isNotEmpty) {
+    if (searchText?.isNotEmpty ?? false) {
       isLoadingSearch = true;
       hasErrorInSearch = false;
       isSearching = true;
