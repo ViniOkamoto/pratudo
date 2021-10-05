@@ -36,7 +36,7 @@ class UserInfoSection extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      userProgressStore.userProgress!.title,
+                      userProgressStore.userProgress?.title ?? '',
                       style: AppTypo.p3(color: AppColors.highlightColor),
                     ),
                     Spacing(height: 8),
@@ -50,7 +50,7 @@ class UserInfoSection extends StatelessWidget {
                         borderRadius: BorderRadius.circular(30),
                       ),
                       child: Text(
-                        'Nível ${userProgressStore.userProgress!.level}',
+                        'Nível ${userProgressStore.userProgress?.level ?? ''}',
                         style: AppTypo.p5(color: AppColors.whiteColor),
                       ),
                     ),

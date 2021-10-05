@@ -14,7 +14,6 @@ class SearchByIngredientsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(
-        top: SizeConverter.relativeHeight(16),
         bottom: SizeConverter.relativeHeight(16),
       ),
       decoration: BoxDecoration(

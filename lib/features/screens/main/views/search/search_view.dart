@@ -1,35 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:pratudo/core/services/di/service_locator.dart';
 import 'package:pratudo/core/theme/colors.dart';
 import 'package:pratudo/core/theme/typography.dart';
 import 'package:pratudo/core/utils/size_converter.dart';
 import 'package:pratudo/features/screens/main/views/search/widgets/category_list.dart';
 import 'package:pratudo/features/screens/main/views/search/widgets/search_by_ingredients_card.dart';
-import 'package:pratudo/features/widgets/app_search_field.dart';
+import 'package:pratudo/features/screens/main/widgets/search_section.dart';
+import 'package:pratudo/features/stores/shared/search_store.dart';
 
 class SearchView extends StatelessWidget {
+  final SearchStore _searchStore = serviceLocator<SearchStore>();
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(
-        horizontal: SizeConverter.relativeWidth(16),
         vertical: SizeConverter.relativeHeight(16),
       ),
       physics: BouncingScrollPhysics(),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          AppSearchField(
-            hintText: 'Digite o nome da receita',
-            textEditingController: TextEditingController(),
-            onChanged: (onChanged) {},
+      child: SearchSection(
+        searchStore: _searchStore,
+        pageContent: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: SizeConverter.relativeWidth(16),
           ),
-          SearchByIngredientsCard(),
-          Text(
-            'Categorias',
-            style: AppTypo.p2(color: AppColors.darkColor),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SearchByIngredientsCard(),
+              Text(
+                'Categorias',
+                style: AppTypo.p2(color: AppColors.darkColor),
+              ),
+              CategoryList()
+            ],
           ),
-          CategoryList()
-        ],
+        ),
       ),
     );
   }

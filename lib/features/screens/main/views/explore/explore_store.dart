@@ -13,39 +13,15 @@ abstract class _ExploreStoreBase with Store {
   _ExploreStoreBase(this._recipeRepository);
 
   @observable
-  String? searchText;
-
-  @action
-  setSearchText(String value) => _setSearchText(value);
-
-  _setSearchText(String value) {
-    searchText = value;
-    if (searchText!.isEmpty) {
-      if (isSearching) isSearching = false;
-    }
-  }
-
-  @observable
   int currentIndex = 0;
 
   @observable
   bool hasError = false;
 
   @observable
-  bool hasErrorInSearch = false;
-
-  @observable
-  bool isLoadingSearch = false;
-
-  @observable
-  bool isSearching = false;
-
-  @observable
   bool isLoading = false;
 
   ObservableList<SummaryRecipe> recipes = ObservableList();
-
-  ObservableList<SummaryRecipe> filteredRecipes = ObservableList();
 
   @action
   getLatestRecipe() async {
@@ -58,25 +34,5 @@ abstract class _ExploreStoreBase with Store {
     );
 
     isLoading = false;
-  }
-
-  @action
-  getFilteredRecipes() async {
-    if (searchText!.isNotEmpty) {
-      isLoadingSearch = true;
-      hasErrorInSearch = false;
-      isSearching = true;
-      filteredRecipes.clear();
-
-      final result = await _recipeRepository.getFilteredRecipes(searchText!);
-      result.fold(
-        (l) => hasErrorInSearch,
-        (r) {
-          filteredRecipes.addAll(r);
-        },
-      );
-
-      isLoadingSearch = false;
-    }
   }
 }
