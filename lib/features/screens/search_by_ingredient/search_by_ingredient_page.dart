@@ -50,7 +50,7 @@ class SearchByIngredientPage extends StatelessWidget {
                           children: [
                             Expanded(
                               child: AppField(
-                                hintText: 'Digite e adicione o seu ingrediente',
+                                hintText: 'Adicione o seu ingrediente',
                                 controller: TextEditingController(),
                                 onChanged: (onChanged) {},
                                 verticalPadding: 16,
