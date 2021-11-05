@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:pratudo/core/services/di/service_locator.dart';
 import 'package:pratudo/core/theme/colors.dart';
 import 'package:pratudo/core/theme/typography.dart';
@@ -65,32 +66,36 @@ class _ExploreViewState extends State<ExploreView> {
                     style: AppTypo.p2(color: AppColors.darkColor),
                   ),
                 ),
-                Visibility(
-                  visible: _exploreStore.isLoading,
-                  child: CarouselShimmer(),
-                  replacement: Column(
-                    children: [
-                      Spacing(height: 8),
-                      CarouselSlider.builder(
-                        key: UniqueKey(),
-                        itemCount: _exploreStore.recipes.length,
-                        options: CarouselOptions(
-                          viewportFraction: 0.6,
-                          enableInfiniteScroll: true,
-                          height: SizeConverter.relativeHeight(300),
-                          enlargeCenterPage: true,
-                          scrollPhysics: BouncingScrollPhysics(),
-                          onPageChanged: (index, _) {
-                            _exploreStore.currentIndex = index;
-                          },
-                        ),
-                        itemBuilder: (BuildContext context, int index, int pageViewIndex) {
-                          SummaryRecipe recipe = _exploreStore.recipes[index];
-                          return CarouselItem(recipe: recipe);
-                        },
+                Observer(
+                  builder: (context) {
+                    return Visibility(
+                      visible: _exploreStore.isLoading,
+                      child: CarouselShimmer(),
+                      replacement: Column(
+                        children: [
+                          Spacing(height: 8),
+                          CarouselSlider.builder(
+                            key: UniqueKey(),
+                            itemCount: _exploreStore.recipes.length,
+                            options: CarouselOptions(
+                              viewportFraction: 0.6,
+                              enableInfiniteScroll: true,
+                              height: SizeConverter.relativeHeight(300),
+                              enlargeCenterPage: true,
+                              scrollPhysics: BouncingScrollPhysics(),
+                              onPageChanged: (index, _) {
+                                _exploreStore.currentIndex = index;
+                              },
+                            ),
+                            itemBuilder: (BuildContext context, int index, int pageViewIndex) {
+                              SummaryRecipe recipe = _exploreStore.recipes[index];
+                              return CarouselItem(recipe: recipe);
+                            },
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    );
+                  },
                 ),
               ],
             ),

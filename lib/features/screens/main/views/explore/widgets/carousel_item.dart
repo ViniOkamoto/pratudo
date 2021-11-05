@@ -5,6 +5,7 @@ import 'package:pratudo/core/theme/typography.dart';
 import 'package:pratudo/core/utils/enums/time_enum.dart';
 import 'package:pratudo/core/utils/image_helper.dart';
 import 'package:pratudo/core/utils/size_converter.dart';
+import 'package:pratudo/features/models/recipe/preparation_time.dart';
 import 'package:pratudo/features/models/recipe/summary_recipe.dart';
 import 'package:pratudo/features/widgets/spacing.dart';
 
@@ -51,37 +52,9 @@ class _CarouselItemState extends State<CarouselItem> with AutomaticKeepAliveClie
           Expanded(
             child: Stack(
               children: [
-                Positioned(
-                  right: 0,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: SizeConverter.relativeWidth(8),
-                      vertical: SizeConverter.relativeHeight(8),
-                    ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(10),
-                        topRight: Radius.circular(10),
-                      ),
-                      color: AppColors.blueColor,
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          LineAwesomeIcons.clock,
-                          size: SizeConverter.fontSize(16),
-                          color: AppColors.whiteColor,
-                        ),
-                        Spacing(width: 4),
-                        Text(
-                          "${widget.recipe.preparationTime.value} "
-                          "${parseStringToEnum(widget.recipe.preparationTime.unit)!.parseToStringFront}",
-                          style: AppTypo.p5(color: AppColors.whiteColor),
-                        ),
-                      ],
-                    ),
-                  ),
+                _PreparationHeader(preparationTime: widget.recipe.preparationTime),
+                _PortionHeader(
+                  text: widget.recipe.portions,
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -161,4 +134,91 @@ class _CarouselItemState extends State<CarouselItem> with AutomaticKeepAliveClie
 
   @override
   bool get wantKeepAlive => true;
+}
+
+class _PreparationHeader extends StatelessWidget {
+  const _PreparationHeader({
+    required this.preparationTime,
+  });
+
+  final PreparationTime preparationTime;
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      right: 0,
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: SizeConverter.relativeWidth(8),
+          vertical: SizeConverter.relativeHeight(8),
+        ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(10),
+            topRight: Radius.circular(10),
+          ),
+          color: AppColors.blueColor,
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              LineAwesomeIcons.clock,
+              size: SizeConverter.fontSize(16),
+              color: AppColors.whiteColor,
+            ),
+            Spacing(width: 4),
+            Text(
+              "${preparationTime.value} "
+              "${parseStringToEnum(preparationTime.unit)!.parseToStringFront}",
+              style: AppTypo.p5(color: AppColors.whiteColor),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _PortionHeader extends StatelessWidget {
+  const _PortionHeader({
+    required this.text,
+  });
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      left: 0,
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: SizeConverter.relativeWidth(8),
+          vertical: SizeConverter.relativeHeight(8),
+        ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+            bottomRight: Radius.circular(10),
+            topLeft: Radius.circular(10),
+          ),
+          color: AppColors.orangeColor,
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              LineAwesomeIcons.user,
+              size: SizeConverter.fontSize(16),
+              color: AppColors.whiteColor,
+            ),
+            Spacing(width: 4),
+            Text(
+              text,
+              style: AppTypo.p5(color: AppColors.whiteColor),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }

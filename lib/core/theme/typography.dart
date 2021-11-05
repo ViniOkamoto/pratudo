@@ -94,7 +94,7 @@ class AppTypo {
     return TextStyle(
       color: color,
       fontSize: SizeConverter.fontSize(8),
-      fontWeight: FontWeight.w400,
+      fontWeight: FontWeight.w300,
     );
   }
 
