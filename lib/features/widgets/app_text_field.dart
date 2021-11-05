@@ -51,7 +51,7 @@ class AppTextField extends StatelessWidget {
           inputFormatters: inputFormatters,
           obscureText: isObscure,
           hintText: hintText,
-          prefixIcon: isPassword
+          suffixIcon: isPassword
               ? Padding(
                   padding: EdgeInsets.only(
                     right: SizeConverter.relativeWidth(8),

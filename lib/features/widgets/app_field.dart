@@ -11,6 +11,7 @@ class AppField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final Function(String)? onSubmitted;
   final Widget? prefixIcon;
+  final Widget? suffixIcon;
   final bool obscureText;
   final String? errorText;
   final TextInputAction? textInputAction;
@@ -21,6 +22,7 @@ class AppField extends StatelessWidget {
     required this.controller,
     required this.onChanged,
     this.textInputAction,
+    this.suffixIcon,
     this.inputFormatters,
     this.onSubmitted,
     this.prefixIcon,
@@ -50,6 +52,7 @@ class AppField extends StatelessWidget {
         isDense: true,
         hintText: hintText,
         prefixIcon: prefixIcon,
+        suffixIcon: suffixIcon,
         hintStyle: AppTypo.p2(color: AppColors.lightGrayColor),
         floatingLabelBehavior: FloatingLabelBehavior.always,
         focusedBorder: UnderlineInputBorder(
