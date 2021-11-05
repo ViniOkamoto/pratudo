@@ -9,6 +9,7 @@ import 'package:pratudo/core/services/di/features/stores_service_locator.dart';
 import 'package:pratudo/core/services/http/bearer_interceptor.dart';
 import 'package:pratudo/core/services/http/http_service.dart';
 import 'package:pratudo/core/services/storage_service.dart';
+import 'package:pratudo/core/utils/navigation_without_context.dart';
 
 final GetIt serviceLocator = GetIt.I;
 
@@ -25,11 +26,13 @@ Future<void> setupLocator() async {
 Future<void> _setupServices() async {
   serviceLocator.registerSingleton(Dio());
   serviceLocator.registerFactory(() => FlutterSecureStorage());
+  serviceLocator.registerFactory(() => NavigationWithoutContext());
   serviceLocator.registerSingleton(StorageService(secureStorage: serviceLocator<FlutterSecureStorage>()));
   serviceLocator.registerFactory(
     () => BearerInterceptor(
       dio: serviceLocator<Dio>(),
       storageService: serviceLocator<StorageService>(),
+      navigationWithoutContext: serviceLocator<NavigationWithoutContext>(),
     ),
   );
   serviceLocator.registerSingleton(
