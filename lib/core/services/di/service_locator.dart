@@ -5,6 +5,7 @@ import 'package:pratudo/core/services/di/features/authentication_service_locator
 import 'package:pratudo/core/services/di/features/gamification_service_locator.dart';
 import 'package:pratudo/core/services/di/features/main_service_locator.dart';
 import 'package:pratudo/core/services/di/features/recipe_service_locator.dart';
+import 'package:pratudo/core/services/di/features/search_service_locator.dart';
 import 'package:pratudo/core/services/di/features/stores_service_locator.dart';
 import 'package:pratudo/core/services/http/bearer_interceptor.dart';
 import 'package:pratudo/core/services/http/http_service.dart';
@@ -21,6 +22,7 @@ Future<void> setupLocator() async {
   setupMainServiceLocator();
   setupStoresLocator();
   setupGamificationLocator();
+  setupSearchLocator();
 }
 
 Future<void> _setupServices() async {

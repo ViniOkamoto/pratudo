@@ -38,7 +38,7 @@ class SearchByIngredientsCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Icon(
-            LineAwesomeIcons.book,
+            LineAwesomeIcons.fruit_apple,
             size: SizeConverter.fontSize(32),
             color: AppColors.highlightColor,
           ),

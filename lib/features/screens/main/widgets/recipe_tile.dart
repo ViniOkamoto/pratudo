@@ -1,3 +1,4 @@
+import 'package:easy_rich_text/easy_rich_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
@@ -6,12 +7,17 @@ import 'package:pratudo/core/theme/typography.dart';
 import 'package:pratudo/core/utils/image_helper.dart';
 import 'package:pratudo/core/utils/size_converter.dart';
 import 'package:pratudo/features/models/recipe/summary_recipe.dart';
+import 'package:pratudo/features/screens/shared/filtered_ingredients/filtered_ingredients_enum.dart';
 import 'package:pratudo/features/widgets/spacing.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class RecipeTile extends StatefulWidget {
   final SummaryRecipe recipe;
-  const RecipeTile({required this.recipe});
+  final FilteredIngredientsEnum? recipeType;
+  const RecipeTile({
+    required this.recipe,
+    this.recipeType,
+  });
 
   @override
   _RecipeTileState createState() => _RecipeTileState();
@@ -32,26 +38,9 @@ class _RecipeTileState extends State<RecipeTile> with AutomaticKeepAliveClientMi
           Expanded(
             child: Container(
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    height: SizeConverter.relativeWidth(45),
-                    width: SizeConverter.relativeWidth(45),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: AppColors.lightestGrayColor,
-                        width: 1,
-                      ),
-                    ),
-                    child: ClipOval(
-                      child: FadeInImage(
-                        image: MemoryImage(ImageHelper.convertBase64ToImage(widget.recipe.images.first)),
-                        placeholder: MemoryImage(kTransparentImage),
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ),
+                  _IngredientCircle(widget: widget),
                   Spacing(width: 8),
                   Expanded(
                     child: Column(
@@ -64,53 +53,90 @@ class _RecipeTileState extends State<RecipeTile> with AutomaticKeepAliveClientMi
                               color: AppColors.orangeColor,
                             ),
                           ),
-                        Container(
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Flexible(
-                                child: Text(
-                                  widget.recipe.name,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: AppTypo.h3(color: AppColors.darkestColor),
-                                ),
-                              ),
-                              Spacing(width: 4),
-                              Row(
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Flexible(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Icon(
-                                    LineAwesomeIcons.star_1,
-                                    color: AppColors.yellowColor,
-                                    size: SizeConverter.fontSize(12),
+                                  Container(
+                                    child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Flexible(
+                                          child: Text(
+                                            widget.recipe.name,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: AppTypo.h3(color: AppColors.darkestColor),
+                                          ),
+                                        ),
+                                        Spacing(width: 4),
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              LineAwesomeIcons.star_1,
+                                              color: AppColors.yellowColor,
+                                              size: SizeConverter.fontSize(12),
+                                            ),
+                                            Text(
+                                              "(${widget.recipe.rate})",
+                                              style: AppTypo.p5(color: AppColors.yellowColor),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Row(
+                                    children: [
+                                      _RecipeInfo(
+                                        color: AppColors.blueColor,
+                                        icon: LineAwesomeIcons.clock,
+                                        text: widget.recipe.preparationTimeToString,
+                                      ),
+                                      Spacing(width: 8),
+                                      _RecipeInfo(
+                                        color: AppColors.orangeColor,
+                                        icon: LineAwesomeIcons.user,
+                                        text: widget.recipe.portions,
+                                      ),
+                                    ],
                                   ),
                                   Text(
-                                    "(${widget.recipe.rate})",
-                                    style: AppTypo.p5(color: AppColors.yellowColor),
+                                    "Feito por: ${widget.recipe.recipeOwner.name}",
+                                    style: AppTypo.p5(color: AppColors.darkColor),
                                   ),
                                 ],
                               ),
-                            ],
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            _RecipeInfo(
-                              color: AppColors.blueColor,
-                              icon: LineAwesomeIcons.clock,
-                              text: widget.recipe.preparationTimeToString,
                             ),
-                            Spacing(width: 8),
-                            _RecipeInfo(
-                              color: AppColors.orangeColor,
-                              icon: LineAwesomeIcons.user,
-                              text: widget.recipe.portions,
+                            IconButton(
+                              onPressed: () {},
+                              color: AppColors.lightGrayColor,
+                              iconSize: SizeConverter.fontSize(20),
+                              icon: Icon(LineAwesomeIcons.bookmark),
                             ),
                           ],
                         ),
-                        Text(
-                          "Feito por: ${widget.recipe.recipeOwner.name}",
-                          style: AppTypo.p5(color: AppColors.darkColor),
-                        ),
+                        if (widget.recipeType == FilteredIngredientsEnum.INGREDIENTS) ...[
+                          EasyRichText(
+                            widget.recipe.formattedIngredients!,
+                            defaultStyle: AppTypo.p5(color: AppColors.darkColor),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            patternList: [
+                              EasyRichTextPattern(
+                                targetString: '(\\*)(.*?)(\\*)',
+                                matchBuilder: (BuildContext context, RegExpMatch? match) {
+                                  return TextSpan(
+                                    text: match![0]?.replaceAll('*', ''),
+                                    style: TextStyle(color: AppColors.highlightColor),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ]
                       ],
                     ),
                   ),
@@ -118,12 +144,6 @@ class _RecipeTileState extends State<RecipeTile> with AutomaticKeepAliveClientMi
               ),
             ),
           ),
-          IconButton(
-            onPressed: () {},
-            color: AppColors.lightGrayColor,
-            iconSize: SizeConverter.fontSize(20),
-            icon: Icon(LineAwesomeIcons.bookmark),
-          )
         ],
       ),
     );
@@ -131,6 +151,39 @@ class _RecipeTileState extends State<RecipeTile> with AutomaticKeepAliveClientMi
 
   @override
   bool get wantKeepAlive => true;
+}
+
+class _IngredientCircle extends StatelessWidget {
+  const _IngredientCircle({
+    Key? key,
+    required this.widget,
+  }) : super(key: key);
+
+  final RecipeTile widget;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: SizeConverter.relativeWidth(45),
+      width: SizeConverter.relativeWidth(45),
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: AppColors.lightestGrayColor,
+          width: 1,
+        ),
+      ),
+      child: ClipOval(
+        child: FadeInImage(
+          image: MemoryImage(
+            ImageHelper.convertBase64ToImage(widget.recipe.images.first),
+          ),
+          placeholder: MemoryImage(kTransparentImage),
+          fit: BoxFit.contain,
+        ),
+      ),
+    );
+  }
 }
 
 class _RecipeInfo extends StatelessWidget {

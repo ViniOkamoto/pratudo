@@ -4,6 +4,7 @@ import 'package:pratudo/features/screens/login/login_page.dart';
 import 'package:pratudo/features/screens/main/main_page.dart';
 import 'package:pratudo/features/screens/register/register_page.dart';
 import 'package:pratudo/features/screens/search_by_ingredient/search_by_ingredient_page.dart';
+import 'package:pratudo/features/screens/shared/filtered_ingredients/filtered_ingredients_page.dart';
 import 'package:pratudo/features/screens/splash/splash_page.dart';
 
 class Router {
@@ -19,6 +20,9 @@ class Router {
         return MaterialPageRoute(builder: (_) => MainPage(), settings: settings);
       case Routes.searchByIngredient:
         return MaterialPageRoute(builder: (_) => SearchByIngredientPage(), settings: settings);
+      case Routes.filteredIngredients:
+        FilteredIngredientsPageParams params = settings.arguments as FilteredIngredientsPageParams;
+        return MaterialPageRoute(builder: (_) => FilteredIngredientsPage(params), settings: settings);
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

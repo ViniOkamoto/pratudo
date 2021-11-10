@@ -20,42 +20,45 @@ class AppPrimaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: SizedBox(
-            height: SizeConverter.relativeWidth(height),
-            child: ElevatedButton(
-              onPressed: onPressed,
-              child: Visibility(
-                visible: !isLoading,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    if (icon != null) ...[
-                      Icon(
-                        icon,
-                        size: SizeConverter.fontSize(24),
-                        color: AppColors.whiteColor,
+    return Padding(
+      padding: EdgeInsets.all(8.0),
+      child: Row(
+        children: [
+          Expanded(
+            child: SizedBox(
+              height: SizeConverter.relativeWidth(height),
+              child: ElevatedButton(
+                onPressed: onPressed,
+                child: Visibility(
+                  visible: !isLoading,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (icon != null) ...[
+                        Icon(
+                          icon,
+                          size: SizeConverter.fontSize(24),
+                          color: AppColors.whiteColor,
+                        ),
+                        Spacing(width: 8),
+                      ],
+                      Text(
+                        text,
+                        style: AppTypo.buttonText(color: AppColors.whiteColor),
                       ),
-                      Spacing(width: 8),
                     ],
-                    Text(
-                      text,
-                      style: AppTypo.buttonText(color: AppColors.whiteColor),
+                  ),
+                  replacement: Center(
+                    child: CircularProgressIndicator(
+                      color: AppColors.whiteColor,
                     ),
-                  ],
-                ),
-                replacement: Center(
-                  child: CircularProgressIndicator(
-                    color: AppColors.whiteColor,
                   ),
                 ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

@@ -13,6 +13,7 @@ class SummaryRecipe {
   final PreparationTime preparationTime;
   final List<String>? tags;
   final bool isNew;
+  final String? formattedIngredients;
 
   SummaryRecipe({
     required this.id,
@@ -25,6 +26,7 @@ class SummaryRecipe {
     required this.isNew,
     required this.serves,
     required this.tags,
+    this.formattedIngredients,
   });
 
   String get preparationTimeToString =>
@@ -43,6 +45,7 @@ class SummaryRecipe {
         preparationTime: PreparationTime.fromJson(json['totalMethodOfPreparationTime']),
         tags: json['tags']?.cast<String>(),
         isNew: json['isNew'],
+        formattedIngredients: json['formattedIngredients'],
       );
 
   static List<SummaryRecipe> fromJsonList(List<dynamic> json) {

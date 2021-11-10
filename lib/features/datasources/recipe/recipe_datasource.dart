@@ -33,4 +33,20 @@ class RecipeDatasource {
       throw ServerException(errorText: e.toString());
     }
   }
+
+  Future<List<SummaryRecipe>> getRecipeByIngredients(List<String> ingredients) async {
+    try {
+      String ingredientsToString = ingredients.toString().replaceAll('[', "").replaceAll(']', "");
+
+      final response =
+          await _httpService.get('/recipe/ingredients', queryParameters: {"ingredients": ingredientsToString});
+
+      return SummaryRecipe.fromJsonList(response.data["content"]);
+    } on DioError catch (e) {
+      throw ServerException(
+          errorText: e.response?.data['message'] != null ? e.response?.data['message'] : "Erro Inesperado");
+    } catch (e) {
+      throw ServerException(errorText: e.toString());
+    }
+  }
 }

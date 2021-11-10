@@ -21,7 +21,7 @@ dependencies:
   transparent_image: ^2.0.0
   percent_indicator: ^3.4.0
   shimmer: ^2.0.0
-
+  easy_rich_text: ^1.0.1
 
   flutter:
     sdk: flutter

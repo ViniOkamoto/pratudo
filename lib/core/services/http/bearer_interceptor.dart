@@ -41,9 +41,25 @@ class BearerInterceptor extends Interceptor {
     print(
         'ERROR[${err.response?.statusCode}] => PATH: ${err.requestOptions.path}, BODY : ${err.response!.data}, request : ${err.requestOptions.data}');
     if (err.response!.statusCode == 401 || err.response!.statusCode == 403) {
+      _lock();
+
+      _dio.clear();
+      _unlock();
       _storageService.delete(key: 'accessToken');
       _navigation.pushNamedAndRemoveUntil(Routes.login);
     }
     return super.onError(err, handler);
+  }
+
+  _lock() {
+    _dio.interceptors.responseLock.lock();
+    _dio.interceptors.requestLock.lock();
+    _dio.interceptors.errorLock.lock();
+  }
+
+  _unlock() {
+    _dio.interceptors.responseLock.unlock();
+    _dio.interceptors.requestLock.unlock();
+    _dio.interceptors.errorLock.unlock();
   }
 }
