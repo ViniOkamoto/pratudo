@@ -13,6 +13,7 @@ import 'package:pratudo/features/screens/main/views/explore/widgets/carousel_ite
 import 'package:pratudo/features/screens/main/views/explore/widgets/carousel_shimmer.dart';
 import 'package:pratudo/features/screens/main/widgets/search_section.dart';
 import 'package:pratudo/features/stores/shared/search_store.dart';
+import 'package:pratudo/features/widgets/app_default_error.dart';
 import 'package:pratudo/features/widgets/spacing.dart';
 
 class ExploreView extends StatefulWidget {
@@ -57,42 +58,49 @@ class _ExploreViewState extends State<ExploreView> {
             pageContent: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: SizeConverter.relativeWidth(16),
-                  ),
-                  child: Text(
-                    "Últimas receitas",
-                    style: AppTypo.p2(color: AppColors.darkColor),
-                  ),
-                ),
                 Observer(
                   builder: (context) {
                     return Visibility(
                       visible: _exploreStore.isLoading,
                       child: CarouselShimmer(),
-                      replacement: Column(
-                        children: [
-                          Spacing(height: 8),
-                          CarouselSlider.builder(
-                            key: UniqueKey(),
-                            itemCount: _exploreStore.recipes.length,
-                            options: CarouselOptions(
-                              viewportFraction: 0.6,
-                              enableInfiniteScroll: true,
-                              height: SizeConverter.relativeHeight(300),
-                              enlargeCenterPage: true,
-                              scrollPhysics: BouncingScrollPhysics(),
-                              onPageChanged: (index, _) {
-                                _exploreStore.currentIndex = index;
+                      replacement: Visibility(
+                        visible: _exploreStore.hasError,
+                        child: AppDefaultError(
+                          onPressed: () => _exploreStore.getLatestRecipe(),
+                        ),
+                        replacement: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: SizeConverter.relativeWidth(16),
+                              ),
+                              child: Text(
+                                "Últimas receitas",
+                                style: AppTypo.p2(color: AppColors.darkColor),
+                              ),
+                            ),
+                            Spacing(height: 8),
+                            CarouselSlider.builder(
+                              key: UniqueKey(),
+                              itemCount: _exploreStore.recipes.length,
+                              options: CarouselOptions(
+                                viewportFraction: 0.6,
+                                enableInfiniteScroll: true,
+                                height: SizeConverter.relativeHeight(300),
+                                enlargeCenterPage: true,
+                                scrollPhysics: BouncingScrollPhysics(),
+                                onPageChanged: (index, _) {
+                                  _exploreStore.currentIndex = index;
+                                },
+                              ),
+                              itemBuilder: (BuildContext context, int index, int pageViewIndex) {
+                                SummaryRecipe recipe = _exploreStore.recipes[index];
+                                return CarouselItem(recipe: recipe);
                               },
                             ),
-                            itemBuilder: (BuildContext context, int index, int pageViewIndex) {
-                              SummaryRecipe recipe = _exploreStore.recipes[index];
-                              return CarouselItem(recipe: recipe);
-                            },
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     );
                   },

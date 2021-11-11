@@ -26,10 +26,11 @@ abstract class _ExploreStoreBase with Store {
   @action
   getLatestRecipe() async {
     isLoading = true;
-    final result = await _recipeRepository.getLatestRecipes();
+    hasError = false;
+    final result = await _recipeRepository.getRecipeByFilters();
 
     result.fold(
-      (l) => hasError,
+      (l) => hasError = true,
       (r) => recipes.addAll(r),
     );
 
