@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:mobx/mobx.dart';
+import 'package:pratudo/features/models/recipe/recipe_helper_model.dart';
 import 'package:pratudo/features/models/recipe/summary_recipe.dart';
 import 'package:pratudo/features/repositories/recipe_repository.dart';
 
@@ -21,12 +22,16 @@ abstract class _ExploreStoreBase with Store {
   @observable
   bool isLoading = false;
 
+  @observable
+  RecipeHelperModel? filterSelected;
+
   ObservableList<SummaryRecipe> recipes = ObservableList();
 
   @action
-  getLatestRecipe() async {
+  getLatestRecipe(RecipeHelperModel filter) async {
     isLoading = true;
     hasError = false;
+    filterSelected = filter;
     final result = await _recipeRepository.getRecipeByFilters();
 
     result.fold(
