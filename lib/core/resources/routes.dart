@@ -5,4 +5,5 @@ class Routes {
   static const main = '/main';
   static const searchByIngredient = '/searchByIngredient';
   static const filteredIngredients = '/filteredIngredients';
+  static const createRecipe = '/createRecipe';
 }

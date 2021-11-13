@@ -15,6 +15,7 @@ class AppTextField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final String? errorText;
   final String? labelText;
+  final bool isOptional;
   final bool isObscure;
   final bool isPassword;
   final Function()? onPressedIcon;
@@ -27,6 +28,7 @@ class AppTextField extends StatelessWidget {
     this.inputFormatters,
     this.errorText,
     this.isObscure = false,
+    this.isOptional = false,
     this.isPassword = false,
     this.labelText,
   });
@@ -37,11 +39,21 @@ class AppTextField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (labelText != null) ...[
-          Text(
-            labelText!,
-            style: AppTypo.p3(
-              color: errorText != null ? AppColors.redColor : AppColors.darkColor,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                labelText!,
+                style: AppTypo.p3(
+                  color: errorText != null ? AppColors.redColor : AppColors.darkColor,
+                ),
+              ),
+              if (isOptional)
+                Text(
+                  'Opcional',
+                  style: AppTypo.p5(color: AppColors.lightGrayColor),
+                ),
+            ],
           ),
           Spacing(height: 8)
         ],

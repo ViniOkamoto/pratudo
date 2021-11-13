@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:pratudo/core/resources/routes.dart';
 import 'package:pratudo/core/services/di/service_locator.dart';
 import 'package:pratudo/core/theme/colors.dart';
 import 'package:pratudo/core/utils/enums/nav_bar_items_enum.dart';
@@ -33,6 +34,15 @@ class _MainPageState extends State<MainPage> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: AppColors.whiteColor,
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => Navigator.pushNamed(context, Routes.createRecipe),
+          backgroundColor: AppColors.highlightColor,
+          child: Icon(
+            LineAwesomeIcons.edit,
+            color: AppColors.whiteColor,
+            size: SizeConverter.fontSize(32),
+          ),
+        ),
         body: NestedScrollView(
           physics: BouncingScrollPhysics(),
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {

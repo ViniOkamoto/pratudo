@@ -42,8 +42,8 @@ class _FullScreenLoader extends StatelessWidget {
         Center(
           child: Lottie.asset(
             "assets/animations/loading_animation.json",
-            width: 100,
-            height: 100,
+            width: 200,
+            height: 200,
           ),
         ),
       ],

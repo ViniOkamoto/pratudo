@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pratudo/core/resources/routes.dart';
+import 'package:pratudo/features/screens/create_recipe/create_recipe_page.dart';
 import 'package:pratudo/features/screens/login/login_page.dart';
 import 'package:pratudo/features/screens/main/main_page.dart';
 import 'package:pratudo/features/screens/register/register_page.dart';
@@ -23,6 +24,8 @@ class Router {
       case Routes.filteredIngredients:
         FilteredIngredientsPageParams params = settings.arguments as FilteredIngredientsPageParams;
         return MaterialPageRoute(builder: (_) => FilteredIngredientsPage(params), settings: settings);
+      case Routes.createRecipe:
+        return MaterialPageRoute(builder: (_) => CreateRecipePage(), settings: settings);
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
