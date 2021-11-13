@@ -42,6 +42,11 @@ abstract class _SearchStoreBase with Store {
     }
   }
 
+  clearSearch() {
+    setSearchText("");
+    searchController.clear();
+  }
+
   @action
   getRecipeByText() async {
     if (searchText?.isNotEmpty ?? false) {

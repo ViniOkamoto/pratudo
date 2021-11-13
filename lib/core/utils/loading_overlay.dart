@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pratudo/core/resources/constants.dart';
 import 'package:pratudo/core/theme/colors.dart';
 
@@ -35,11 +36,15 @@ class _FullScreenLoader extends StatelessWidget {
     return Stack(
       children: <Widget>[
         Opacity(
-          opacity: 0.8,
+          opacity: 0.4,
           child: const ModalBarrier(dismissible: false, color: AppColors.darkestColor),
         ),
         Center(
-          child: CircularProgressIndicator(),
+          child: Lottie.asset(
+            "assets/animations/loading_animation.json",
+            width: 100,
+            height: 100,
+          ),
         ),
       ],
     );

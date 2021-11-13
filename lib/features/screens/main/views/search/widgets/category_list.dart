@@ -3,31 +3,53 @@ import 'package:pratudo/core/theme/colors.dart';
 import 'package:pratudo/core/theme/typography.dart';
 import 'package:pratudo/core/utils/image_helper.dart';
 import 'package:pratudo/core/utils/size_converter.dart';
-import 'package:pratudo/image_string.dart';
+import 'package:pratudo/features/models/recipe/recipe_helper_model.dart';
+import 'package:pratudo/features/widgets/app_default_error.dart';
+import 'package:pratudo/features/widgets/conditional_widget.dart';
+import 'package:pratudo/features/widgets/loading_shimmer.dart';
 
 class CategoryList extends StatelessWidget {
+  final List<RecipeHelperModel> categories;
+  final bool isLoading;
+  final bool hasError;
+  final VoidCallback onTapError;
+
   const CategoryList({
-    Key? key,
-  }) : super(key: key);
+    required this.categories,
+    required this.isLoading,
+    required this.onTapError,
+    required this.hasError,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      shrinkWrap: true,
-      itemCount: 8,
-      padding: EdgeInsets.only(
-        top: SizeConverter.relativeHeight(16),
+    return ConditionalWidget(
+      isLoading: isLoading,
+      hasError: hasError,
+      errorWidget: AppDefaultError(
+        onPressed: onTapError,
       ),
-      physics: NeverScrollableScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: SizeConverter.relativeWidth(24),
-        mainAxisSpacing: SizeConverter.relativeWidth(16),
-        mainAxisExtent: SizeConverter.relativeWidth(172),
+      loadingWidget: CategoryListShimmer(),
+      child: GridView.builder(
+        shrinkWrap: true,
+        itemCount: categories.length,
+        padding: EdgeInsets.only(
+          top: SizeConverter.relativeHeight(16),
+        ),
+        physics: NeverScrollableScrollPhysics(),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: SizeConverter.relativeWidth(24),
+          mainAxisSpacing: SizeConverter.relativeWidth(16),
+          mainAxisExtent: SizeConverter.relativeWidth(160),
+        ),
+        itemBuilder: (BuildContext context, int index) {
+          RecipeHelperModel category = categories[index];
+          return CategoryCard(
+            category: category,
+          );
+        },
       ),
-      itemBuilder: (BuildContext context, int index) {
-        return CategoryCard();
-      },
     );
   }
 }
@@ -35,10 +57,11 @@ class CategoryList extends StatelessWidget {
 class CategoryCard extends StatelessWidget {
   const CategoryCard({
     Key? key,
-    this.category,
+    required this.category,
     this.categoryImage,
-  }) : super(key: key);
-  final String? category;
+  });
+
+  final RecipeHelperModel category;
   final String? categoryImage;
 
   @override
@@ -57,7 +80,7 @@ class CategoryCard extends StatelessWidget {
         image: DecorationImage(
           fit: BoxFit.cover,
           image: MemoryImage(
-            ImageHelper.convertBase64ToImage(imageTest),
+            ImageHelper.convertBase64ToImage(category.image64!),
           ),
         ),
       ),
@@ -66,7 +89,7 @@ class CategoryCard extends StatelessWidget {
           bottom: SizeConverter.relativeHeight(8),
         ),
         decoration: BoxDecoration(
-          color: Color(0x660000000),
+          color: Color(0x990000000),
           borderRadius: BorderRadius.circular(15),
         ),
         child: Row(
@@ -74,11 +97,17 @@ class CategoryCard extends StatelessWidget {
             Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Lorem Ipsum',
-                    style: AppTypo.h3(
-                      color: AppColors.whiteColor,
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: SizeConverter.relativeWidth(16),
+                    ),
+                    child: Text(
+                      category.value,
+                      style: AppTypo.p3(
+                        color: AppColors.whiteColor,
+                      ),
                     ),
                   ),
                 ],
@@ -86,6 +115,36 @@ class CategoryCard extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class CategoryListShimmer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return LoadingShimmer(
+      child: GridView.builder(
+        shrinkWrap: true,
+        itemCount: 8,
+        padding: EdgeInsets.only(
+          top: SizeConverter.relativeHeight(16),
+        ),
+        physics: NeverScrollableScrollPhysics(),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: SizeConverter.relativeWidth(24),
+          mainAxisSpacing: SizeConverter.relativeWidth(16),
+          mainAxisExtent: SizeConverter.relativeWidth(172),
+        ),
+        itemBuilder: (BuildContext context, int index) {
+          return Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              color: Colors.white,
+            ),
+          );
+        },
       ),
     );
   }

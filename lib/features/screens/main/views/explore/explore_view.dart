@@ -35,11 +35,12 @@ class _ExploreViewState extends State<ExploreView> with AutomaticKeepAliveClient
 
   @override
   void initState() {
-    _fetchInitialData();
+    _fetchData();
     super.initState();
   }
 
-  _fetchInitialData() async {
+  _fetchData({bool isRefreshing = false}) async {
+    if (isRefreshing) _searchStore.clearSearch();
     await _recipeHelpersStore.getFilters();
     if (_recipeHelpersStore.filters.isNotEmpty) {
       _exploreStore.getLatestRecipe(_recipeHelpersStore.filters.first);
@@ -49,7 +50,7 @@ class _ExploreViewState extends State<ExploreView> with AutomaticKeepAliveClient
   @override
   Widget build(BuildContext context) {
     return BasePage(
-      onRefresh: () => _fetchInitialData(),
+      onRefresh: () => _fetchData(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -75,7 +76,7 @@ class _ExploreViewState extends State<ExploreView> with AutomaticKeepAliveClient
                       loadingWidget: CarouselShimmer(),
                       hasError: _recipeHelpersStore.hasErrorInFilters && _exploreStore.recipes.isEmpty,
                       errorWidget: AppDefaultError(
-                        onPressed: () => _fetchInitialData(),
+                        onPressed: () => _fetchData(),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
