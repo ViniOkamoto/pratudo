@@ -18,7 +18,7 @@ class FilterRow extends StatelessWidget {
 
   final RecipeHelpersStore _recipeHelpersStore;
   final Function(RecipeHelperModel) onPressedFilter;
-  final RecipeHelperModel filterSelected;
+  final RecipeHelperModel? filterSelected;
   @override
   Widget build(BuildContext context) {
     return Observer(
@@ -39,7 +39,7 @@ class FilterRow extends StatelessWidget {
                     return _Filter(
                       onPressedFilter: onPressedFilter,
                       filter: filter,
-                      isSelected: filterSelected.key == filter.key,
+                      isSelected: filterSelected?.key == filter.key,
                     );
                   },
                   separatorBuilder: (context, index) => Spacing(width: 24),

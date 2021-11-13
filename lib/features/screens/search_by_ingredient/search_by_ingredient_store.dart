@@ -35,7 +35,6 @@ abstract class _SearchByIngredientStoreBase with Store {
   addIngredient() {
     if (ingredient?.isNotEmpty ?? false) {
       ingredients.add(ingredient!);
-      print(ingredients);
       ingredient = '';
       ingredientField.clear();
     } else {

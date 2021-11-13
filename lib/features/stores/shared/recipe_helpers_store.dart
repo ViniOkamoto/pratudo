@@ -47,7 +47,7 @@ abstract class _RecipeHelpersStoreBase with Store {
   getFilters() async {
     isLoadingFilters = true;
     hasErrorInFilters = false;
-    final result = await _repository.getFilters();
+    final result = await _repository.getTrends();
     result.fold(
       (l) => hasErrorInFilters = true,
       (r) {

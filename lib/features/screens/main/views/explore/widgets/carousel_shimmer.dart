@@ -5,41 +5,45 @@ import 'package:pratudo/features/widgets/loading_shimmer.dart';
 import 'package:pratudo/features/widgets/spacing.dart';
 
 class CarouselShimmer extends StatelessWidget {
+  final bool withoutFilterRow;
+  CarouselShimmer({this.withoutFilterRow = false});
+
   @override
   Widget build(BuildContext context) {
     return LoadingShimmer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            height: 25,
-            child: Row(children: [
-              Expanded(
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  children: List.generate(
-                    3,
-                    (index) => Container(
-                      margin: EdgeInsets.symmetric(
-                        horizontal: SizeConverter.relativeWidth(16),
-                      ),
-                      width: 100,
-                      height: 25,
-                      decoration: BoxDecoration(
-                        color: AppColors.whiteColor,
-                        borderRadius: BorderRadius.circular(
-                          15,
+          if (!withoutFilterRow)
+            SizedBox(
+              height: 25,
+              child: Row(children: [
+                Expanded(
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    children: List.generate(
+                      3,
+                      (index) => Container(
+                        margin: EdgeInsets.symmetric(
+                          horizontal: SizeConverter.relativeWidth(16),
+                        ),
+                        width: 100,
+                        height: 25,
+                        decoration: BoxDecoration(
+                          color: AppColors.whiteColor,
+                          borderRadius: BorderRadius.circular(
+                            15,
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ]),
-          ),
-          Spacing(height: 32),
+              ]),
+            ),
+          Spacing(height: withoutFilterRow ? 24 : 32),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,

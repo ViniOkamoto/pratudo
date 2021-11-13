@@ -5,18 +5,23 @@ import 'package:pratudo/core/theme/typography.dart';
 import 'package:pratudo/core/utils/size_converter.dart';
 import 'package:pratudo/features/screens/main/views/search/widgets/category_list.dart';
 import 'package:pratudo/features/screens/main/views/search/widgets/search_by_ingredients_card.dart';
+import 'package:pratudo/features/screens/main/widgets/base_page.dart';
 import 'package:pratudo/features/screens/main/widgets/search_section.dart';
 import 'package:pratudo/features/stores/shared/search_store.dart';
 
-class SearchView extends StatelessWidget {
+class SearchView extends StatefulWidget {
+  @override
+  State<SearchView> createState() => _SearchViewState();
+}
+
+class _SearchViewState extends State<SearchView> {
   final SearchStore _searchStore = serviceLocator<SearchStore>();
+
+  _fetchInitialData() {}
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(
-        vertical: SizeConverter.relativeHeight(16),
-      ),
-      physics: BouncingScrollPhysics(),
+    return BasePage(
+      onRefresh: () => _fetchInitialData(),
       child: SearchSection(
         searchStore: _searchStore,
         pageContent: Padding(

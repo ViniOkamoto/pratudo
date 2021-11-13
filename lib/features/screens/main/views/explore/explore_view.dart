@@ -13,10 +13,12 @@ import 'package:pratudo/features/screens/main/views/explore/explore_store.dart';
 import 'package:pratudo/features/screens/main/views/explore/widgets/carousel_item.dart';
 import 'package:pratudo/features/screens/main/views/explore/widgets/carousel_shimmer.dart';
 import 'package:pratudo/features/screens/main/views/explore/widgets/filter_row.dart';
+import 'package:pratudo/features/screens/main/widgets/base_page.dart';
 import 'package:pratudo/features/screens/main/widgets/search_section.dart';
 import 'package:pratudo/features/stores/shared/recipe_helpers_store.dart';
 import 'package:pratudo/features/stores/shared/search_store.dart';
 import 'package:pratudo/features/widgets/app_default_error.dart';
+import 'package:pratudo/features/widgets/conditional_widget.dart';
 import 'package:pratudo/features/widgets/spacing.dart';
 
 class ExploreView extends StatefulWidget {
@@ -38,7 +40,6 @@ class _ExploreViewState extends State<ExploreView> with AutomaticKeepAliveClient
   }
 
   _fetchInitialData() async {
-    print("aqui?");
     await _recipeHelpersStore.getFilters();
     if (_recipeHelpersStore.filters.isNotEmpty) {
       _exploreStore.getLatestRecipe(_recipeHelpersStore.filters.first);
@@ -47,51 +48,52 @@ class _ExploreViewState extends State<ExploreView> with AutomaticKeepAliveClient
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
+    return BasePage(
       onRefresh: () => _fetchInitialData(),
-      color: AppColors.highlightColor,
-      child: ListView(
-        padding: EdgeInsets.symmetric(
-          vertical: SizeConverter.relativeHeight(16),
-        ),
-        physics: BouncingScrollPhysics(),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: SizeConverter.relativeWidth(16),
-                ),
-                child: Text(
-                  "O que vamos cozinhar hoje?",
-                  style: AppTypo.h2(color: AppColors.darkestColor),
-                ),
-              ),
-              Spacing(height: 16),
-              SearchSection(
-                searchStore: _searchStore,
-                pageContent: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Observer(
-                      builder: (context) {
-                        return Visibility(
-                          visible: _exploreStore.isLoading && _exploreStore.recipes.isEmpty,
-                          child: CarouselShimmer(),
-                          replacement: Visibility(
-                            visible: _exploreStore.hasError,
-                            child: AppDefaultError(
-                              onPressed: () => _fetchInitialData(),
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: SizeConverter.relativeWidth(16),
+            ),
+            child: Text(
+              "O que vamos cozinhar hoje?",
+              style: AppTypo.h2(color: AppColors.darkestColor),
+            ),
+          ),
+          Spacing(height: 16),
+          SearchSection(
+            searchStore: _searchStore,
+            pageContent: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Observer(
+                  builder: (context) {
+                    return ConditionalWidget(
+                      isLoading: _recipeHelpersStore.isLoadingFilters,
+                      loadingWidget: CarouselShimmer(),
+                      hasError: _recipeHelpersStore.hasErrorInFilters && _exploreStore.recipes.isEmpty,
+                      errorWidget: AppDefaultError(
+                        onPressed: () => _fetchInitialData(),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          FilterRow(
+                            recipeHelpersStore: _recipeHelpersStore,
+                            onPressedFilter: _exploreStore.getLatestRecipe,
+                            filterSelected: _exploreStore.filterSelected,
+                          ),
+                          ConditionalWidget(
+                            isLoading: _exploreStore.isLoading && !_recipeHelpersStore.isLoadingFilters,
+                            loadingWidget: CarouselShimmer(withoutFilterRow: true),
+                            hasError: _exploreStore.hasError,
+                            errorWidget: AppDefaultError(
+                              onPressed: () => _exploreStore.getLatestRecipe(_exploreStore.filterSelected!),
                             ),
-                            replacement: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            child: Column(
                               children: [
-                                FilterRow(
-                                  recipeHelpersStore: _recipeHelpersStore,
-                                  onPressedFilter: _exploreStore.getLatestRecipe,
-                                  filterSelected: _exploreStore.filterSelected!,
-                                ),
                                 Spacing(height: 8),
                                 CarouselSlider.builder(
                                   key: UniqueKey(),
@@ -114,13 +116,13 @@ class _ExploreViewState extends State<ExploreView> with AutomaticKeepAliveClient
                               ],
                             ),
                           ),
-                        );
-                      },
-                    ),
-                  ],
+                        ],
+                      ),
+                    );
+                  },
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),

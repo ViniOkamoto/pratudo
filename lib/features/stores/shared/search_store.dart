@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:mobx/mobx.dart';
+import 'package:pratudo/features/datasources/recipe/recipe_query_params.dart';
 import 'package:pratudo/features/models/recipe/summary_recipe.dart';
 import 'package:pratudo/features/repositories/recipe_repository.dart';
 import 'package:pratudo/features/screens/shared/filtered_ingredients/filtered_ingredients_enum.dart';
@@ -67,7 +68,7 @@ abstract class _SearchStoreBase with Store {
   }
 
   _getRecipeByText() async {
-    final result = await _repository.getFilteredRecipes(searchText!);
+    final result = await _repository.getRecipe(RecipeQueryParams(name: searchText!));
     result.fold(
       (l) => hasErrorInSearch = true,
       (r) {
@@ -77,7 +78,7 @@ abstract class _SearchStoreBase with Store {
   }
 
   _getRecipeByIngredients(List<String> ingredients) async {
-    final result = await _repository.getRecipeByIngredients(ingredients);
+    final result = await _repository.getRecipe(RecipeQueryParams(ingredients: ingredients));
     result.fold(
       (l) => hasErrorInSearch = true,
       (r) {

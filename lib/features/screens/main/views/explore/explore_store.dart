@@ -20,7 +20,7 @@ abstract class _ExploreStoreBase with Store {
   bool hasError = false;
 
   @observable
-  bool isLoading = false;
+  bool isLoading = true;
 
   @observable
   RecipeHelperModel? filterSelected;
