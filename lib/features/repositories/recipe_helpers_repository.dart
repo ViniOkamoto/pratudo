@@ -5,7 +5,7 @@ import 'package:pratudo/features/models/recipe/recipe_helper_model.dart';
 
 abstract class RecipeHelperRepository {
   Future<Either<Failure, List<RecipeHelperModel>>> getCategories();
-  Future<Either<Failure, List<RecipeHelperModel>>> getFilters();
+  Future<Either<Failure, List<RecipeHelperModel>>> getTrends();
 }
 
 class RecipeHelperRepositoryImpl implements RecipeHelperRepository {
@@ -29,9 +29,9 @@ class RecipeHelperRepositoryImpl implements RecipeHelperRepository {
   }
 
   @override
-  Future<Either<Failure, List<RecipeHelperModel>>> getFilters() async {
+  Future<Either<Failure, List<RecipeHelperModel>>> getTrends() async {
     try {
-      return Right(await _datasource.getCriteria());
+      return Right(await _datasource.getTrends());
     } on ServerException catch (e) {
       return Left(ServerFailure(errorText: e.errorText));
     } on Exception catch (e) {

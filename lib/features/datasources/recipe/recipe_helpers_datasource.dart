@@ -21,9 +21,9 @@ class RecipeHelperDatasource {
     }
   }
 
-  Future<List<RecipeHelperModel>> getCriteria() async {
+  Future<List<RecipeHelperModel>> getTrends() async {
     try {
-      final response = await _httpService.get('/recipe/criterias');
+      final response = await _httpService.get('/recipe/trends');
 
       return RecipeHelperModel.fromJsonList(response.data);
     } on DioError catch (e) {
