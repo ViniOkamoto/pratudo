@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:pratudo/core/resources/routes.dart';
 import 'package:pratudo/core/theme/colors.dart';
 import 'package:pratudo/core/theme/typography.dart';
 import 'package:pratudo/core/utils/image_helper.dart';
 import 'package:pratudo/core/utils/size_converter.dart';
 import 'package:pratudo/features/models/recipe/recipe_helper_model.dart';
+import 'package:pratudo/features/screens/shared/filtered_ingredients/filtered_ingredients_enum.dart';
+import 'package:pratudo/features/screens/shared/filtered_ingredients/filtered_ingredients_page.dart';
 import 'package:pratudo/features/widgets/app_default_error.dart';
 import 'package:pratudo/features/widgets/conditional_widget.dart';
 import 'package:pratudo/features/widgets/loading_shimmer.dart';
@@ -47,6 +50,16 @@ class CategoryList extends StatelessWidget {
           RecipeHelperModel category = categories[index];
           return CategoryCard(
             category: category,
+            onTap: () {
+              Navigator.pushNamed(
+                context,
+                Routes.filteredIngredients,
+                arguments: FilteredIngredientsPageParams(
+                  FilteredIngredientsEnum.CATEGORY,
+                  category: category,
+                ),
+              );
+            },
           );
         },
       ),
@@ -59,61 +72,65 @@ class CategoryCard extends StatelessWidget {
     Key? key,
     required this.category,
     this.categoryImage,
+    required this.onTap,
   });
 
   final RecipeHelperModel category;
   final String? categoryImage;
-
+  final VoidCallback onTap;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.blackWith25Opacity,
-            offset: Offset(0, 2),
-            blurRadius: 10,
-          ),
-        ],
-        image: DecorationImage(
-          fit: BoxFit.cover,
-          image: MemoryImage(
-            ImageHelper.convertBase64ToImage(category.image64!),
-          ),
-        ),
-      ),
+    return InkWell(
+      onTap: onTap,
       child: Container(
-        padding: EdgeInsets.only(
-          bottom: SizeConverter.relativeHeight(8),
-        ),
         decoration: BoxDecoration(
-          color: Color(0x990000000),
+          color: Colors.white,
           borderRadius: BorderRadius.circular(15),
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(
-                      left: SizeConverter.relativeWidth(16),
-                    ),
-                    child: Text(
-                      category.value,
-                      style: AppTypo.p3(
-                        color: AppColors.whiteColor,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.blackWith25Opacity,
+              offset: Offset(0, 2),
+              blurRadius: 10,
             ),
           ],
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: MemoryImage(
+              ImageHelper.convertBase64ToImage(category.image64!),
+            ),
+          ),
+        ),
+        child: Container(
+          padding: EdgeInsets.only(
+            bottom: SizeConverter.relativeHeight(8),
+          ),
+          decoration: BoxDecoration(
+            color: Color(0x990000000),
+            borderRadius: BorderRadius.circular(15),
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(
+                        left: SizeConverter.relativeWidth(16),
+                      ),
+                      child: Text(
+                        category.value,
+                        style: AppTypo.p3(
+                          color: AppColors.whiteColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -4,12 +4,12 @@ import 'package:pratudo/features/screens/create_recipe/widgets/drop_down_item.da
 import 'package:pratudo/features/widgets/app_dropdown_field.dart';
 
 class DifficultyDropdown extends StatelessWidget {
-  final List<DifficultyEnum> difficultyList;
+  final List<DifficultyEnum> difficuties;
   final Function(DifficultyEnum?) onChanged;
   final DifficultyEnum? value;
 
   const DifficultyDropdown({
-    required this.difficultyList,
+    required this.difficuties,
     required this.onChanged,
     required this.value,
   });
@@ -21,7 +21,7 @@ class DifficultyDropdown extends StatelessWidget {
       labelText: "Dificuldade da receita",
       onChanged: (value) => onChanged(value),
       value: value,
-      items: difficultyList
+      items: difficuties
           .map(
             (difficulty) => DropdownMenuItem(
               value: difficulty,

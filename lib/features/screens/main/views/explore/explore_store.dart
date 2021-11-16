@@ -32,7 +32,7 @@ abstract class _ExploreStoreBase with Store {
     isLoading = true;
     hasError = false;
     filterSelected = filter;
-    final result = await _recipeRepository.getRecipeByFilters();
+    final result = await _recipeRepository.getRecipeByFilters(filterValue: filterSelected!.key);
 
     result.fold(
       (l) => hasError = true,

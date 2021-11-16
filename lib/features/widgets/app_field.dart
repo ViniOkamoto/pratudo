@@ -12,23 +12,31 @@ class AppField extends StatelessWidget {
   final Function(String)? onSubmitted;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
+  final FocusNode? focusNode;
   final bool obscureText;
   final String? errorText;
   final TextInputAction? textInputAction;
   final double verticalPadding;
+  final double horizontalPadding;
+  final bool isBigTextField;
+  final TextStyle? Function({dynamic color})? fieldTextStyle;
 
-  const AppField({
+  AppField({
     required this.hintText,
     required this.controller,
     required this.onChanged,
-    this.textInputAction,
+    this.textInputAction = TextInputAction.done,
     this.suffixIcon,
     this.inputFormatters,
     this.onSubmitted,
+    this.focusNode,
     this.prefixIcon,
     this.errorText,
     this.verticalPadding = 11,
+    this.horizontalPadding = 16,
     this.obscureText = false,
+    this.isBigTextField = false,
+    this.fieldTextStyle,
   });
 
   @override
@@ -37,23 +45,29 @@ class AppField extends StatelessWidget {
       controller: controller,
       onChanged: onChanged,
       textInputAction: textInputAction,
+      focusNode: focusNode,
       onSubmitted: onSubmitted,
       obscureText: obscureText,
       inputFormatters: inputFormatters,
+      maxLines: isBigTextField ? null : 1,
       textAlignVertical: TextAlignVertical.center,
-      style: AppTypo.p2(color: AppColors.darkestColor),
+      style: fieldTextStyle != null
+          ? fieldTextStyle!(color: AppColors.darkestColor)
+          : AppTypo.p2(color: AppColors.darkestColor),
       decoration: InputDecoration(
         fillColor: AppColors.lightestGrayColor,
         filled: true,
         contentPadding: EdgeInsets.symmetric(
-          horizontal: SizeConverter.relativeWidth(16),
+          horizontal: SizeConverter.relativeWidth(horizontalPadding),
           vertical: SizeConverter.relativeWidth(verticalPadding),
         ),
         isDense: true,
         hintText: hintText,
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
-        hintStyle: AppTypo.p2(color: AppColors.lightGrayColor),
+        hintStyle: fieldTextStyle != null
+            ? fieldTextStyle!(color: AppColors.lightGrayColor)
+            : AppTypo.p2(color: AppColors.lightGrayColor),
         floatingLabelBehavior: FloatingLabelBehavior.always,
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(color: AppColors.lightestGrayColor),

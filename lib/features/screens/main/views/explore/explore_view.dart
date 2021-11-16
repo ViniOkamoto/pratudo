@@ -89,7 +89,7 @@ class _ExploreViewState extends State<ExploreView> with AutomaticKeepAliveClient
                           ConditionalWidget(
                             isLoading: _exploreStore.isLoading && !_recipeHelpersStore.isLoadingFilters,
                             loadingWidget: CarouselShimmer(withoutFilterRow: true),
-                            hasError: _exploreStore.hasError,
+                            hasError: _exploreStore.hasError || _exploreStore.recipes.isEmpty,
                             errorWidget: AppDefaultError(
                               onPressed: () => _exploreStore.getLatestRecipe(_exploreStore.filterSelected!),
                             ),

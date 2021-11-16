@@ -10,18 +10,22 @@ class FormDropdownField<T> extends StatelessWidget {
   final T? value;
   final String hintText;
   final List<DropdownMenuItem<T>> items;
-  final String labelText;
+  final String? labelText;
   final String? errorText;
-  final double verticalPadding;
+  final double height;
+  final TextStyle? Function({dynamic color})? fieldTextStyle;
+  final Color? errorBorderSide;
 
   const FormDropdownField({
     required this.hintText,
-    required this.labelText,
+    this.labelText,
     required this.onChanged,
     required this.items,
-    this.verticalPadding = 11,
+    this.height = 50,
     this.value,
     this.errorText,
+    this.fieldTextStyle,
+    this.errorBorderSide,
   });
 
   @override
@@ -29,58 +33,70 @@ class FormDropdownField<T> extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              labelText,
-              style: AppTypo.p3(
-                color: errorText != null ? AppColors.redColor : AppColors.darkColor,
+        if (labelText != null) ...[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                labelText!,
+                style: AppTypo.p3(
+                  color: errorText != null ? AppColors.redColor : AppColors.darkColor,
+                ),
               ),
-            ),
-          ],
-        ),
-        Spacing(height: 8),
-        DropdownButtonFormField<T>(
-          elevation: 0,
-          items: items,
-          onChanged: onChanged,
-          icon: Icon(
-            LineAwesomeIcons.angle_down,
-            color: AppColors.highlightColor,
+            ],
           ),
-          iconSize: SizeConverter.fontSize(12),
-          value: value,
-          decoration: InputDecoration(
-            fillColor: AppColors.lightestGrayColor,
-            filled: true,
-            contentPadding: EdgeInsets.symmetric(
-              horizontal: SizeConverter.relativeWidth(16),
-              vertical: SizeConverter.relativeWidth(verticalPadding),
+          Spacing(height: 8),
+        ],
+        Container(
+          height: SizeConverter.relativeWidth(height),
+          child: DropdownButtonFormField<T>(
+            isExpanded: true,
+            isDense: true,
+            elevation: 0,
+            items: items,
+            onChanged: onChanged,
+            icon: Icon(
+              LineAwesomeIcons.angle_down,
+              color: AppColors.highlightColor,
             ),
-            isDense: false,
-            hintText: hintText,
-            hintStyle: AppTypo.p2(color: AppColors.lightGrayColor),
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-            focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: AppColors.lightestGrayColor),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: AppColors.lightestGrayColor),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            focusedErrorBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: AppColors.lightestGrayColor),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            errorText: errorText,
-            errorBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: AppColors.lightestGrayColor),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            errorStyle: AppTypo.p3(
-              color: AppColors.redColor,
+            iconSize: SizeConverter.fontSize(12),
+            value: value,
+            style: fieldTextStyle != null
+                ? fieldTextStyle!(color: AppColors.darkestColor)
+                : AppTypo.p2(
+                    color: AppColors.darkestColor,
+                  ),
+            decoration: InputDecoration(
+              fillColor: AppColors.lightestGrayColor,
+              filled: true,
+              isDense: false,
+              hintText: hintText,
+              hintStyle: fieldTextStyle != null
+                  ? fieldTextStyle!(color: AppColors.lightGrayColor)
+                  : AppTypo.p2(color: AppColors.lightGrayColor),
+              floatingLabelBehavior: FloatingLabelBehavior.always,
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: AppColors.lightestGrayColor),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: AppColors.lightestGrayColor),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              focusedErrorBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: AppColors.lightestGrayColor),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              errorText: errorText,
+              errorBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: AppColors.lightestGrayColor),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              errorStyle: fieldTextStyle != null
+                  ? fieldTextStyle!(color: AppColors.redColor)
+                  : AppTypo.p2(
+                      color: AppColors.redColor,
+                    ),
             ),
           ),
         ),

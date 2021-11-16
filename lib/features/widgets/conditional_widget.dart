@@ -21,7 +21,7 @@ class ConditionalWidget extends StatelessWidget {
       visible: isLoading,
       child: loadingWidget,
       replacement: Visibility(
-        visible: hasError && !isLoading,
+        visible: hasError,
         child: errorWidget,
         replacement: child,
       ),

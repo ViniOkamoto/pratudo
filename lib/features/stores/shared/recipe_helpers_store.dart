@@ -1,6 +1,7 @@
 import 'package:mobx/mobx.dart';
 import 'package:pratudo/core/utils/loading_overlay.dart';
 import 'package:pratudo/features/models/recipe/recipe_helper_model.dart';
+import 'package:pratudo/features/models/unit_model.dart';
 import 'package:pratudo/features/repositories/recipe_helpers_repository.dart';
 
 part 'recipe_helpers_store.g.dart';
@@ -29,18 +30,30 @@ abstract class _RecipeHelpersStoreBase with Store {
   @observable
   bool isLoadingFilters = false;
 
+  @observable
+  ObservableList<UnitModel> units = ObservableList();
+
+  @observable
+  bool hasErrorInUnits = false;
+
+  @observable
+  bool isLoadingUnits = false;
+
+  getDataForForm() async {
+    if (units.isEmpty || categories.isEmpty) await LoadingOverlay.of().during(_getFormData());
+  }
+
+  _getFormData() async {
+    await getCategories();
+    await getUnitsOfMeasure();
+  }
+
   @action
   getCategories({bool withLoadingOverlay = false, bool fetchingNewData = false}) async {
     if (fetchingNewData || categories.isEmpty) {
       isLoadingCategories = true;
       hasErrorInCategories = false;
-      dynamic result;
-
-      if (withLoadingOverlay) {
-        result = await LoadingOverlay.of().during(_repository.getCategories());
-      } else {
-        result = await _repository.getCategories();
-      }
+      final result = await _repository.getCategories();
       categories.clear();
       result.fold(
         (l) => hasErrorInCategories = true,
@@ -66,5 +79,22 @@ abstract class _RecipeHelpersStoreBase with Store {
       },
     );
     isLoadingFilters = false;
+  }
+
+  @action
+  getUnitsOfMeasure({fetchingNewData = false}) async {
+    if (fetchingNewData || units.isEmpty) {
+      isLoadingUnits = true;
+      hasErrorInUnits = false;
+      units.clear();
+      final result = await _repository.getUnitsOfMeasurement();
+      result.fold(
+        (l) => hasErrorInUnits = true,
+        (r) {
+          units.addAll(r);
+        },
+      );
+      isLoadingUnits = false;
+    }
   }
 }

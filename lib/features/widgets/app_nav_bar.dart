@@ -107,10 +107,10 @@ class _UserLevel extends StatelessWidget {
             lineWidth: 4,
             circularStrokeCap: CircularStrokeCap.round,
             percent: percentage,
-            progressColor: AppColors.highlightColor,
+            progressColor: AppColors.blueColor,
             center: Text(
               "$level",
-              style: AppTypo.p3(color: AppColors.highlightColor),
+              style: AppTypo.p3(color: AppColors.blueColor),
             ),
           ),
         ],

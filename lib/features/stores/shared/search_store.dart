@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:mobx/mobx.dart';
 import 'package:pratudo/features/datasources/recipe/recipe_query_params.dart';
+import 'package:pratudo/features/models/recipe/recipe_helper_model.dart';
 import 'package:pratudo/features/models/recipe/summary_recipe.dart';
 import 'package:pratudo/features/repositories/recipe_repository.dart';
 import 'package:pratudo/features/screens/shared/filtered_ingredients/filtered_ingredients_enum.dart';
@@ -61,14 +62,14 @@ abstract class _SearchStoreBase with Store {
   }
 
   @action
-  getFilteredRecipes({FilteredIngredientsEnum? searchType, List<String>? ingredients}) async {
+  getFilteredRecipes({
+    FilteredIngredientsEnum? searchType,
+    List<String>? ingredients,
+    RecipeHelperModel? category,
+  }) async {
     isLoadingSearch = true;
     hasErrorInSearch = false;
-    filteredRecipes.clear();
-    if (searchType == FilteredIngredientsEnum.INGREDIENTS) {
-      await _getRecipeByIngredients(ingredients!);
-    }
-
+    await _getRecipe(ingredients, category);
     isLoadingSearch = false;
   }
 
@@ -82,8 +83,18 @@ abstract class _SearchStoreBase with Store {
     );
   }
 
-  _getRecipeByIngredients(List<String> ingredients) async {
-    final result = await _repository.getRecipe(RecipeQueryParams(ingredients: ingredients));
+  @action
+  _getRecipe(
+    List<String>? ingredients,
+    RecipeHelperModel? category,
+  ) async {
+    final result = await _repository.getRecipe(
+      RecipeQueryParams(
+        ingredients: ingredients ?? [],
+        categories: category != null ? [category.key] : [],
+      ),
+    );
+    print(category?.key);
     result.fold(
       (l) => hasErrorInSearch = true,
       (r) {

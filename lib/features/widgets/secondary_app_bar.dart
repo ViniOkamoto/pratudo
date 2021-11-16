@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:pratudo/core/theme/colors.dart';
 import 'package:pratudo/core/theme/typography.dart';
 import 'package:pratudo/core/utils/size_converter.dart';
+import 'package:pratudo/features/widgets/app_icon_button.dart';
 
 class SecondaryAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? text;
@@ -29,25 +29,8 @@ class SecondaryAppBar extends StatelessWidget implements PreferredSizeWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                InkWell(
-                  highlightColor: AppColors.lightestHighlightColor,
-                  borderRadius: BorderRadius.circular(5),
+                AppIconButton(
                   onTap: () => Navigator.pop(context),
-                  child: Container(
-                    padding: EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: AppColors.lightHighlightColor,
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: Icon(
-                      LineAwesomeIcons.arrow_left,
-                      size: SizeConverter.fontSize(20),
-                      color: AppColors.highlightColor,
-                    ),
-                  ),
                 ),
                 Row(
                   children: children ?? [],

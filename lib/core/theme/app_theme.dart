@@ -24,4 +24,15 @@ final ThemeData appTheme = ThemeData(
       ),
     ),
   ),
+  outlinedButtonTheme: OutlinedButtonThemeData(
+    style: OutlinedButton.styleFrom(
+      primary: AppColors.darkHighlightColor,
+      side: BorderSide(
+        color: AppColors.darkHighlightColor,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+    ),
+  ),
 );

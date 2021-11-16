@@ -19,6 +19,12 @@ class AppTextField extends StatelessWidget {
   final bool isObscure;
   final bool isPassword;
   final Function()? onPressedIcon;
+  final bool isBigText;
+  final double verticalPadding;
+  final double horizontalPadding;
+  final TextStyle? Function({dynamic color})? fieldTextStyle;
+  final Widget? prefixIcon;
+  final FocusNode? focusNode;
 
   const AppTextField({
     required this.hintText,
@@ -31,6 +37,12 @@ class AppTextField extends StatelessWidget {
     this.isOptional = false,
     this.isPassword = false,
     this.labelText,
+    this.isBigText = false,
+    this.verticalPadding = 14,
+    this.horizontalPadding = 16,
+    this.fieldTextStyle,
+    this.prefixIcon,
+    this.focusNode,
   });
 
   @override
@@ -63,6 +75,12 @@ class AppTextField extends StatelessWidget {
           inputFormatters: inputFormatters,
           obscureText: isObscure,
           hintText: hintText,
+          verticalPadding: verticalPadding,
+          horizontalPadding: horizontalPadding,
+          fieldTextStyle: fieldTextStyle,
+          isBigTextField: isBigText,
+          prefixIcon: prefixIcon,
+          focusNode: focusNode,
           suffixIcon: isPassword
               ? Padding(
                   padding: EdgeInsets.only(
