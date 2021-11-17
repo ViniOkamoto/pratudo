@@ -7,6 +7,7 @@ import 'package:pratudo/core/theme/typography.dart';
 import 'package:pratudo/core/utils/size_converter.dart';
 import 'package:pratudo/features/models/difficulty_enum.dart';
 import 'package:pratudo/features/models/recipe/recipe_helper_model.dart';
+import 'package:pratudo/features/screens/create_recipe/form_section_store.dart';
 import 'package:pratudo/features/screens/create_recipe/recipe_form_store.dart';
 import 'package:pratudo/features/screens/create_recipe/widgets/difficulty_dropdown.dart';
 import 'package:pratudo/features/screens/create_recipe/widgets/ingredients_section.dart';
@@ -32,6 +33,7 @@ class CreateRecipePage extends StatefulWidget {
 class _CreateRecipePageState extends State<CreateRecipePage> {
   final RecipeHelpersStore _recipeHelpersStore = serviceLocator<RecipeHelpersStore>();
   final RecipeFormStore _recipeFormStore = serviceLocator<RecipeFormStore>();
+  final FormSectionStore _formSectionStore = serviceLocator<FormSectionStore>();
 
   @override
   void initState() {
@@ -164,70 +166,126 @@ class _CreateRecipePageState extends State<CreateRecipePage> {
                       isOptional: true,
                     ),
                     Spacing(height: 24),
-                    AppOutlinedButton(
-                      onPressed: () {},
-                      text: 'Adicionar Seção',
-                      primaryColor: AppColors.blueColor,
-                    ),
+                    if (_formSectionStore.sections.isEmpty)
+                      AppOutlinedButton(
+                        onPressed: _formSectionStore.addSection,
+                        text: 'Adicionar Seção',
+                        primaryColor: AppColors.blueColor,
+                      ),
                   ],
                 ),
               ),
-              _StepDivider(),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: SizeConverter.relativeWidth(24),
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Flexible(
-                                child: Container(
-                                  child: OutlinedTextField(
-                                    hintText: 'Insira um título: "Para Massa", "Para cobertura"',
-                                    onChanged: (value) {},
-                                    controller: TextEditingController(),
-                                    errorText: null,
-                                    isBigTextField: true,
-                                  ),
-                                ),
-                              ),
-                              Spacing(width: 8),
-                              OptionMenu(),
-                            ],
-                          ),
-                          Spacing(height: 24),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Tempo de preparo da seção',
-                                style: AppTypo.p3(color: AppColors.darkColor),
-                              ),
-                              Text(
-                                'Sem estimativa',
-                                style: AppTypo.p4(color: AppColors.grayColor),
-                              ),
-                            ],
-                          ),
-                          Spacing(height: 24),
-                          IngredientsSection(recipeHelpersStore: _recipeHelpersStore),
-                          Spacing(height: 24),
-                          StepByStepSection(),
-                        ],
+              ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return Column(
+                    children: [
+                      _StepDivider(),
+                      RecipeSection(
+                        recipeHelpersStore: _recipeHelpersStore,
+                        sectionIndex: index,
+                        formSectionStore: _formSectionStore,
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  );
+                },
+                itemCount: _formSectionStore.sections.length,
               ),
             ],
           );
         },
       ),
+    );
+  }
+}
+
+class RecipeSection extends StatelessWidget {
+  const RecipeSection({
+    Key? key,
+    required RecipeHelpersStore recipeHelpersStore,
+    required FormSectionStore formSectionStore,
+    required this.sectionIndex,
+  })  : _recipeHelpersStore = recipeHelpersStore,
+        _formSectionStore = formSectionStore,
+        super(key: key);
+
+  final RecipeHelpersStore _recipeHelpersStore;
+  final FormSectionStore _formSectionStore;
+  final int sectionIndex;
+
+  @override
+  Widget build(BuildContext context) {
+    return Observer(
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: SizeConverter.relativeWidth(24),
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Flexible(
+                          child: Container(
+                            child: OutlinedTextField(
+                              hintText: 'Insira um título: "Para Massa", "Para cobertura"',
+                              onChanged: (value) => _formSectionStore.setSectionName(value, sectionIndex),
+                              controller: _formSectionStore.sectionNameControllers[sectionIndex],
+                              textInputAction: TextInputAction.done,
+                              errorText: _formSectionStore.sectionNameErrors[sectionIndex]['error'],
+                              isBigTextField: true,
+                            ),
+                          ),
+                        ),
+                        Spacing(width: 8),
+                        OptionMenu(
+                          onTapDelete: () {
+                            _formSectionStore.removeSection(sectionIndex);
+                            FocusScope.of(context).requestFocus(FocusNode());
+                          },
+                        ),
+                      ],
+                    ),
+                    Spacing(height: 24),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Tempo de preparo da seção',
+                          style: AppTypo.p3(color: AppColors.darkColor),
+                        ),
+                        Text(
+                          'Sem estimativa',
+                          style: AppTypo.p4(color: AppColors.grayColor),
+                        ),
+                      ],
+                    ),
+                    Spacing(height: 24),
+                    IngredientsSection(
+                      recipeHelpersStore: _recipeHelpersStore,
+                    ),
+                    Spacing(height: 24),
+                    StepByStepSection(),
+                    if (_formSectionStore.sections.length == (sectionIndex + 1)) ...[
+                      Spacing(height: 24),
+                      AppOutlinedButton(
+                        onPressed: _formSectionStore.addSection,
+                        text: 'Adicionar Seção',
+                        primaryColor: AppColors.blueColor,
+                      ),
+                    ]
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
@@ -269,8 +327,10 @@ class AddOption extends StatelessWidget {
 
 class OptionMenu extends StatelessWidget {
   const OptionMenu({
-    Key? key,
-  }) : super(key: key);
+    required this.onTapDelete,
+  });
+
+  final VoidCallback onTapDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -279,7 +339,8 @@ class OptionMenu extends StatelessWidget {
       itemBuilder: (context) {
         return [
           PopupMenuItem(
-            child: Text("teste"),
+            child: Text("Deletar seção"),
+            onTap: onTapDelete,
           )
         ];
       },

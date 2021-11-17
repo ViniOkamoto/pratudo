@@ -23,12 +23,15 @@ class OutlinedTextField extends StatelessWidget {
     return TextField(
       style: AppTypo.h2(color: AppColors.darkestColor),
       maxLines: isBigTextField ? null : 1,
+      onChanged: onChanged,
+      controller: controller,
+      textInputAction: textInputAction,
       decoration: InputDecoration(
         border: InputBorder.none,
         errorBorder: InputBorder.none,
         hintText: hintText,
         hintStyle: AppTypo.p2(color: AppColors.lightGrayColor),
-        errorStyle: AppTypo.p2(color: AppColors.redColor),
+        errorStyle: AppTypo.p3(color: AppColors.redColor),
         errorText: errorText,
       ),
     );
