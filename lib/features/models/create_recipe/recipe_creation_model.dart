@@ -19,7 +19,7 @@ class RecipeCreationModel {
   late final int serves;
   late final String creationDate;
   late final String chefTips;
-  late final List<Ingredient> ingredients;
+  late final List<Ingredients> ingredients;
   late final MethodOfPreparation methodOfPreparation;
   late final List<String> tags;
   late final List<String> categories;
@@ -31,7 +31,7 @@ class RecipeCreationModel {
     serves = json['serves'];
     creationDate = json['creationDate'];
     chefTips = json['chefTips'];
-    ingredients = List.from(json['ingredients']).map((e) => Ingredient.fromJson(e)).toList();
+    ingredients = List.from(json['ingredients']).map((e) => Ingredients.fromJson(e)).toList();
     methodOfPreparation = MethodOfPreparation.fromJson(json['methodOfPreparation']);
     tags = List.castFrom<dynamic, String>(json['tags']);
     categories = List.castFrom<dynamic, String>(json['categories']);
@@ -53,15 +53,15 @@ class RecipeCreationModel {
   }
 }
 
-class Ingredient {
-  Ingredient({
-    this.step,
-    this.items,
+class Ingredients {
+  Ingredients({
+    required this.step,
+    required this.items,
   });
-  late final String? step;
-  late final List<Items>? items;
+  late final String step;
+  late final List<Items> items;
 
-  Ingredient.fromJson(Map<String, dynamic> json) {
+  Ingredients.fromJson(Map<String, dynamic> json) {
     step = json['step'];
     items = List.from(json['items']).map((e) => Items.fromJson(e)).toList();
   }
@@ -69,29 +69,18 @@ class Ingredient {
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['step'] = step;
-    _data['items'] = items!.map((e) => e.toJson()).toList();
+    _data['items'] = items.map((e) => e.toJson()).toList();
     return _data;
-  }
-
-  Ingredient copyWith({
-    String? step,
-    List<Items>? items,
-  }) {
-    return Ingredient(
-      step: step ?? this.step,
-      items: items ?? this.items,
-    );
   }
 }
 
 class Items {
-  late final String? name;
-  late final Portion? portion;
-
   Items({
     required this.name,
     required this.portion,
   });
+  late final String name;
+  late final Portion portion;
 
   Items.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -101,18 +90,8 @@ class Items {
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['name'] = name;
-    _data['portion'] = portion!.toJson();
+    _data['portion'] = portion.toJson();
     return _data;
-  }
-
-  Items copyWith({
-    String? name,
-    Portion? portion,
-  }) {
-    return Items(
-      name: name ?? this.name,
-      portion: portion ?? this.portion,
-    );
   }
 }
 

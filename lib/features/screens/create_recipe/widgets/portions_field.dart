@@ -7,9 +7,14 @@ import 'package:pratudo/features/widgets/app_icon_button.dart';
 
 class PortionsField extends StatelessWidget {
   const PortionsField({
-    Key? key,
-  }) : super(key: key);
+    required this.portionValue,
+    required this.onTapMore,
+    required this.onTapLess,
+  });
 
+  final int portionValue;
+  final VoidCallback onTapMore;
+  final VoidCallback onTapLess;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -23,7 +28,7 @@ class PortionsField extends StatelessWidget {
           child: Row(
             children: [
               AppIconButton(
-                onTap: () {},
+                onTap: onTapLess,
                 iconSize: 16,
                 iconData: LineAwesomeIcons.minus,
               ),
@@ -32,12 +37,12 @@ class PortionsField extends StatelessWidget {
                   horizontal: SizeConverter.relativeWidth(16),
                 ),
                 child: Text(
-                  "Porções 1",
+                  "$portionValue ${portionValue > 1 ? 'Pessoas' : 'Pessoa'}",
                   style: AppTypo.p3(color: AppColors.darkerColor),
                 ),
               ),
               AppIconButton(
-                onTap: () {},
+                onTap: onTapMore,
                 iconSize: 16,
                 iconData: LineAwesomeIcons.plus,
               ),

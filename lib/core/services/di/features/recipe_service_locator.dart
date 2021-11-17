@@ -4,7 +4,8 @@ import 'package:pratudo/features/datasources/recipe/recipe_datasource.dart';
 import 'package:pratudo/features/datasources/recipe/recipe_helpers_datasource.dart';
 import 'package:pratudo/features/repositories/recipe_helpers_repository.dart';
 import 'package:pratudo/features/repositories/recipe_repository.dart';
-import 'package:pratudo/features/screens/main/views/explore/explore_store.dart';
+import 'package:pratudo/features/screens/create_recipe/form_section_store.dart';
+import 'package:pratudo/features/screens/create_recipe/recipe_form_store.dart';
 
 Future<void> setupRecipeLocator() async {
   serviceLocator.registerFactory<RecipeDatasource>(
@@ -26,7 +27,11 @@ Future<void> setupRecipeLocator() async {
     ),
   );
 
-  serviceLocator.registerFactory<ExploreStore>(
-    () => ExploreStore(serviceLocator.get<RecipeRepository>()),
+  serviceLocator.registerFactory<RecipeFormStore>(
+    () => RecipeFormStore(),
+  );
+
+  serviceLocator.registerFactory<FormSectionStore>(
+    () => FormSectionStore(),
   );
 }
