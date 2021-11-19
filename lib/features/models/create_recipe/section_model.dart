@@ -1,13 +1,19 @@
 import 'package:flutter/cupertino.dart';
-import 'package:pratudo/features/models/recipe/recipe_creation_model.dart';
+import 'package:mobx/mobx.dart';
+import 'package:pratudo/features/models/create_recipe/recipe_creation_model.dart';
 import 'package:pratudo/features/models/unit_model.dart';
 
 class SectionModel {
   late final Key key;
+  @observable
   late final String? sectionName;
+  @observable
   late final UnitModel? unitModel;
+  @observable
   late final int? time;
-  late final List<Ingredient?> ingredients;
+  @observable
+  late final List<FormIngredientModel> ingredients;
+  @observable
   late final List<StepByStep?> steps;
 
   SectionModel({
@@ -23,8 +29,8 @@ class SectionModel {
     String? sectionName,
     UnitModel? unitModel,
     int? time,
-    List<Ingredient?>? ingredients,
-    List<StepByStep?>? steps,
+    List<FormIngredientModel>? ingredients,
+    List<StepByStep>? steps,
   }) {
     return SectionModel(
       key: key,
@@ -33,6 +39,40 @@ class SectionModel {
       time: time ?? this.time,
       ingredients: ingredients ?? this.ingredients,
       steps: steps ?? this.steps,
+    );
+  }
+}
+
+class FormIngredientModel {
+  @observable
+  late final String? name;
+  @observable
+  late final Portion? portion;
+
+  FormIngredientModel({
+    this.name,
+    this.portion,
+  });
+
+  FormIngredientModel.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    portion = Portion.fromJson(json['portion']);
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['name'] = name;
+    _data['portion'] = portion!.toJson();
+    return _data;
+  }
+
+  FormIngredientModel copyWith({
+    String? name,
+    Portion? portion,
+  }) {
+    return FormIngredientModel(
+      name: name ?? this.name,
+      portion: portion ?? this.portion,
     );
   }
 }

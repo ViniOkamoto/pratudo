@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:mobx/mobx.dart';
 
 class RecipeCreationModel {
   RecipeCreationModel({
@@ -19,7 +20,7 @@ class RecipeCreationModel {
   late final int serves;
   late final String creationDate;
   late final String chefTips;
-  late final List<Ingredients> ingredients;
+  late final List<Ingredient> ingredients;
   late final MethodOfPreparation methodOfPreparation;
   late final List<String> tags;
   late final List<String> categories;
@@ -31,7 +32,7 @@ class RecipeCreationModel {
     serves = json['serves'];
     creationDate = json['creationDate'];
     chefTips = json['chefTips'];
-    ingredients = List.from(json['ingredients']).map((e) => Ingredients.fromJson(e)).toList();
+    ingredients = List.from(json['ingredients']).map((e) => Ingredient.fromJson(e)).toList();
     methodOfPreparation = MethodOfPreparation.fromJson(json['methodOfPreparation']);
     tags = List.castFrom<dynamic, String>(json['tags']);
     categories = List.castFrom<dynamic, String>(json['categories']);
@@ -53,15 +54,15 @@ class RecipeCreationModel {
   }
 }
 
-class Ingredients {
-  Ingredients({
-    required this.step,
-    required this.items,
+class Ingredient {
+  Ingredient({
+    this.step,
+    this.items,
   });
-  late final String step;
-  late final List<Items> items;
+  late final String? step;
+  late final List<Items>? items;
 
-  Ingredients.fromJson(Map<String, dynamic> json) {
+  Ingredient.fromJson(Map<String, dynamic> json) {
     step = json['step'];
     items = List.from(json['items']).map((e) => Items.fromJson(e)).toList();
   }
@@ -69,18 +70,29 @@ class Ingredients {
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['step'] = step;
-    _data['items'] = items.map((e) => e.toJson()).toList();
+    _data['items'] = items!.map((e) => e.toJson()).toList();
     return _data;
+  }
+
+  Ingredient copyWith({
+    String? step,
+    List<Items>? items,
+  }) {
+    return Ingredient(
+      step: step ?? this.step,
+      items: items ?? this.items,
+    );
   }
 }
 
 class Items {
+  late final String? name;
+  late final Portion? portion;
+
   Items({
     required this.name,
     required this.portion,
   });
-  late final String name;
-  late final Portion portion;
 
   Items.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -90,18 +102,30 @@ class Items {
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['name'] = name;
-    _data['portion'] = portion.toJson();
+    _data['portion'] = portion!.toJson();
     return _data;
+  }
+
+  Items copyWith({
+    String? name,
+    Portion? portion,
+  }) {
+    return Items(
+      name: name ?? this.name,
+      portion: portion ?? this.portion,
+    );
   }
 }
 
 class Portion {
   Portion({
-    required this.value,
-    required this.unitOfMeasure,
+    this.value,
+    this.unitOfMeasure,
   });
-  late final int value;
-  late final String unitOfMeasure;
+  @observable
+  late final double? value;
+  @observable
+  late final String? unitOfMeasure;
 
   Portion.fromJson(Map<String, dynamic> json) {
     value = json['value'];
@@ -113,6 +137,16 @@ class Portion {
     _data['value'] = value;
     _data['unitOfMeasure'] = unitOfMeasure;
     return _data;
+  }
+
+  Portion copyWith({
+    double? value,
+    String? unitOfMeasure,
+  }) {
+    return Portion(
+      value: value ?? this.value,
+      unitOfMeasure: unitOfMeasure ?? this.unitOfMeasure,
+    );
   }
 }
 

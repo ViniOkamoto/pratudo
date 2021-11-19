@@ -3,7 +3,7 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:pratudo/core/theme/colors.dart';
 import 'package:pratudo/core/theme/typography.dart';
 import 'package:pratudo/core/utils/size_converter.dart';
-import 'package:pratudo/features/models/recipe/recipe_creation_model.dart';
+import 'package:pratudo/features/models/recipe/detailed_recipe_model.dart';
 import 'package:pratudo/features/widgets/app_text_field.dart';
 import 'package:pratudo/features/widgets/spacing.dart';
 

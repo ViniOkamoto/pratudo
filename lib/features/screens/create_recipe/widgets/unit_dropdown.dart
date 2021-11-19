@@ -1,105 +1,125 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:pratudo/core/theme/colors.dart';
 import 'package:pratudo/core/theme/typography.dart';
 import 'package:pratudo/core/utils/size_converter.dart';
 import 'package:pratudo/features/models/unit_model.dart';
+import 'package:pratudo/features/screens/create_recipe/form_section_store.dart';
 import 'package:pratudo/features/widgets/base_modal.dart';
 
-class UnitDropdown extends StatefulWidget {
+class UnitDropdown extends StatelessWidget {
   final List<UnitModel> unitList;
-  final Function(dynamic) onChanged;
-  final UnitModel value;
+  final FormSectionStore formSectionStore;
+  final int sectionIndex;
+  final int ingredientIndex;
 
   const UnitDropdown({
     required this.unitList,
-    required this.onChanged,
-    required this.value,
+    required this.formSectionStore,
+    required this.sectionIndex,
+    required this.ingredientIndex,
   });
 
   @override
-  State<UnitDropdown> createState() => _UnitDropdownState();
-}
-
-class _UnitDropdownState extends State<UnitDropdown> {
-  @override
   Widget build(BuildContext context) {
     return SelectableFieldWithModal(
-      modalItems: widget.unitList,
-      onChanged: widget.onChanged,
-      value: widget.value,
+      modalItems: unitList,
+      formSectionStore: formSectionStore,
+      sectionIndex: sectionIndex,
+      ingredientIndex: ingredientIndex,
     );
   }
 }
 
 class SelectableFieldWithModal extends StatelessWidget {
   final List<UnitModel> modalItems;
-  final Function(dynamic) onChanged;
-  final UnitModel value;
+  final FormSectionStore formSectionStore;
+  final int sectionIndex;
+  final int ingredientIndex;
 
   const SelectableFieldWithModal({
     required this.modalItems,
-    required this.onChanged,
-    required this.value,
+    required this.formSectionStore,
+    required this.sectionIndex,
+    required this.ingredientIndex,
   });
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(10),
-      onTap: () async {
-        final result = await showDialog(
-          context: context,
-          builder: (context) {
-            return _OptionsModal(
-              onChanged: onChanged,
-              modalItems: modalItems,
-              itemSelected: value,
-            );
-          },
-        );
-      },
-      child: Container(
-        padding: EdgeInsets.only(
-          left: SizeConverter.relativeWidth(12),
-          right: SizeConverter.relativeWidth(10),
-          top: SizeConverter.relativeWidth(8),
-          bottom: SizeConverter.relativeWidth(8),
+    return Observer(builder: (context) {
+      return InkWell(
+        borderRadius: BorderRadius.circular(10),
+        onTap: () async {
+          await showDialog(
+            context: context,
+            builder: (context) {
+              return _OptionsModal(
+                modalItems: modalItems,
+                formSectionStore: formSectionStore,
+                sectionIndex: sectionIndex,
+                ingredientIndex: ingredientIndex,
+              );
+            },
+          );
+        },
+        child: Container(
+          padding: EdgeInsets.only(
+            left: SizeConverter.relativeWidth(12),
+            right: SizeConverter.relativeWidth(10),
+            top: SizeConverter.relativeWidth(8),
+            bottom: SizeConverter.relativeWidth(8),
+          ),
+          decoration: BoxDecoration(
+            color: AppColors.lightestGrayColor,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                _catchUnitSelected()?.abbreviation ?? 'un',
+                style: AppTypo.p3(
+                  color: _catchUnitSelected() != null ? AppColors.darkestColor : AppColors.lightGrayColor,
+                ),
+              ),
+              Icon(
+                LineAwesomeIcons.angle_down,
+                color: AppColors.highlightColor,
+                size: SizeConverter.fontSize(12),
+              ),
+            ],
+          ),
         ),
-        decoration: BoxDecoration(
-          color: AppColors.lightestGrayColor,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              value.abbreviation,
-              style: AppTypo.p3(color: AppColors.darkestColor),
-            ),
-            Icon(
-              LineAwesomeIcons.angle_down,
-              color: AppColors.highlightColor,
-              size: SizeConverter.fontSize(12),
-            ),
-          ],
-        ),
-      ),
-    );
+      );
+    });
+  }
+
+  UnitModel? _catchUnitSelected() {
+    try {
+      return modalItems.firstWhere(
+        (element) =>
+            element.key == formSectionStore.sections[sectionIndex].ingredients[ingredientIndex].portion!.unitOfMeasure,
+      );
+    } catch (e) {
+      return null;
+    }
   }
 }
 
 class _OptionsModal extends StatelessWidget {
+  final List<UnitModel> modalItems;
+  final FormSectionStore formSectionStore;
+  final int sectionIndex;
+  final int ingredientIndex;
+
   const _OptionsModal({
     required this.modalItems,
-    required this.itemSelected,
-    required this.onChanged,
+    required this.formSectionStore,
+    required this.sectionIndex,
+    required this.ingredientIndex,
   });
-
-  final List<UnitModel> modalItems;
-  final UnitModel itemSelected;
-  final Function(dynamic) onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -111,11 +131,16 @@ class _OptionsModal extends StatelessWidget {
             physics: BouncingScrollPhysics(),
             itemBuilder: (context, index) {
               UnitModel unit = modalItems[index];
-              return RadioItemWidget(
-                groupValue: itemSelected.key,
-                onChanged: onChanged,
-                value: unit.key,
-                text: '${unit.translate} (${unit.abbreviation})',
+              return Observer(
+                builder: (context) {
+                  return RadioItemWidget<String>(
+                    groupValue:
+                        formSectionStore.sections[sectionIndex].ingredients[ingredientIndex].portion!.unitOfMeasure,
+                    onChanged: (value) => formSectionStore.setIngredientUnit(value, sectionIndex, ingredientIndex),
+                    value: unit.key,
+                    text: '${unit.translate} (${unit.abbreviation})',
+                  );
+                },
               );
             },
             itemCount: modalItems.length,
@@ -127,14 +152,14 @@ class _OptionsModal extends StatelessWidget {
   }
 }
 
-class RadioItemWidget extends StatelessWidget {
-  final dynamic value;
-  final dynamic groupValue;
-  final ValueChanged<dynamic>? onChanged;
+class RadioItemWidget<T> extends StatelessWidget {
+  final T value;
+  final T? groupValue;
+  final ValueChanged<T?>? onChanged;
   final String text;
 
   const RadioItemWidget({
-    this.groupValue,
+    required this.groupValue,
     required this.onChanged,
     required this.value,
     required this.text,
@@ -144,7 +169,11 @@ class RadioItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Radio(value: value, groupValue: groupValue, onChanged: onChanged),
+        Radio(
+          value: value,
+          groupValue: groupValue,
+          onChanged: onChanged,
+        ),
         Expanded(
           child: Text(
             text,

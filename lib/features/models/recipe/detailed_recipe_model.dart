@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
-class RecipeCreationModel {
-  RecipeCreationModel({
+class DetailedRecipeModel {
+  DetailedRecipeModel({
     required this.name,
     required this.images,
     required this.difficulty,
@@ -24,7 +24,7 @@ class RecipeCreationModel {
   late final List<String> tags;
   late final List<String> categories;
 
-  RecipeCreationModel.fromJson(Map<String, dynamic> json) {
+  DetailedRecipeModel.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     images = List.castFrom<dynamic, String>(json['images']);
     difficulty = json['difficulty'];
@@ -134,6 +134,16 @@ class Portion {
     _data['value'] = value;
     _data['unitOfMeasure'] = unitOfMeasure;
     return _data;
+  }
+
+  Portion copyWith({
+    int? value,
+    String? unitOfMeasure,
+  }) {
+    return Portion(
+      value: value ?? this.value,
+      unitOfMeasure: unitOfMeasure ?? this.unitOfMeasure,
+    );
   }
 }
 

@@ -94,7 +94,6 @@ abstract class _SearchStoreBase with Store {
         categories: category != null ? [category.key] : [],
       ),
     );
-    print(category?.key);
     result.fold(
       (l) => hasErrorInSearch = true,
       (r) {

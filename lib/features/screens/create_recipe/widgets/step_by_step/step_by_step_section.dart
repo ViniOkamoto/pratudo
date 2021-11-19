@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pratudo/core/theme/colors.dart';
 import 'package:pratudo/core/theme/typography.dart';
-import 'package:pratudo/features/models/recipe/recipe_creation_model.dart';
-import 'package:pratudo/features/screens/create_recipe/create_recipe_page.dart';
+import 'package:pratudo/features/models/recipe/detailed_recipe_model.dart';
+import 'package:pratudo/features/screens/create_recipe/widgets/recipe_section.dart';
 import 'package:pratudo/features/screens/create_recipe/widgets/step_by_step/step_by_step_tile.dart';
 import 'package:pratudo/features/screens/create_recipe/widgets/step_by_step/step_by_step_with_time_tile.dart';
 import 'package:pratudo/features/widgets/spacing.dart';
@@ -54,33 +54,34 @@ class _StepByStepSectionState extends State<StepByStepSection> {
                 children: [
                   Expanded(
                     child: ReorderableListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: steps.length,
-                        itemBuilder: (context, index) {
-                          if (steps[index] is StepByStepWithTime) {
-                            return StepByStepWithTimeTile(
-                              key: ValueKey(steps[index].key),
-                              step: steps[index] as StepByStepWithTime,
-                              index: index,
-                            );
-                          }
-                          return StepByStepTile(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: steps.length,
+                      itemBuilder: (context, index) {
+                        if (steps[index] is StepByStepWithTime) {
+                          return StepByStepWithTimeTile(
                             key: ValueKey(steps[index].key),
-                            step: steps[index],
+                            step: steps[index] as StepByStepWithTime,
                             index: index,
                           );
-                        },
-                        // The reorder function
-                        onReorder: (oldIndex, newIndex) {
-                          setState(() {
-                            if (newIndex > oldIndex) {
-                              newIndex = newIndex - 1;
-                            }
-                            final element = steps.removeAt(oldIndex);
-                            steps.insert(newIndex, element);
-                          });
-                        }),
+                        }
+                        return StepByStepTile(
+                          key: ValueKey(steps[index].key),
+                          step: steps[index],
+                          index: index,
+                        );
+                      },
+                      // The reorder function
+                      onReorder: (oldIndex, newIndex) {
+                        setState(() {
+                          if (newIndex > oldIndex) {
+                            newIndex = newIndex - 1;
+                          }
+                          final element = steps.removeAt(oldIndex);
+                          steps.insert(newIndex, element);
+                        });
+                      },
+                    ),
                   ),
                 ],
               ),

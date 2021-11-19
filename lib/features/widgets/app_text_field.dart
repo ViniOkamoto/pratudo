@@ -25,6 +25,7 @@ class AppTextField extends StatelessWidget {
   final TextStyle? Function({dynamic color})? fieldTextStyle;
   final Widget? prefixIcon;
   final FocusNode? focusNode;
+  final TextInputType keyBoardType;
 
   const AppTextField({
     required this.hintText,
@@ -43,6 +44,7 @@ class AppTextField extends StatelessWidget {
     this.fieldTextStyle,
     this.prefixIcon,
     this.focusNode,
+    this.keyBoardType = TextInputType.text,
   });
 
   @override
@@ -81,6 +83,7 @@ class AppTextField extends StatelessWidget {
           isBigTextField: isBigText,
           prefixIcon: prefixIcon,
           focusNode: focusNode,
+          keyBoardType: keyBoardType,
           suffixIcon: isPassword
               ? Padding(
                   padding: EdgeInsets.only(

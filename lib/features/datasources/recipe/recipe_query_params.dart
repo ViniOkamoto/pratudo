@@ -20,7 +20,7 @@ class RecipeQueryParams {
     if (this.categories.isNotEmpty) data['categories'] = this.categories;
     if (this.portions.isNotEmpty) data['serves'] = this.portions;
     if (this.name.isNotEmpty) data['name'] = this.name;
-    print(data);
+
     return data;
   }
 }

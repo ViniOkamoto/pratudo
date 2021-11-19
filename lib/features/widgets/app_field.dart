@@ -16,6 +16,7 @@ class AppField extends StatelessWidget {
   final bool obscureText;
   final String? errorText;
   final TextInputAction? textInputAction;
+  final TextInputType keyBoardType;
   final double verticalPadding;
   final double horizontalPadding;
   final bool isBigTextField;
@@ -37,6 +38,7 @@ class AppField extends StatelessWidget {
     this.obscureText = false,
     this.isBigTextField = false,
     this.fieldTextStyle,
+    this.keyBoardType = TextInputType.text,
   });
 
   @override
@@ -48,6 +50,7 @@ class AppField extends StatelessWidget {
       focusNode: focusNode,
       onSubmitted: onSubmitted,
       obscureText: obscureText,
+      keyboardType: keyBoardType,
       inputFormatters: inputFormatters,
       maxLines: isBigTextField ? null : 1,
       textAlignVertical: TextAlignVertical.center,
