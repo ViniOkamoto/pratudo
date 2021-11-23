@@ -112,7 +112,7 @@ class IngredientsSection extends StatelessWidget {
               ),
               AddOption(
                 onTap: onTapAdd,
-                label: "Adiciona Ingrediente",
+                label: "Adicionar Ingrediente",
               ),
             ],
           ),
