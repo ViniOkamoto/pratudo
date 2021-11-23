@@ -173,11 +173,11 @@ class Steps {
     required this.items,
   });
   late final String step;
-  late final List<StepByStep> items;
+  late final List<StepByStepCreation> items;
 
   Steps.fromJson(Map<String, dynamic> json) {
     step = json['step'];
-    items = List.from(json['items']).map((e) => StepByStep.fromJson(e)).toList();
+    items = List.from(json['items']).map((e) => StepByStepCreation.fromJson(e)).toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -188,15 +188,20 @@ class Steps {
   }
 }
 
-class StepByStep {
+enum StepEnum {
+  DEFAULT,
+  WITHTIME,
+}
+
+class StepByStepCreation {
   late final Key? key;
-  late final String description;
-  StepByStep({
+  late final String? description;
+  StepByStepCreation({
     this.key,
-    required this.description,
+    this.description,
   });
 
-  StepByStep.fromJson(Map<String, dynamic> json) {
+  StepByStepCreation.fromJson(Map<String, dynamic> json) {
     description = json['description'];
   }
 
@@ -205,17 +210,26 @@ class StepByStep {
     _data['description'] = description;
     return _data;
   }
+
+  StepByStepCreation copyWith({
+    String? description,
+  }) {
+    return StepByStepCreation(
+      key: key,
+      description: description ?? this.description,
+    );
+  }
 }
 
-class StepByStepWithTime extends StepByStep {
-  late final Time time;
-  StepByStepWithTime({
+class StepByStepWithTimeCreation extends StepByStepCreation {
+  late final Time? time;
+  StepByStepWithTimeCreation({
     Key? key,
-    required String description,
-    required this.time,
+    String? description,
+    this.time,
   }) : super(description: description, key: key);
 
-  factory StepByStepWithTime.fromJson(Map<String, dynamic> json) => StepByStepWithTime(
+  factory StepByStepWithTimeCreation.fromJson(Map<String, dynamic> json) => StepByStepWithTimeCreation(
         time: Time.fromJson(json['time']),
         description: json['value'],
       );
@@ -223,8 +237,19 @@ class StepByStepWithTime extends StepByStep {
   @override
   Map<String, dynamic> toJson() {
     final data = super.toJson();
-    data['time'] = time.toJson();
+    data['time'] = time!.toJson();
     return data;
+  }
+
+  StepByStepWithTimeCreation copyWith({
+    String? description,
+    Time? time,
+  }) {
+    return StepByStepWithTimeCreation(
+      key: key,
+      description: description ?? this.description,
+      time: time ?? this.time,
+    );
   }
 }
 

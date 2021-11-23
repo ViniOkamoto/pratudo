@@ -2,19 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:pratudo/core/theme/colors.dart';
 import 'package:pratudo/core/utils/size_converter.dart';
-import 'package:pratudo/features/models/recipe/detailed_recipe_model.dart';
+import 'package:pratudo/features/models/create_recipe/recipe_creation_model.dart';
 import 'package:pratudo/features/screens/create_recipe/widgets/step_by_step/step_by_step_tile.dart';
 import 'package:pratudo/features/widgets/app_text_field.dart';
 import 'package:pratudo/features/widgets/spacing.dart';
 
 class StepByStepWithTimeTile extends StatefulWidget {
-  final StepByStepWithTime step;
+  final StepByStepWithTimeCreation step;
   final int index;
+  final VoidCallback onTapDelete;
+  final TextEditingController textEditingController;
+  final ValueChanged onChanged;
 
   StepByStepWithTimeTile({
     Key? key,
     required this.step,
     required this.index,
+    required this.onTapDelete,
+    required this.textEditingController,
+    required this.onChanged,
   }) : super(key: key);
 
   @override
@@ -22,8 +28,6 @@ class StepByStepWithTimeTile extends StatefulWidget {
 }
 
 class _StepByStepWithTimeTileState extends State<StepByStepWithTimeTile> {
-  final TextEditingController _controller = TextEditingController();
-
   final FocusNode textFieldFocusNode = FocusNode();
 
   @override
@@ -76,16 +80,19 @@ class _StepByStepWithTimeTileState extends State<StepByStepWithTimeTile> {
                 ),
               ),
               hintText: "Corte os ingredientes",
-              textEditingController: _controller,
-              onChanged: (onChanged) {},
+              textEditingController: widget.textEditingController,
+              onChanged: widget.onChanged,
               errorText: null,
             ),
           ),
           Spacing(width: 8),
-          Icon(
-            LineAwesomeIcons.alternate_trash,
-            size: SizeConverter.fontSize(24),
-            color: AppColors.lightGrayColor,
+          GestureDetector(
+            onTap: widget.onTapDelete,
+            child: Icon(
+              LineAwesomeIcons.alternate_trash,
+              size: SizeConverter.fontSize(24),
+              color: AppColors.lightGrayColor,
+            ),
           ),
         ],
       ),

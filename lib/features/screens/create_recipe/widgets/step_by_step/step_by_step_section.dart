@@ -1,41 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:pratudo/core/theme/colors.dart';
 import 'package:pratudo/core/theme/typography.dart';
-import 'package:pratudo/features/models/recipe/detailed_recipe_model.dart';
+import 'package:pratudo/features/models/create_recipe/recipe_creation_model.dart';
 import 'package:pratudo/features/screens/create_recipe/widgets/recipe_section.dart';
 import 'package:pratudo/features/screens/create_recipe/widgets/step_by_step/step_by_step_tile.dart';
 import 'package:pratudo/features/screens/create_recipe/widgets/step_by_step/step_by_step_with_time_tile.dart';
 import 'package:pratudo/features/widgets/spacing.dart';
 
 class StepByStepSection extends StatefulWidget {
+  final List<StepByStepCreation> steps;
+  final List<TextEditingController> controllers;
+  final VoidCallback onTapAdd;
+  final Function(int, int) onTapDelete;
+  final Function(int, int, int) reorderStep;
+  final Function(String, int, int) onChangedStepDescription;
+  final int sectionIndex;
+
+  StepByStepSection({
+    required this.steps,
+    required this.controllers,
+    required this.onTapAdd,
+    required this.onTapDelete,
+    required this.reorderStep,
+    required this.sectionIndex,
+    required this.onChangedStepDescription,
+  });
+
   @override
   State<StepByStepSection> createState() => _StepByStepSectionState();
 }
 
 class _StepByStepSectionState extends State<StepByStepSection> {
-  List<StepByStep> steps = [
-    StepByStep(key: UniqueKey(), description: "Teste"),
-    StepByStepWithTime(
-      key: UniqueKey(),
-      time: Time(
-        value: 2,
-        unit: 'SECONDS',
-      ),
-      description: 'Descrição testeaaaaaaaaaa',
-    ),
-    StepByStepWithTime(
-      key: UniqueKey(),
-      time: Time(
-        value: 4,
-        unit: 'SECONDS',
-      ),
-      description: 'Descrição teste',
-    ),
-    StepByStep(
-      key: UniqueKey(),
-      description: "Testeaaaaaaaaaaaaa",
-    ),
-  ];
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -56,38 +51,50 @@ class _StepByStepSectionState extends State<StepByStepSection> {
                     child: ReorderableListView.builder(
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      itemCount: steps.length,
+                      itemCount: widget.steps.length,
                       itemBuilder: (context, index) {
-                        if (steps[index] is StepByStepWithTime) {
+                        if (widget.steps[index] is StepByStepWithTimeCreation) {
                           return StepByStepWithTimeTile(
-                            key: ValueKey(steps[index].key),
-                            step: steps[index] as StepByStepWithTime,
+                            key: ValueKey(widget.steps[index].key),
+                            step: widget.steps[index] as StepByStepWithTimeCreation,
+                            onTapDelete: () => widget.onTapDelete(
+                              widget.sectionIndex,
+                              index,
+                            ),
+                            onChanged: (value) {},
+                            textEditingController: widget.controllers[index],
                             index: index,
                           );
                         }
                         return StepByStepTile(
-                          key: ValueKey(steps[index].key),
-                          step: steps[index],
+                          key: ValueKey(widget.steps[index].key),
+                          step: widget.steps[index],
+                          onTapDelete: () => widget.onTapDelete(
+                            widget.sectionIndex,
+                            index,
+                          ),
+                          textEditingController: widget.controllers[index],
+                          onChanged: (value) => widget.onChangedStepDescription(
+                            value,
+                            widget.sectionIndex,
+                            index,
+                          ),
                           index: index,
                         );
                       },
                       // The reorder function
-                      onReorder: (oldIndex, newIndex) {
-                        setState(() {
-                          if (newIndex > oldIndex) {
-                            newIndex = newIndex - 1;
-                          }
-                          final element = steps.removeAt(oldIndex);
-                          steps.insert(newIndex, element);
-                        });
-                      },
+                      onReorder: (oldIndex, newIndex) => widget.reorderStep(
+                        widget.sectionIndex,
+                        oldIndex,
+                        newIndex,
+                      ),
                     ),
                   ),
                 ],
               ),
               Spacing(height: 16),
               AddOption(
-                onTap: () {},
+                onTap: widget.onTapAdd,
                 label: "Adicionar mais um passo",
               ),
             ],

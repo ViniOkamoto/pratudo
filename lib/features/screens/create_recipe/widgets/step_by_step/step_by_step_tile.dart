@@ -3,18 +3,24 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:pratudo/core/theme/colors.dart';
 import 'package:pratudo/core/theme/typography.dart';
 import 'package:pratudo/core/utils/size_converter.dart';
-import 'package:pratudo/features/models/recipe/detailed_recipe_model.dart';
+import 'package:pratudo/features/models/create_recipe/recipe_creation_model.dart';
 import 'package:pratudo/features/widgets/app_text_field.dart';
 import 'package:pratudo/features/widgets/spacing.dart';
 
 class StepByStepTile extends StatefulWidget {
-  final StepByStep step;
+  final StepByStepCreation step;
   final int index;
+  final VoidCallback onTapDelete;
+  final TextEditingController textEditingController;
+  final ValueChanged onChanged;
 
   StepByStepTile({
     Key? key,
     required this.step,
     required this.index,
+    required this.onTapDelete,
+    required this.textEditingController,
+    required this.onChanged,
   }) : super(key: key);
 
   @override
@@ -22,8 +28,6 @@ class StepByStepTile extends StatefulWidget {
 }
 
 class _StepByStepTileState extends State<StepByStepTile> {
-  final TextEditingController _controller = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -50,16 +54,19 @@ class _StepByStepTileState extends State<StepByStepTile> {
             child: AppTextField(
               isBigText: true,
               hintText: "Corte os ingredientes",
-              textEditingController: _controller,
-              onChanged: (onChanged) {},
+              textEditingController: widget.textEditingController,
+              onChanged: widget.onChanged,
               errorText: null,
             ),
           ),
           Spacing(width: 8),
-          Icon(
-            LineAwesomeIcons.alternate_trash,
-            size: SizeConverter.fontSize(24),
-            color: AppColors.lightGrayColor,
+          GestureDetector(
+            onTap: widget.onTapDelete,
+            child: Icon(
+              LineAwesomeIcons.alternate_trash,
+              size: SizeConverter.fontSize(24),
+              color: AppColors.lightGrayColor,
+            ),
           ),
         ],
       ),

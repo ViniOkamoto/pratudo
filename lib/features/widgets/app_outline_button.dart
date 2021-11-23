@@ -34,7 +34,7 @@ class AppOutlinedButton extends StatelessWidget {
                 style: OutlinedButton.styleFrom(
                   primary: primaryColor,
                   side: BorderSide(
-                    color: primaryColor ?? AppColors.darkHighlightColor,
+                    color: primaryColor ?? AppColors.highlightColor,
                   ),
                   textStyle: TextStyle(
                     color: primaryColor,
@@ -56,7 +56,7 @@ class AppOutlinedButton extends StatelessWidget {
                       ],
                       Text(
                         text,
-                        style: AppTypo.buttonText(color: primaryColor ?? AppColors.darkHighlightColor),
+                        style: AppTypo.buttonText(color: primaryColor ?? AppColors.highlightColor),
                       ),
                     ],
                   ),

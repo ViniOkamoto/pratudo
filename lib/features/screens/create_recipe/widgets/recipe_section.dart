@@ -4,6 +4,7 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:pratudo/core/theme/colors.dart';
 import 'package:pratudo/core/theme/typography.dart';
 import 'package:pratudo/core/utils/size_converter.dart';
+import 'package:pratudo/features/models/create_recipe/recipe_creation_model.dart';
 import 'package:pratudo/features/screens/create_recipe/form_section_store.dart';
 import 'package:pratudo/features/screens/create_recipe/widgets/ingredients_section.dart';
 import 'package:pratudo/features/screens/create_recipe/widgets/step_by_step/step_by_step_section.dart';
@@ -79,19 +80,27 @@ class RecipeSection extends StatelessWidget {
                     ),
                     Spacing(height: 24),
                     IngredientsSection(
+                      sectionIndex: sectionIndex,
                       recipeHelpersStore: _recipeHelpersStore,
                       formSectionStore: _formSectionStore,
-                      sectionIndex: sectionIndex,
                       ingredients: _formSectionStore.sections[sectionIndex].ingredients,
-                      onTapDelete: _formSectionStore.removeIngredient,
-                      onTapAdd: () => _formSectionStore.addIngredient(sectionIndex),
                       ingredientNameControllers: _formSectionStore.ingredientNameControllers,
                       quantityControllers: _formSectionStore.quantityControllers,
+                      onTapDelete: _formSectionStore.removeIngredient,
+                      onTapAdd: () => _formSectionStore.addIngredient(sectionIndex),
                       onChangedIngredientName: _formSectionStore.setIngredientName,
                       onChangedIngredientQuantity: _formSectionStore.setIngredientQuantity,
                     ),
                     Spacing(height: 24),
-                    StepByStepSection(),
+                    StepByStepSection(
+                      sectionIndex: sectionIndex,
+                      steps: _formSectionStore.sections[sectionIndex].steps,
+                      controllers: _formSectionStore.stepDescriptionControllers,
+                      reorderStep: _formSectionStore.reorderStep,
+                      onTapAdd: () => buildShowModalBottomSheet(context),
+                      onTapDelete: _formSectionStore.removeStep,
+                      onChangedStepDescription: _formSectionStore.setStepDescription,
+                    ),
                     if (_formSectionStore.sections.length == (sectionIndex + 1)) ...[
                       Spacing(height: 24),
                       AppOutlinedButton(
@@ -107,6 +116,80 @@ class RecipeSection extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+
+  Future<dynamic> buildShowModalBottomSheet(BuildContext context) {
+    return showModalBottomSheet(
+      context: context,
+      isDismissible: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(15),
+        ),
+      ),
+      builder: (builder) {
+        return _BottomSheetStepField(
+          formSectionStore: _formSectionStore,
+          sectionIndex: sectionIndex,
+        );
+      },
+    );
+  }
+}
+
+class _BottomSheetStepField extends StatelessWidget {
+  const _BottomSheetStepField({
+    Key? key,
+    required FormSectionStore formSectionStore,
+    required this.sectionIndex,
+  })  : _formSectionStore = formSectionStore,
+        super(key: key);
+
+  final FormSectionStore _formSectionStore;
+  final int sectionIndex;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: 24,
+          vertical: 16,
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Campos do passo a passo',
+                    style: AppTypo.p3(color: AppColors.darkColor),
+                  ),
+                  Spacing(height: 16),
+                  AppOutlinedButton(
+                    onPressed: () {
+                      _formSectionStore.addStep(sectionIndex, StepEnum.DEFAULT);
+                      Navigator.pop(context);
+                    },
+                    text: 'Adicionar passo padrão',
+                  ),
+                  Spacing(height: 16),
+                  AppOutlinedButton(
+                    onPressed: () {
+                      _formSectionStore.addStep(sectionIndex, StepEnum.WITHTIME);
+                      Navigator.pop(context);
+                    },
+                    text: 'Adicionar passo com tempo',
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

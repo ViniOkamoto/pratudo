@@ -18,6 +18,9 @@ abstract class _FormSectionStoreBase with Store {
   List<Map<String, dynamic>> ingredientNameErrors = [];
   List<TextEditingController> quantityControllers = [];
   List<Map<String, dynamic>> ingredientQuantityErrors = [];
+  //Step controllers
+  List<TextEditingController> stepDescriptionControllers = [];
+  List<Map<String, dynamic>> stepErrors = [];
 
   String? _validatorIfIsANullOrEmptyValue(String? value, String fieldName) {
     if (value != null && value.isEmpty) {
@@ -131,5 +134,62 @@ abstract class _FormSectionStoreBase with Store {
     sections[sectionIndex] = section.copyWith(ingredients: ingredients);
     ingredientNameControllers.removeAt(ingredientIndex);
     quantityControllers.removeAt(ingredientIndex);
+  }
+
+  @action
+  addStep(int sectionIndex, StepEnum stepType) {
+    Map<String, dynamic> baseError = {"error": null};
+    stepDescriptionControllers.add(TextEditingController());
+    stepErrors.add(baseError);
+    SectionModel section = sections[sectionIndex];
+    sections[sectionIndex] = section.copyWith(
+      steps: [
+        ...section.steps,
+        StepByStepCreation(
+          key: UniqueKey(),
+        ),
+      ],
+    );
+  }
+
+  @action
+  reorderStep(int sectionIndex, oldIndex, newIndex) {
+    if (newIndex > oldIndex) {
+      newIndex = newIndex - 1;
+    }
+    SectionModel section = sections[sectionIndex];
+    List<StepByStepCreation> steps = [...section.steps];
+
+    final element = steps.removeAt(oldIndex);
+    steps.insert(newIndex, element);
+    sections[sectionIndex] = section.copyWith(
+      steps: steps,
+    );
+
+    final controller = stepDescriptionControllers.removeAt(oldIndex);
+    stepDescriptionControllers.insert(newIndex, controller);
+  }
+
+  @action
+  setStepDescription(String value, int sectionIndex, int stepIndex) {
+    SectionModel section = sections[sectionIndex];
+    List<StepByStepCreation> steps = section.steps;
+    StepByStepCreation step = steps[stepIndex];
+    steps[stepIndex] = step.copyWith(description: value);
+    sections[sectionIndex] = section.copyWith(steps: steps);
+    stepErrors[stepIndex]['error'] = _validatorIfIsANullOrEmptyValue(
+      value,
+      "Descrição do passo",
+    );
+  }
+
+  @action
+  removeStep(int sectionIndex, int stepIndex) {
+    SectionModel section = sections[sectionIndex];
+    List<StepByStepCreation> steps = [...section.steps];
+    steps.removeAt(stepIndex);
+    sections[sectionIndex] = section.copyWith(steps: steps);
+    stepDescriptionControllers.removeAt(stepIndex);
+    stepErrors.removeAt(stepIndex);
   }
 }

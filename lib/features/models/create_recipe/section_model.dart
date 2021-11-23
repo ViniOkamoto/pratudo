@@ -14,7 +14,7 @@ class SectionModel {
   @observable
   late final List<FormIngredientModel> ingredients;
   @observable
-  late final List<StepByStep?> steps;
+  late final List<StepByStepCreation> steps;
 
   SectionModel({
     required this.key,
@@ -30,7 +30,7 @@ class SectionModel {
     UnitModel? unitModel,
     int? time,
     List<FormIngredientModel>? ingredients,
-    List<StepByStep>? steps,
+    List<StepByStepCreation>? steps,
   }) {
     return SectionModel(
       key: key,
