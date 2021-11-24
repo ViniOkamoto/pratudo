@@ -34,8 +34,8 @@ class IngredientsSection extends StatelessWidget {
   final Function(int, int) onTapDelete;
   final List<FormIngredientModel> ingredients;
   final int sectionIndex;
-  final List<TextEditingController> ingredientNameControllers;
-  final List<TextEditingController> quantityControllers;
+  final List<TextEditingController>? ingredientNameControllers;
+  final List<TextEditingController>? quantityControllers;
   final Function(String, int, int) onChangedIngredientName;
   final Function(String, int, int) onChangedIngredientQuantity;
 
@@ -67,7 +67,7 @@ class IngredientsSection extends StatelessWidget {
                             child: AppTextField(
                               hintText: "Farinha",
                               fieldTextStyle: AppTypo.p3,
-                              textEditingController: ingredientNameControllers[index],
+                              textEditingController: ingredientNameControllers![index],
                               onChanged: (value) => onChangedIngredientName(value, sectionIndex, index),
                               verticalPadding: 8,
                             ),
@@ -78,7 +78,7 @@ class IngredientsSection extends StatelessWidget {
                             child: AppTextField(
                               fieldTextStyle: AppTypo.p3,
                               hintText: "1,0",
-                              textEditingController: quantityControllers[index],
+                              textEditingController: quantityControllers![index],
                               keyBoardType: TextInputType.number,
                               onChanged: (value) => onChangedIngredientQuantity(value, sectionIndex, index),
                               verticalPadding: 8,

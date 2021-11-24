@@ -9,11 +9,12 @@ import 'package:pratudo/features/widgets/spacing.dart';
 
 class StepByStepSection extends StatefulWidget {
   final List<StepByStepCreation> steps;
-  final List<TextEditingController> controllers;
+  final List<TextEditingController>? controllers;
   final VoidCallback onTapAdd;
   final Function(int, int) onTapDelete;
   final Function(int, int, int) reorderStep;
   final Function(String, int, int) onChangedStepDescription;
+  final Function(Duration, int, int) onChangedTime;
   final int sectionIndex;
 
   StepByStepSection({
@@ -24,6 +25,7 @@ class StepByStepSection extends StatefulWidget {
     required this.reorderStep,
     required this.sectionIndex,
     required this.onChangedStepDescription,
+    required this.onChangedTime,
   });
 
   @override
@@ -61,8 +63,18 @@ class _StepByStepSectionState extends State<StepByStepSection> {
                               widget.sectionIndex,
                               index,
                             ),
-                            onChanged: (value) {},
-                            textEditingController: widget.controllers[index],
+                            onChanged: (value) => widget.onChangedStepDescription(
+                              value,
+                              widget.sectionIndex,
+                              index,
+                            ),
+                            onChangedTime: (value) => widget.onChangedTime(
+                              value,
+                              widget.sectionIndex,
+                              index,
+                            ),
+                            time: (widget.steps[index] as StepByStepWithTimeCreation).time,
+                            textEditingController: widget.controllers![index],
                             index: index,
                           );
                         }
@@ -73,7 +85,7 @@ class _StepByStepSectionState extends State<StepByStepSection> {
                             widget.sectionIndex,
                             index,
                           ),
-                          textEditingController: widget.controllers[index],
+                          textEditingController: widget.controllers![index],
                           onChanged: (value) => widget.onChangedStepDescription(
                             value,
                             widget.sectionIndex,

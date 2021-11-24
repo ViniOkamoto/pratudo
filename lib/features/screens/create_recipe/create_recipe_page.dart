@@ -181,8 +181,8 @@ class _CreateRecipePageState extends State<CreateRecipePage> {
                     children: [
                       _StepDivider(),
                       RecipeSection(
-                        recipeHelpersStore: _recipeHelpersStore,
                         sectionIndex: index,
+                        recipeHelpersStore: _recipeHelpersStore,
                         formSectionStore: _formSectionStore,
                       ),
                     ],

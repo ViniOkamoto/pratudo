@@ -3,6 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:pratudo/core/theme/colors.dart';
 import 'package:pratudo/core/theme/typography.dart';
+import 'package:pratudo/core/utils/enums/time_enum.dart';
 import 'package:pratudo/core/utils/size_converter.dart';
 import 'package:pratudo/features/models/create_recipe/recipe_creation_model.dart';
 import 'package:pratudo/features/screens/create_recipe/form_section_store.dart';
@@ -72,9 +73,20 @@ class RecipeSection extends StatelessWidget {
                           'Tempo de preparo da seção',
                           style: AppTypo.p3(color: AppColors.darkColor),
                         ),
-                        Text(
-                          'Sem estimativa',
-                          style: AppTypo.p4(color: AppColors.grayColor),
+                        Visibility(
+                          visible: _formSectionStore.sections[sectionIndex].time! > 0,
+                          child: Text(
+                            convertTimeToString(
+                              Time(
+                                  value: _formSectionStore.sections[sectionIndex].time!,
+                                  unit: _formSectionStore.sections[sectionIndex].unit!),
+                            ),
+                            style: AppTypo.p4(color: AppColors.grayColor),
+                          ),
+                          replacement: Text(
+                            'Sem estimativa',
+                            style: AppTypo.p4(color: AppColors.grayColor),
+                          ),
                         ),
                       ],
                     ),
@@ -84,8 +96,8 @@ class RecipeSection extends StatelessWidget {
                       recipeHelpersStore: _recipeHelpersStore,
                       formSectionStore: _formSectionStore,
                       ingredients: _formSectionStore.sections[sectionIndex].ingredients,
-                      ingredientNameControllers: _formSectionStore.ingredientNameControllers,
-                      quantityControllers: _formSectionStore.quantityControllers,
+                      ingredientNameControllers: _formSectionStore.ingredientNameControllers[sectionIndex],
+                      quantityControllers: _formSectionStore.quantityControllers[sectionIndex],
                       onTapDelete: _formSectionStore.removeIngredient,
                       onTapAdd: () => _formSectionStore.addIngredient(sectionIndex),
                       onChangedIngredientName: _formSectionStore.setIngredientName,
@@ -95,14 +107,15 @@ class RecipeSection extends StatelessWidget {
                     StepByStepSection(
                       sectionIndex: sectionIndex,
                       steps: _formSectionStore.sections[sectionIndex].steps,
-                      controllers: _formSectionStore.stepDescriptionControllers,
+                      controllers: _formSectionStore.stepDescriptionControllers[sectionIndex],
                       reorderStep: _formSectionStore.reorderStep,
                       onTapAdd: () => buildShowModalBottomSheet(context),
                       onTapDelete: _formSectionStore.removeStep,
                       onChangedStepDescription: _formSectionStore.setStepDescription,
+                      onChangedTime: _formSectionStore.setStepTime,
                     ),
+                    Spacing(height: 24),
                     if (_formSectionStore.sections.length == (sectionIndex + 1)) ...[
-                      Spacing(height: 24),
                       AppOutlinedButton(
                         onPressed: _formSectionStore.addSection,
                         text: 'Adicionar Seção',

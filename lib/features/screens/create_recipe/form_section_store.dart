@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:mobx/mobx.dart';
+import 'package:pratudo/core/utils/enums/time_enum.dart';
 import 'package:pratudo/features/models/create_recipe/recipe_creation_model.dart';
 import 'package:pratudo/features/models/create_recipe/section_model.dart';
 
@@ -14,13 +15,13 @@ abstract class _FormSectionStoreBase with Store {
   List<TextEditingController> sectionNameControllers = [];
   List<Map<String, dynamic>> sectionNameErrors = [];
   //Ingredient controllers
-  List<TextEditingController> ingredientNameControllers = [];
-  List<Map<String, dynamic>> ingredientNameErrors = [];
-  List<TextEditingController> quantityControllers = [];
-  List<Map<String, dynamic>> ingredientQuantityErrors = [];
+  Map<int, List<TextEditingController>> ingredientNameControllers = {};
+  Map<int, List<Map<String, String?>>> ingredientNameErrors = {};
+  Map<int, List<TextEditingController>> quantityControllers = {};
+  Map<int, List<Map<String, String?>>> ingredientQuantityErrors = {};
   //Step controllers
-  List<TextEditingController> stepDescriptionControllers = [];
-  List<Map<String, dynamic>> stepErrors = [];
+  Map<int, List<TextEditingController>> stepDescriptionControllers = {};
+  Map<int, List<Map<String, String?>>> stepErrors = {};
 
   String? _validatorIfIsANullOrEmptyValue(String? value, String fieldName) {
     if (value != null && value.isEmpty) {
@@ -37,6 +38,8 @@ abstract class _FormSectionStoreBase with Store {
     sections.add(
       SectionModel(
         key: UniqueKey(),
+        time: 0,
+        unit: TimeEnum.MINUTES.parseToString,
       ),
     );
   }
@@ -46,6 +49,12 @@ abstract class _FormSectionStoreBase with Store {
     sections.removeAt(index);
     sectionNameErrors.removeAt(index);
     sectionNameControllers.removeAt(index);
+    ingredientNameControllers.removeWhere((key, value) => key == index);
+    quantityControllers.removeWhere((key, value) => key == index);
+    ingredientNameErrors.removeWhere((key, value) => key == index);
+    ingredientQuantityErrors.removeWhere((key, value) => key == index);
+    stepDescriptionControllers.removeWhere((key, value) => key == index);
+    stepErrors.removeWhere((key, value) => key == index);
   }
 
   @action
@@ -60,12 +69,12 @@ abstract class _FormSectionStoreBase with Store {
 
   @action
   addIngredient(int sectionIndex) {
-    Map<String, dynamic> baseError = {"error": null};
+    Map<String, String?> baseError = {"error": null};
 
-    ingredientNameControllers.add(TextEditingController());
-    ingredientQuantityErrors.add(baseError);
-    ingredientNameErrors.add(baseError);
-    quantityControllers.add(TextEditingController());
+    ingredientNameControllers[sectionIndex] = [...?ingredientNameControllers[sectionIndex], TextEditingController()];
+    ingredientQuantityErrors[sectionIndex] = [...?ingredientQuantityErrors[sectionIndex], baseError];
+    ingredientNameErrors[sectionIndex] = [...?ingredientNameErrors[sectionIndex], baseError];
+    quantityControllers[sectionIndex] = [...?quantityControllers[sectionIndex], TextEditingController()];
     SectionModel section = sections[sectionIndex];
     sections[sectionIndex] = section.copyWith(
       ingredients: [
@@ -84,7 +93,7 @@ abstract class _FormSectionStoreBase with Store {
     FormIngredientModel ingredient = ingredients[ingredientIndex];
     ingredients[ingredientIndex] = ingredient.copyWith(name: value);
     sections[sectionIndex] = section.copyWith(ingredients: ingredients);
-    ingredientNameErrors[ingredientIndex]['error'] = _validatorIfIsANullOrEmptyValue(
+    ingredientNameErrors[sectionIndex]![ingredientIndex]['error'] = _validatorIfIsANullOrEmptyValue(
       value,
       "Nome do ingrediente",
     );
@@ -106,7 +115,7 @@ abstract class _FormSectionStoreBase with Store {
     );
 
     sections[sectionIndex] = section.copyWith(ingredients: ingredients);
-    ingredientNameErrors[ingredientIndex]['error'] = _validatorIfIsANullOrEmptyValue(
+    ingredientNameErrors[sectionIndex]![ingredientIndex]['error'] = _validatorIfIsANullOrEmptyValue(
       value,
       "Nome do ingrediente",
     );
@@ -132,16 +141,27 @@ abstract class _FormSectionStoreBase with Store {
     List<FormIngredientModel> ingredients = [...section.ingredients];
     ingredients.removeAt(ingredientIndex);
     sections[sectionIndex] = section.copyWith(ingredients: ingredients);
-    ingredientNameControllers.removeAt(ingredientIndex);
-    quantityControllers.removeAt(ingredientIndex);
+    ingredientNameControllers[sectionIndex]!.removeAt(ingredientIndex);
+    quantityControllers[sectionIndex]!.removeAt(ingredientIndex);
   }
 
   @action
   addStep(int sectionIndex, StepEnum stepType) {
-    Map<String, dynamic> baseError = {"error": null};
-    stepDescriptionControllers.add(TextEditingController());
-    stepErrors.add(baseError);
+    Map<String, String?> baseError = {"error": null};
+    stepDescriptionControllers[sectionIndex] = [...?stepDescriptionControllers[sectionIndex], TextEditingController()];
+    stepErrors[sectionIndex] = [...?stepErrors[sectionIndex], baseError];
     SectionModel section = sections[sectionIndex];
+    if (stepType == StepEnum.WITHTIME) {
+      sections[sectionIndex] = section.copyWith(
+        steps: [
+          ...section.steps,
+          StepByStepWithTimeCreation(
+            key: UniqueKey(),
+          ),
+        ],
+      );
+      return;
+    }
     sections[sectionIndex] = section.copyWith(
       steps: [
         ...section.steps,
@@ -166,8 +186,8 @@ abstract class _FormSectionStoreBase with Store {
       steps: steps,
     );
 
-    final controller = stepDescriptionControllers.removeAt(oldIndex);
-    stepDescriptionControllers.insert(newIndex, controller);
+    final controller = stepDescriptionControllers[sectionIndex]!.removeAt(oldIndex);
+    stepDescriptionControllers[sectionIndex]!.insert(newIndex, controller);
   }
 
   @action
@@ -177,10 +197,25 @@ abstract class _FormSectionStoreBase with Store {
     StepByStepCreation step = steps[stepIndex];
     steps[stepIndex] = step.copyWith(description: value);
     sections[sectionIndex] = section.copyWith(steps: steps);
-    stepErrors[stepIndex]['error'] = _validatorIfIsANullOrEmptyValue(
+    stepErrors[sectionIndex]![stepIndex]['error'] = _validatorIfIsANullOrEmptyValue(
       value,
       "Descrição do passo",
     );
+  }
+
+  @action
+  setStepTime(Duration value, int sectionIndex, int stepIndex) {
+    SectionModel section = sections[sectionIndex];
+    List<StepByStepCreation> steps = section.steps;
+    StepByStepWithTimeCreation step = steps[stepIndex] as StepByStepWithTimeCreation;
+    Time newTime = Time(
+      value: value.inMinutes,
+      unit: TimeEnum.MINUTES.parseToString,
+    );
+    steps[stepIndex] = step.copyWith(time: newTime);
+    sections[sectionIndex] = section.copyWith(steps: steps);
+
+    _calculateSectionTime(sectionIndex);
   }
 
   @action
@@ -189,7 +224,19 @@ abstract class _FormSectionStoreBase with Store {
     List<StepByStepCreation> steps = [...section.steps];
     steps.removeAt(stepIndex);
     sections[sectionIndex] = section.copyWith(steps: steps);
-    stepDescriptionControllers.removeAt(stepIndex);
-    stepErrors.removeAt(stepIndex);
+    stepDescriptionControllers[sectionIndex]!.removeAt(stepIndex);
+    stepErrors[sectionIndex]!.removeAt(stepIndex);
+
+    _calculateSectionTime(sectionIndex);
+  }
+
+  _calculateSectionTime(int index) {
+    int value = 0;
+    sections[index].steps.forEach(
+      (element) {
+        if (element is StepByStepWithTimeCreation) value += element.time!.value;
+      },
+    );
+    sections[index] = sections[index].copyWith(time: value);
   }
 }

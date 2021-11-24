@@ -1,14 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:mobx/mobx.dart';
 import 'package:pratudo/features/models/create_recipe/recipe_creation_model.dart';
-import 'package:pratudo/features/models/unit_model.dart';
 
 class SectionModel {
   late final Key key;
   @observable
   late final String? sectionName;
   @observable
-  late final UnitModel? unitModel;
+  late final String? unit;
   @observable
   late final int? time;
   @observable
@@ -19,7 +18,7 @@ class SectionModel {
   SectionModel({
     required this.key,
     this.sectionName,
-    this.unitModel,
+    this.unit,
     this.time,
     this.ingredients = const [],
     this.steps = const [],
@@ -27,7 +26,7 @@ class SectionModel {
 
   SectionModel copyWith({
     String? sectionName,
-    UnitModel? unitModel,
+    String? unit,
     int? time,
     List<FormIngredientModel>? ingredients,
     List<StepByStepCreation>? steps,
@@ -35,7 +34,7 @@ class SectionModel {
     return SectionModel(
       key: key,
       sectionName: sectionName ?? this.sectionName,
-      unitModel: unitModel ?? this.unitModel,
+      unit: unit ?? this.unit,
       time: time ?? this.time,
       ingredients: ingredients ?? this.ingredients,
       steps: steps ?? this.steps,
