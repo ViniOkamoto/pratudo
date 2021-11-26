@@ -1,0 +1,6 @@
+enum ValidateEnum {
+  FIELD_EMPTY,
+  FIELD_LESS_THAN_OR_EQUAL_0,
+  INGREDIENT_EMPTY,
+  STEP_EMPTY,
+}

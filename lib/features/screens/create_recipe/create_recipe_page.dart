@@ -4,6 +4,7 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:pratudo/core/services/di/service_locator.dart';
 import 'package:pratudo/core/theme/colors.dart';
 import 'package:pratudo/core/theme/typography.dart';
+import 'package:pratudo/core/utils/image_helper.dart';
 import 'package:pratudo/core/utils/size_converter.dart';
 import 'package:pratudo/features/models/difficulty_enum.dart';
 import 'package:pratudo/features/models/recipe/recipe_helper_model.dart';
@@ -14,6 +15,7 @@ import 'package:pratudo/features/screens/create_recipe/widgets/multi_select_form
 import 'package:pratudo/features/screens/create_recipe/widgets/portions_field.dart';
 import 'package:pratudo/features/screens/create_recipe/widgets/recipe_section.dart';
 import 'package:pratudo/features/stores/shared/recipe_helpers_store.dart';
+import 'package:pratudo/features/widgets/app_icon_button.dart';
 import 'package:pratudo/features/widgets/app_outline_button.dart';
 import 'package:pratudo/features/widgets/app_small_button.dart';
 import 'package:pratudo/features/widgets/app_text_field.dart';
@@ -54,7 +56,9 @@ class _CreateRecipePageState extends State<CreateRecipePage> {
           ),
           Spacing(width: 8),
           AppSmallButton(
-            onPressed: null,
+            onPressed: () {
+              _formSectionStore.checkIfHaveAnErrorOrAFieldNotCompleted();
+            },
             text: 'Publicar',
           ),
         ],
@@ -72,43 +76,10 @@ class _CreateRecipePageState extends State<CreateRecipePage> {
                 ),
                 child: Column(
                   children: [
-                    InkWell(
-                      onTap: () {},
-                      child: Container(
-                        padding: EdgeInsets.only(
-                          left: SizeConverter.relativeWidth(64),
-                          right: SizeConverter.relativeWidth(64),
-                          top: SizeConverter.relativeHeight(8),
-                          bottom: SizeConverter.relativeHeight(32),
-                        ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(
-                            color: AppColors.highlightColor,
-                          ),
-                        ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: Column(
-                                children: [
-                                  Icon(
-                                    LineAwesomeIcons.alternate_cloud_upload,
-                                    size: SizeConverter.fontSize(56),
-                                    color: AppColors.lightGrayColor,
-                                  ),
-                                  Text(
-                                    'Clique aqui para subir uma imagem da receita',
-                                    style: AppTypo.p4(color: AppColors.lightGrayColor),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                    ImageField(
+                      image: _recipeFormStore.image,
+                      onTap: () => _recipeFormStore.setImage(),
+                      onTapDelete: () => _recipeFormStore.removeImage(),
                     ),
                     Spacing(height: 24),
                     AppTextField(
@@ -194,6 +165,102 @@ class _CreateRecipePageState extends State<CreateRecipePage> {
           );
         },
       ),
+    );
+  }
+}
+
+class ImageField extends StatelessWidget {
+  const ImageField({
+    required this.onTapDelete,
+    required this.onTap,
+    required this.image,
+  });
+
+  final VoidCallback onTap;
+  final VoidCallback onTapDelete;
+  final String? image;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        InkWell(
+          onTap: onTap,
+          child: Container(
+            width: 400,
+            height: 150,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              border: Border.all(
+                color: AppColors.highlightColor,
+              ),
+            ),
+            child: Visibility(
+              visible: image != null,
+              child: Stack(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: MemoryImage(
+                          ImageHelper.convertBase64ToImage(image ?? ""),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: AppIconButton(
+                        onTap: onTapDelete,
+                        iconData: LineAwesomeIcons.times,
+                        buttonColor: Color(0xCCFFFFFFF),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              replacement: Padding(
+                padding: EdgeInsets.only(
+                  left: SizeConverter.relativeWidth(64),
+                  right: SizeConverter.relativeWidth(64),
+                  top: SizeConverter.relativeHeight(8),
+                  bottom: SizeConverter.relativeHeight(32),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        children: [
+                          Icon(
+                            LineAwesomeIcons.alternate_cloud_upload,
+                            size: SizeConverter.fontSize(56),
+                            color: AppColors.lightGrayColor,
+                          ),
+                          Text(
+                            'Clique aqui para subir uma imagem da receita',
+                            style: AppTypo.p4(color: AppColors.lightGrayColor),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+        Spacing(height: 8),
+        Text(
+          'Dica: Tente centralizar bem a foto da sua receita para que fique melhor posicionada na caixa acima',
+          style: AppTypo.p5(color: AppColors.blueColor),
+        ),
+      ],
     );
   }
 }

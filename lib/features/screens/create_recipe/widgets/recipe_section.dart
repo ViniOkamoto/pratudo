@@ -74,11 +74,11 @@ class RecipeSection extends StatelessWidget {
                           style: AppTypo.p3(color: AppColors.darkColor),
                         ),
                         Visibility(
-                          visible: _formSectionStore.sections[sectionIndex].time! > 0,
+                          visible: _formSectionStore.sections[sectionIndex].time > 0,
                           child: Text(
                             convertTimeToString(
                               Time(
-                                  value: _formSectionStore.sections[sectionIndex].time!,
+                                  value: _formSectionStore.sections[sectionIndex].time,
                                   unit: _formSectionStore.sections[sectionIndex].unit!),
                             ),
                             style: AppTypo.p4(color: AppColors.grayColor),

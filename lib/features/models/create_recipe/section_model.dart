@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:mobx/mobx.dart';
+import 'package:pratudo/core/utils/enums/time_enum.dart';
+import 'package:pratudo/core/utils/enums/validate_enum.dart';
 import 'package:pratudo/features/models/create_recipe/recipe_creation_model.dart';
 
 class SectionModel {
@@ -9,7 +11,7 @@ class SectionModel {
   @observable
   late final String? unit;
   @observable
-  late final int? time;
+  late final int time;
   @observable
   late final List<FormIngredientModel> ingredients;
   @observable
@@ -18,15 +20,80 @@ class SectionModel {
   SectionModel({
     required this.key,
     this.sectionName,
-    this.unit,
-    this.time,
+    this.time = 0,
     this.ingredients = const [],
     this.steps = const [],
-  });
+  }) : this.unit = TimeEnum.MINUTES.parseToString;
+
+  //Section base validators
+  Map<String, ValidateEnum> get validateTime =>
+      time > 0 ? {} : {'Tempo da seção': ValidateEnum.FIELD_LESS_THAN_OR_EQUAL_0};
+
+  Map<String, ValidateEnum> get validateSection =>
+      sectionName != null && sectionName!.isNotEmpty ? {} : {'Nome da seção': ValidateEnum.FIELD_EMPTY};
+
+  // Ingredient validators
+  Map<String, ValidateEnum> get validateIfHaveAnyIngredient =>
+      ingredients.isNotEmpty ? {} : {'Ingrediente da seção': ValidateEnum.INGREDIENT_EMPTY};
+
+  Map<String, ValidateEnum> get validateIfHaveAnyIngredientWithoutName =>
+      ingredients.any((element) => element.name == null || (element.name != null && element.name!.isEmpty))
+          ? {'Nome do ingrediente': ValidateEnum.FIELD_EMPTY}
+          : {};
+
+  Map<String, ValidateEnum> get validateIfHaveAnyIngredientWithoutPortion =>
+      ingredients.any((element) => element.portion == null) ? {'Porção do ingrediente': ValidateEnum.FIELD_EMPTY} : {};
+
+  Map<String, ValidateEnum> get validateIfHaveAnyIngredientWithoutPortionQuantity =>
+      ingredients.any((element) => (element.portion != null && element.portion!.value <= 0))
+          ? {'Quantidade do ingrediente': ValidateEnum.FIELD_LESS_THAN_OR_EQUAL_0}
+          : {};
+
+  Map<String, ValidateEnum> get validateIfHaveAnyIngredientWithoutPortionUnit =>
+      ingredients.any((element) => (element.portion != null &&
+              element.portion!.unitOfMeasure != null &&
+              element.portion!.unitOfMeasure!.isEmpty))
+          ? {'Unidade do ingrediente': ValidateEnum.FIELD_LESS_THAN_OR_EQUAL_0}
+          : {};
+
+  // Step Validators
+  Map<String, ValidateEnum> get validateIfHaveAnyStep =>
+      steps.isNotEmpty ? {} : {'Passo da seção': ValidateEnum.STEP_EMPTY};
+
+  Map<String, ValidateEnum> get validateIfHaveAnyStepWithoutDescription =>
+      steps.any((element) => element.description == null || element.description != null && element.description!.isEmpty)
+          ? {'Descrição do passo': ValidateEnum.FIELD_EMPTY}
+          : {};
+
+  ///TODO ajustar lógica de validação
+  Map<String, Map<String, ValidateEnum>?>? validateSectionField(sectionIndex) {
+    Map<String, ValidateEnum>? errors = {};
+
+    errors.addAll(validateSection);
+    errors.addAll(validateTime);
+    if (validateIfHaveAnyIngredient.isEmpty) {
+      errors.addAll(validateIfHaveAnyIngredient);
+    } else {
+      errors.addAll(validateIfHaveAnyIngredientWithoutName);
+      if (validateIfHaveAnyIngredientWithoutPortion.isEmpty) {
+        errors.addAll(validateIfHaveAnyIngredientWithoutPortion);
+      } else {
+        errors.addAll(validateIfHaveAnyIngredientWithoutPortionQuantity);
+        errors.addAll(validateIfHaveAnyIngredientWithoutPortionUnit);
+      }
+    }
+
+    if (validateIfHaveAnyStep != {}) {
+      errors.addAll(validateIfHaveAnyStep);
+    } else {
+      errors.addAll(validateIfHaveAnyStepWithoutDescription);
+    }
+    print(errors);
+    return null;
+  }
 
   SectionModel copyWith({
     String? sectionName,
-    String? unit,
     int? time,
     List<FormIngredientModel>? ingredients,
     List<StepByStepCreation>? steps,
@@ -34,7 +101,6 @@ class SectionModel {
     return SectionModel(
       key: key,
       sectionName: sectionName ?? this.sectionName,
-      unit: unit ?? this.unit,
       time: time ?? this.time,
       ingredients: ingredients ?? this.ingredients,
       steps: steps ?? this.steps,

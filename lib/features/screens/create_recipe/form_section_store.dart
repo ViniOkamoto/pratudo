@@ -25,9 +25,22 @@ abstract class _FormSectionStoreBase with Store {
 
   String? _validatorIfIsANullOrEmptyValue(String? value, String fieldName) {
     if (value != null && value.isEmpty) {
-      return "$fieldName não pode ser vazio";
+      return "FIELD_NULL";
     }
     return null;
+  }
+
+  bool checkIfHaveASection() {
+    return sections.isNotEmpty;
+  }
+
+  Map<String, Map<String, String>>? checkIfHaveAnErrorOrAFieldNotCompleted() {
+    Map<String, Map<String, String>>? errors;
+    for (int i = 0; i < sections.length; i++) {
+      SectionModel section = sections[i];
+      section.validateSectionField(i);
+    }
+    return errors;
   }
 
   @action
@@ -39,22 +52,51 @@ abstract class _FormSectionStoreBase with Store {
       SectionModel(
         key: UniqueKey(),
         time: 0,
-        unit: TimeEnum.MINUTES.parseToString,
       ),
     );
   }
 
   @action
   removeSection(int index) {
+    if (sections.length > index + 1) {
+      _reorderMaps(index);
+    } else {
+      _removeSection(index);
+    }
+  }
+
+  _removeSection(index) {
     sections.removeAt(index);
     sectionNameErrors.removeAt(index);
     sectionNameControllers.removeAt(index);
     ingredientNameControllers.removeWhere((key, value) => key == index);
-    quantityControllers.removeWhere((key, value) => key == index);
     ingredientNameErrors.removeWhere((key, value) => key == index);
+    quantityControllers.removeWhere((key, value) => key == index);
     ingredientQuantityErrors.removeWhere((key, value) => key == index);
     stepDescriptionControllers.removeWhere((key, value) => key == index);
     stepErrors.removeWhere((key, value) => key == index);
+  }
+
+  _reorderMaps(int index) {
+    int lastPosition = sections.length - 1;
+    for (int i = index; i < lastPosition; i++) {
+      int nextPosition = index + 1;
+      sectionNameErrors.removeAt(index);
+      sectionNameControllers.removeAt(index);
+      ingredientNameErrors[index] = ingredientNameErrors[(nextPosition)] as List<Map<String, String?>>;
+      ingredientNameErrors.remove(lastPosition);
+      ingredientNameControllers[index] = ingredientNameControllers[(nextPosition)] as List<TextEditingController>;
+      ingredientNameControllers.remove(lastPosition);
+      quantityControllers[index] = quantityControllers[(nextPosition)] as List<TextEditingController>;
+      quantityControllers.remove(lastPosition);
+      ingredientQuantityErrors[index] = ingredientQuantityErrors[(nextPosition)] as List<Map<String, String?>>;
+      ingredientQuantityErrors.remove(lastPosition);
+      stepDescriptionControllers[index] = stepDescriptionControllers[(nextPosition)] as List<TextEditingController>;
+      stepDescriptionControllers.remove(lastPosition);
+      stepErrors[index] = stepErrors[(nextPosition)] as List<Map<String, String?>>;
+      stepErrors.remove(lastPosition);
+      sections.removeAt(index);
+    }
   }
 
   @action

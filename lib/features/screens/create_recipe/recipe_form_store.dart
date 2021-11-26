@@ -1,4 +1,8 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
 import 'package:pratudo/features/models/difficulty_enum.dart';
 import 'package:pratudo/features/models/recipe/recipe_helper_model.dart';
@@ -12,6 +16,29 @@ abstract class _RecipeFormStoreBase with Store {
   final TextEditingController recipeNameController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController chefTipController = TextEditingController();
+  final ImagePicker _picker = ImagePicker();
+
+  @observable
+  String? image;
+
+  @action
+  setImage() async {
+    try {
+      final pickedFile = await _picker.pickImage(
+        source: ImageSource.gallery,
+      );
+      List<int> fileInByte = File(pickedFile!.path).readAsBytesSync();
+      String fileInBase64 = base64Encode(fileInByte);
+      image = fileInBase64;
+    } catch (e) {
+      //Skip Interaction
+    }
+  }
+
+  @action
+  removeImage() async {
+    image = null;
+  }
 
   @observable
   String? recipeName;
@@ -19,6 +46,7 @@ abstract class _RecipeFormStoreBase with Store {
   @observable
   String? errorRecipeName;
 
+  @observable
   @action
   setRecipeName(String value) {
     recipeName = value;

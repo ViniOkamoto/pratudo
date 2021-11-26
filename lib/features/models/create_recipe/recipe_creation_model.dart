@@ -119,11 +119,11 @@ class Items {
 
 class Portion {
   Portion({
-    this.value,
+    this.value = 0,
     this.unitOfMeasure,
   });
   @observable
-  late final double? value;
+  late final double value;
   @observable
   late final String? unitOfMeasure;
 
