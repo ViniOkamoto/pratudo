@@ -50,9 +50,8 @@ class SectionModel {
           : {};
 
   Map<String, ValidateEnum> get validateIfHaveAnyIngredientWithoutPortionUnit =>
-      ingredients.any((element) => (element.portion != null &&
-              element.portion!.unitOfMeasure != null &&
-              element.portion!.unitOfMeasure!.isEmpty))
+      ingredients.any((element) => (element.portion!.unitOfMeasure == null ||
+              element.portion!.unitOfMeasure != null && element.portion!.unitOfMeasure!.isEmpty))
           ? {'Unidade do ingrediente': ValidateEnum.FIELD_LESS_THAN_OR_EQUAL_0}
           : {};
 
@@ -71,11 +70,11 @@ class SectionModel {
 
     errors.addAll(validateSection);
     errors.addAll(validateTime);
-    if (validateIfHaveAnyIngredient.isEmpty) {
+    if (validateIfHaveAnyIngredient.isNotEmpty) {
       errors.addAll(validateIfHaveAnyIngredient);
     } else {
       errors.addAll(validateIfHaveAnyIngredientWithoutName);
-      if (validateIfHaveAnyIngredientWithoutPortion.isEmpty) {
+      if (validateIfHaveAnyIngredientWithoutPortion.isNotEmpty) {
         errors.addAll(validateIfHaveAnyIngredientWithoutPortion);
       } else {
         errors.addAll(validateIfHaveAnyIngredientWithoutPortionQuantity);
