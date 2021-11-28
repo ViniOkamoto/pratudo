@@ -62,7 +62,7 @@ class _MultiSelectFormFieldState<T> extends State<MultiSelectFormField<T>> {
           selectedItemsTextStyle: AppTypo.p5(color: AppColors.whiteColor),
           buttonIcon: Icon(
             LineAwesomeIcons.plus,
-            color: AppColors.grayColor,
+            color: AppColors.greyColor,
             size: SizeConverter.fontSize(16),
           ),
           buttonText: Text(

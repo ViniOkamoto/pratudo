@@ -31,16 +31,9 @@ class AppDefaultError extends StatelessWidget {
           RichText(
             textAlign: TextAlign.center,
             text: TextSpan(
-              text: 'Algo aconteceu de forma ',
+              text: 'Algo aconteceu de forma inesperada\n',
               style: AppTypo.p3(color: AppColors.darkestColor),
               children: <TextSpan>[
-                TextSpan(
-                  text: 'inesperada\n',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.highlightColor,
-                  ),
-                ),
                 TextSpan(
                   text: 'Tome um ',
                 ),
@@ -52,7 +45,14 @@ class AppDefaultError extends StatelessWidget {
                   ),
                 ),
                 TextSpan(
-                  text: 'e tente novamente.',
+                  text: 'e ',
+                ),
+                TextSpan(
+                  text: 'tente novamente.',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.highlightColor,
+                  ),
                 ),
               ],
             ),

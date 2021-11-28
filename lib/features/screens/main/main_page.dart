@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:mobx/mobx.dart';
 import 'package:pratudo/core/resources/routes.dart';
 import 'package:pratudo/core/services/di/service_locator.dart';
 import 'package:pratudo/core/theme/colors.dart';
+import 'package:pratudo/core/theme/typography.dart';
 import 'package:pratudo/core/utils/enums/nav_bar_items_enum.dart';
 import 'package:pratudo/core/utils/size_converter.dart';
+import 'package:pratudo/features/models/gamification/experience_gained_model.dart';
 import 'package:pratudo/features/screens/main/main_store.dart';
 import 'package:pratudo/features/stores/shared/user_progress_store.dart';
 import 'package:pratudo/features/widgets/app_nav_bar.dart';
+import 'package:pratudo/features/widgets/app_primary_button.dart';
+import 'package:pratudo/features/widgets/base_modal.dart';
+import 'package:pratudo/features/widgets/custom_text.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -20,13 +26,25 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   final MainStore _mainStore = serviceLocator<MainStore>();
   final UserProgressStore _userProgressStore = serviceLocator<UserProgressStore>();
-
+  late final disposeReaction;
   List<Widget> pages = navPage.entries.map((e) => e.value).toList();
 
   @override
   void initState() {
     super.initState();
     _userProgressStore.getUserProgress();
+    disposeReaction = reaction(
+      (_) => _userProgressStore.experienceGainedModel,
+      (experienceGained) {
+        if (experienceGained != null) {}
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    disposeReaction();
   }
 
   @override
@@ -86,6 +104,64 @@ class _MainPageState extends State<MainPage> {
           mainStore: _mainStore,
           userProgressStore: _userProgressStore,
         ),
+      ),
+    );
+  }
+}
+
+class GamificationNotifierModal extends StatelessWidget {
+  const GamificationNotifierModal({
+    Key? key,
+    required this.experienceGainedModel,
+  }) : super(key: key);
+
+  final ExperienceGainedModel experienceGainedModel;
+  @override
+  Widget build(BuildContext context) {
+    return BaseModal(
+      title: 'Gamificação',
+      body: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CustomText(
+                  text: 'Opa, você ganhou *xp*!!',
+                  style: AppTypo.h2(color: AppColors.darkerColor),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: SizeConverter.relativeHeight(16),
+                  ),
+                  child: Icon(
+                    LineAwesomeIcons.trophy,
+                    size: SizeConverter.fontSize(86),
+                    color: AppColors.orangeColor,
+                  ),
+                ),
+                CustomText(
+                  text: 'Você ganhou *${experienceGainedModel.gainedExperience}xp* '
+                      'por *${experienceGainedModel.reason.toLowerCase()}*',
+                  style: AppTypo.h3(color: AppColors.darkerColor),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+      bottom: Row(
+        children: [
+          Expanded(
+            child: AppPrimaryButton(
+              text: 'Voltar',
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          )
+        ],
       ),
     );
   }

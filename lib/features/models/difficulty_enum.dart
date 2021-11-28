@@ -21,4 +21,15 @@ extension DifficultyEnumExtension on DifficultyEnum {
         return 'Difícil';
     }
   }
+
+  String get key {
+    switch (this) {
+      case DifficultyEnum.EASY:
+        return 'EASY';
+      case DifficultyEnum.MEDIUM:
+        return 'MEDIUM';
+      case DifficultyEnum.HARD:
+        return 'HARD';
+    }
+  }
 }

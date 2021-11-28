@@ -8,7 +8,7 @@ class AppColors {
   static const Color darkestColor = Color(0xFF262626);
   static const Color darkerColor = Color(0xFF484848);
   static const Color darkColor = Color(0xFF6F6F6F);
-  static const Color grayColor = Color(0xFF9A9A9A);
+  static const Color greyColor = Color(0xFF9A9A9A);
   static const Color lightGrayColor = Color(0xFFC4C4C4);
   static const Color lightestGrayColor = Color(0xFFF3F3F3);
   static const Color whiteColor = Color(0xFFFFFFFF);
@@ -17,4 +17,5 @@ class AppColors {
   static const Color orangeColor = Color(0xFFFF7A00);
   static const Color blueColor = Color(0xFF3772FF);
   static const Color blackWith25Opacity = Color(0x40000000);
+  static const Color greenColor = Color(0xFF5FF46E);
 }

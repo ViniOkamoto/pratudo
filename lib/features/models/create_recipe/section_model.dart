@@ -64,9 +64,8 @@ class SectionModel {
           ? {'Descrição do passo': ValidateEnum.FIELD_EMPTY}
           : {};
 
-  ///TODO ajustar lógica de validação
-  Map<String, Map<String, ValidateEnum>?>? validateSectionField(sectionIndex) {
-    Map<String, ValidateEnum>? errors = {};
+  Map<String, Map<String, ValidateEnum>> validateSectionField(sectionIndex) {
+    Map<String, ValidateEnum> errors = {};
 
     errors.addAll(validateSection);
     errors.addAll(validateTime);
@@ -87,8 +86,10 @@ class SectionModel {
     } else {
       errors.addAll(validateIfHaveAnyStepWithoutDescription);
     }
-    print(errors);
-    return null;
+    if (errors.isNotEmpty) {
+      return {'${sectionIndex + 1}': errors};
+    }
+    return {};
   }
 
   SectionModel copyWith({

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
+import 'package:pratudo/features/models/create_recipe/recipe_info_model.dart';
 import 'package:pratudo/features/models/difficulty_enum.dart';
 import 'package:pratudo/features/models/recipe/recipe_helper_model.dart';
 
@@ -17,6 +18,40 @@ abstract class _RecipeFormStoreBase with Store {
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController chefTipController = TextEditingController();
   final ImagePicker _picker = ImagePicker();
+
+  String getErrors() {
+    String errors = '';
+    if (_isNullOrEmpty(image)) {
+      errors += 'É necessária uma imagem para receita\n';
+    }
+    if (_isNullOrEmpty(recipeName)) {
+      errors += 'Nome da receita não pode ser vazio\n';
+    }
+    if (categories.length == 0) {
+      errors += 'É necessário ao menos uma categoria\n';
+    }
+    if (difficulty == null || _isNullOrEmpty(difficulty!.label)) {
+      errors += 'Dificuldade da receita é necessária\n';
+    }
+
+    return errors;
+  }
+
+  bool _isNullOrEmpty(String? value) {
+    return value == null || value.isEmpty;
+  }
+
+  RecipeInfoModel getRecipeInfo() {
+    return RecipeInfoModel(
+      image: image!,
+      recipeName: recipeName!,
+      description: description,
+      categories: categories,
+      difficulty: difficulty!,
+      portions: portion,
+      chefTip: chefTip,
+    );
+  }
 
   @observable
   String? image;

@@ -38,7 +38,7 @@ class SearchSection extends StatelessWidget {
           ),
         ),
         Spacing(height: 24),
-        IngredientSearchResult(
+        RecipeSearchResult(
           searchStore: _searchStore,
           pageContent: pageContent,
         ),
@@ -47,8 +47,8 @@ class SearchSection extends StatelessWidget {
   }
 }
 
-class IngredientSearchResult extends StatelessWidget {
-  const IngredientSearchResult({
+class RecipeSearchResult extends StatelessWidget {
+  const RecipeSearchResult({
     Key? key,
     required SearchStore searchStore,
     this.recipeType,
@@ -83,7 +83,7 @@ class IngredientSearchResult extends StatelessWidget {
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) {
-                  return Spacing(height: index == 0 ? 0 : 16);
+                  return Spacing(height: 16);
                 },
               ),
             ],

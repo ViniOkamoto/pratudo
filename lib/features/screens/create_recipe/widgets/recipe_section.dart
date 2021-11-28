@@ -3,7 +3,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:pratudo/core/theme/colors.dart';
 import 'package:pratudo/core/theme/typography.dart';
-import 'package:pratudo/core/utils/enums/time_enum.dart';
 import 'package:pratudo/core/utils/size_converter.dart';
 import 'package:pratudo/features/models/create_recipe/recipe_creation_model.dart';
 import 'package:pratudo/features/screens/create_recipe/form_section_store.dart';
@@ -59,8 +58,8 @@ class RecipeSection extends StatelessWidget {
                         Spacing(width: 8),
                         OptionMenu(
                           onTapDelete: () {
-                            _formSectionStore.removeSection(sectionIndex);
                             FocusScope.of(context).requestFocus(FocusNode());
+                            _formSectionStore.removeSection(sectionIndex);
                           },
                         ),
                       ],
@@ -76,16 +75,15 @@ class RecipeSection extends StatelessWidget {
                         Visibility(
                           visible: _formSectionStore.sections[sectionIndex].time > 0,
                           child: Text(
-                            convertTimeToString(
-                              Time(
-                                  value: _formSectionStore.sections[sectionIndex].time,
-                                  unit: _formSectionStore.sections[sectionIndex].unit!),
-                            ),
-                            style: AppTypo.p4(color: AppColors.grayColor),
+                            Time(
+                              value: _formSectionStore.sections[sectionIndex].time,
+                              unit: _formSectionStore.sections[sectionIndex].unit!,
+                            ).convertTimeToString(),
+                            style: AppTypo.p4(color: AppColors.greyColor),
                           ),
                           replacement: Text(
                             'Sem estimativa',
-                            style: AppTypo.p4(color: AppColors.grayColor),
+                            style: AppTypo.p4(color: AppColors.greyColor),
                           ),
                         ),
                       ],
@@ -187,12 +185,12 @@ class _BottomSheetStepField extends StatelessWidget {
                       _formSectionStore.addStep(sectionIndex, StepEnum.DEFAULT);
                       Navigator.pop(context);
                     },
-                    text: 'Adicionar passo padrão',
+                    text: 'Adicionar passo',
                   ),
                   Spacing(height: 16),
                   AppOutlinedButton(
                     onPressed: () {
-                      _formSectionStore.addStep(sectionIndex, StepEnum.WITHTIME);
+                      _formSectionStore.addStep(sectionIndex, StepEnum.WITH_TIME);
                       Navigator.pop(context);
                     },
                     text: 'Adicionar passo com tempo',
@@ -221,7 +219,15 @@ class AddOption extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         InkWell(
-          onTap: onTap,
+          onTap: () {
+            FocusScopeNode currentFocus = FocusScope.of(context);
+
+            if (!currentFocus.hasPrimaryFocus) {
+              currentFocus.unfocus();
+            }
+
+            onTap();
+          },
           child: Row(
             children: [
               Icon(
@@ -263,7 +269,7 @@ class OptionMenu extends StatelessWidget {
       },
       icon: Icon(
         LineAwesomeIcons.horizontal_ellipsis,
-        color: AppColors.grayColor,
+        color: AppColors.greyColor,
       ),
       iconSize: SizeConverter.fontSize(16),
     );

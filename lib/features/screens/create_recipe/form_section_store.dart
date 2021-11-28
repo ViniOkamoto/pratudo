@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:mobx/mobx.dart';
 import 'package:pratudo/core/utils/enums/time_enum.dart';
+import 'package:pratudo/core/utils/enums/validate_enum.dart';
 import 'package:pratudo/features/models/create_recipe/recipe_creation_model.dart';
 import 'package:pratudo/features/models/create_recipe/section_model.dart';
 
@@ -9,7 +10,6 @@ part 'form_section_store.g.dart';
 class FormSectionStore = _FormSectionStoreBase with _$FormSectionStore;
 
 abstract class _FormSectionStoreBase with Store {
-  @observable
   List<SectionModel> sections = ObservableList();
   //Section controllers
   List<TextEditingController> sectionNameControllers = [];
@@ -34,13 +34,53 @@ abstract class _FormSectionStoreBase with Store {
     return sections.isNotEmpty;
   }
 
-  Map<String, Map<String, String>>? checkIfHaveAnErrorOrAFieldNotCompleted() {
-    Map<String, Map<String, String>>? errors;
+  Map<String, Map<String, ValidateEnum>> _getValidation() {
+    Map<String, Map<String, ValidateEnum>> errors = {};
     for (int i = 0; i < sections.length; i++) {
       SectionModel section = sections[i];
-      section.validateSectionField(i);
+      if (errors.length < 2) {
+        errors.addAll(section.validateSectionField(i));
+      }
     }
     return errors;
+  }
+
+  String? getErrors() {
+    final errors = _getValidation();
+    if (errors.isNotEmpty) {
+      String finalString = '';
+      errors.forEach((key, value) {
+        String section = 'Seção número $key:\n';
+        List<String> fieldsEmpty = [];
+        List<String> fieldsLessThanZero = [];
+
+        value.forEach((key, value) {
+          if (value == ValidateEnum.FIELD_EMPTY) {
+            fieldsEmpty.add(key);
+          }
+          if (value == ValidateEnum.FIELD_LESS_THAN_OR_EQUAL_0) {
+            fieldsLessThanZero.add(key);
+          }
+          if (value == ValidateEnum.INGREDIENT_EMPTY) {
+            section += '${value.validateToString}';
+          }
+          if (value == ValidateEnum.STEP_EMPTY) {
+            section += '${value.validateToString}';
+          }
+        });
+        if (fieldsEmpty.isNotEmpty) {
+          String fields = fieldsEmpty.toString().replaceAll('[', '').replaceAll(']', '');
+          section += '${ValidateEnum.FIELD_EMPTY.validateToString + fields}\n';
+        }
+        if (fieldsLessThanZero.isNotEmpty) {
+          String fields = fieldsLessThanZero.toString().replaceAll('[', '').replaceAll(']', '');
+          section += '${ValidateEnum.FIELD_LESS_THAN_OR_EQUAL_0.validateToString + fields}\n';
+        }
+        finalString += '$section';
+      });
+      return finalString;
+    }
+    return null;
   }
 
   @action
@@ -193,7 +233,7 @@ abstract class _FormSectionStoreBase with Store {
     stepDescriptionControllers[sectionIndex] = [...?stepDescriptionControllers[sectionIndex], TextEditingController()];
     stepErrors[sectionIndex] = [...?stepErrors[sectionIndex], baseError];
     SectionModel section = sections[sectionIndex];
-    if (stepType == StepEnum.WITHTIME) {
+    if (stepType == StepEnum.WITH_TIME) {
       sections[sectionIndex] = section.copyWith(
         steps: [
           ...section.steps,

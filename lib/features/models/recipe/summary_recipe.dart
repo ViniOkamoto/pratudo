@@ -1,4 +1,3 @@
-import 'package:pratudo/core/utils/enums/time_enum.dart';
 import 'package:pratudo/features/models/recipe/owner_recipe.dart';
 import 'package:pratudo/features/models/recipe/preparation_time.dart';
 
@@ -29,8 +28,7 @@ class SummaryRecipe {
     this.formattedIngredients,
   });
 
-  String get preparationTimeToString =>
-      "${preparationTime.value} ${parseStringToEnum(preparationTime.unit)!.parseToStringFront}";
+  String get preparationTimeToString => preparationTime.convertTimeToString(isLongText: true);
 
   String get portions => "$serves ${serves > 1 ? 'porções' : 'porção'}";
 

@@ -52,6 +52,11 @@ class SelectableFieldWithModal extends StatelessWidget {
       return InkWell(
         borderRadius: BorderRadius.circular(10),
         onTap: () async {
+          FocusScopeNode currentFocus = FocusScope.of(context);
+
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
+          }
           await showDialog(
             context: context,
             builder: (context) {

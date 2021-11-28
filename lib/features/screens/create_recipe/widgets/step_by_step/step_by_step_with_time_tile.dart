@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:pratudo/core/theme/colors.dart';
 import 'package:pratudo/core/theme/typography.dart';
-import 'package:pratudo/core/utils/enums/time_enum.dart';
 import 'package:pratudo/core/utils/size_converter.dart';
 import 'package:pratudo/features/models/create_recipe/recipe_creation_model.dart';
 import 'package:pratudo/features/screens/create_recipe/widgets/step_by_step/step_by_step_tile.dart';
@@ -140,13 +139,10 @@ class DurationTextField extends StatelessWidget {
           Visibility(
             visible: value != null && value?.value != 0,
             child: Text(
-              'Tempo de preparo: ${convertTimeToString(
-                value ??
-                    Time(
-                      unit: '',
-                      value: 0,
-                    ),
-              )}',
+              'Tempo de preparo: ${(value ?? Time(
+                    unit: '',
+                    value: 0,
+                  )).convertTimeToString()}',
               style: AppTypo.p5(
                 color: AppColors.blueColor,
               ),

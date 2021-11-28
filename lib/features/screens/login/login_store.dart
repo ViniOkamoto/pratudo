@@ -49,9 +49,8 @@ abstract class _LoginStoreBase with Store {
   Future<bool> login() async {
     isLoading = true;
     final result = await _repository.login(email: email!, password: password!);
-
     return result.fold((l) {
-      FlutterToastHelper.showToast(text: l.errorText);
+      FlutterToastHelper(text: l.errorText);
       isLoading = false;
       return false;
     }, (r) => true);

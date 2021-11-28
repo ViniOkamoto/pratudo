@@ -96,7 +96,7 @@ class _LoginPageState extends State<LoginPage> {
                         textAlign: TextAlign.start,
                         text: TextSpan(
                           text: "Não tem uma conta? ",
-                          style: AppTypo.p3(color: AppColors.grayColor),
+                          style: AppTypo.p3(color: AppColors.greyColor),
                           children: <TextSpan>[
                             TextSpan(
                               text: 'Registre-se!',

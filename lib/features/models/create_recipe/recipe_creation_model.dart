@@ -7,22 +7,18 @@ class RecipeCreationModel {
     required this.images,
     required this.difficulty,
     required this.serves,
-    required this.creationDate,
     required this.chefTips,
     required this.ingredients,
     required this.methodOfPreparation,
-    required this.tags,
     required this.categories,
   });
   late final String name;
   late final List<String> images;
   late final String difficulty;
   late final int serves;
-  late final String creationDate;
   late final String chefTips;
   late final List<Ingredient> ingredients;
   late final MethodOfPreparation methodOfPreparation;
-  late final List<String> tags;
   late final List<String> categories;
 
   RecipeCreationModel.fromJson(Map<String, dynamic> json) {
@@ -30,11 +26,9 @@ class RecipeCreationModel {
     images = List.castFrom<dynamic, String>(json['images']);
     difficulty = json['difficulty'];
     serves = json['serves'];
-    creationDate = json['creationDate'];
     chefTips = json['chefTips'];
     ingredients = List.from(json['ingredients']).map((e) => Ingredient.fromJson(e)).toList();
     methodOfPreparation = MethodOfPreparation.fromJson(json['methodOfPreparation']);
-    tags = List.castFrom<dynamic, String>(json['tags']);
     categories = List.castFrom<dynamic, String>(json['categories']);
   }
 
@@ -44,11 +38,9 @@ class RecipeCreationModel {
     _data['images'] = images;
     _data['difficulty'] = difficulty;
     _data['serves'] = serves;
-    _data['creationDate'] = creationDate;
     _data['chefTips'] = chefTips;
     _data['ingredients'] = ingredients.map((e) => e.toJson()).toList();
     _data['methodOfPreparation'] = methodOfPreparation.toJson();
-    _data['tags'] = tags;
     _data['categories'] = categories;
     return _data;
   }
@@ -86,8 +78,8 @@ class Ingredient {
 }
 
 class Items {
-  late final String? name;
-  late final Portion? portion;
+  late final String name;
+  late final Portion portion;
 
   Items({
     required this.name,
@@ -102,7 +94,7 @@ class Items {
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['name'] = name;
-    _data['portion'] = portion!.toJson();
+    _data['portion'] = portion.toJson();
     return _data;
   }
 
@@ -154,10 +146,10 @@ class MethodOfPreparation {
   MethodOfPreparation({
     required this.steps,
   });
-  late final List<Steps> steps;
+  late final List<Step> steps;
 
   MethodOfPreparation.fromJson(Map<String, dynamic> json) {
-    steps = List.from(json['steps']).map((e) => Steps.fromJson(e)).toList();
+    steps = List.from(json['steps']).map((e) => Step.fromJson(e)).toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -167,30 +159,35 @@ class MethodOfPreparation {
   }
 }
 
-class Steps {
-  Steps({
+class Step {
+  Step({
     required this.step,
     required this.items,
+    required this.time,
   });
   late final String step;
   late final List<StepByStepCreation> items;
+  late final Time time;
 
-  Steps.fromJson(Map<String, dynamic> json) {
+  Step.fromJson(Map<String, dynamic> json) {
     step = json['step'];
     items = List.from(json['items']).map((e) => StepByStepCreation.fromJson(e)).toList();
+    time = Time.fromJson(json['time']);
   }
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['step'] = step;
     _data['items'] = items.map((e) => e.toJson()).toList();
+    _data['time'] = time.toJson();
+
     return _data;
   }
 }
 
 enum StepEnum {
   DEFAULT,
-  WITHTIME,
+  WITH_TIME,
 }
 
 class StepByStepCreation {
@@ -271,5 +268,27 @@ class Time {
     _data['unit'] = unit;
     _data['value'] = value;
     return _data;
+  }
+
+  String convertTimeToString({isLongText = false}) {
+    int value = this.value;
+    int hours = value ~/ 60;
+    int minutes = value % 60;
+    String timeToString = '';
+    if (hours > 0) {
+      if (isLongText) {
+        timeToString = '$hours horas';
+      } else {
+        timeToString = '${hours}h ';
+      }
+    }
+    if (minutes > 0) {
+      if (isLongText) {
+        timeToString = '$timeToString$minutes minutos';
+      } else {
+        timeToString = '$timeToString${minutes}m';
+      }
+    }
+    return timeToString;
   }
 }

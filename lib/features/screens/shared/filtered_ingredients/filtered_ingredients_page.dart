@@ -42,7 +42,7 @@ class _FilteredIngredientsPageState extends State<FilteredIngredientsPage> {
           widget.params.category?.value,
         ),
       ),
-      body: IngredientSearchResult(
+      body: RecipeSearchResult(
         searchStore: _store,
         recipeType: widget.params.pageType,
       ),

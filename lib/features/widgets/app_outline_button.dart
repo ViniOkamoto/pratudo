@@ -40,7 +40,16 @@ class AppOutlinedButton extends StatelessWidget {
                     color: primaryColor,
                   ),
                 ),
-                onPressed: onPressed,
+                onPressed: onPressed != null
+                    ? () {
+                        FocusScopeNode currentFocus = FocusScope.of(context);
+
+                        if (!currentFocus.hasPrimaryFocus) {
+                          currentFocus.unfocus();
+                        }
+                        onPressed!();
+                      }
+                    : null,
                 child: Visibility(
                   visible: !isLoading,
                   child: Row(

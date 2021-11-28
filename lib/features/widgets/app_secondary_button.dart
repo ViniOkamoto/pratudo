@@ -24,7 +24,7 @@ class AppSecondaryButton extends StatelessWidget {
             child: ElevatedButton(
               onPressed: onPressed,
               style: ElevatedButton.styleFrom(
-                primary: AppColors.grayColor,
+                primary: AppColors.greyColor,
               ),
               child: Text(
                 text,

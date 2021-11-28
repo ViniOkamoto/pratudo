@@ -18,43 +18,50 @@ class BaseModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(
-        left: SizeConverter.relativeWidth(16),
-        right: SizeConverter.relativeWidth(16),
-        top: SizeConverter.relativeHeight(16),
-      ),
-      margin: EdgeInsets.symmetric(
-        vertical: 160,
-        horizontal: SizeConverter.relativeWidth(24),
-      ),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(15)),
-      ),
-      child: Material(
-        color: Colors.white,
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _ModalHeader(title: title),
-                        Spacing(height: 16),
-                        body,
-                      ],
+    return Center(
+      child: Container(
+        padding: EdgeInsets.only(
+          left: SizeConverter.relativeWidth(16),
+          right: SizeConverter.relativeWidth(16),
+          top: SizeConverter.relativeHeight(16),
+        ),
+        margin: EdgeInsets.symmetric(
+          vertical: 160,
+          horizontal: SizeConverter.relativeWidth(24),
+        ),
+        constraints: BoxConstraints(
+          maxHeight: 340,
+        ),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(15)),
+        ),
+        child: Material(
+          color: Colors.white,
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          _ModalHeader(title: title),
+                          Spacing(height: 16),
+                          body,
+                        ],
+                      ),
                     ),
-                  ),
-                  bottom ?? Container(),
-                ],
+                    bottom ?? Container(),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

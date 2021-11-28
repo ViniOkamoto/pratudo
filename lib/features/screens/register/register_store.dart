@@ -135,7 +135,7 @@ abstract class _RegisterStoreBase with Store {
 
     return result.fold(
       (l) {
-        FlutterToastHelper.showToast(text: l.errorText);
+        FlutterToastHelper(text: l.errorText);
         isLoading = false;
         return false;
       },

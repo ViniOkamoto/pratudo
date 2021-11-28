@@ -1,5 +1,3 @@
-import 'package:pratudo/features/models/create_recipe/recipe_creation_model.dart';
-
 enum TimeEnum {
   HOURS,
   MINUTES,
@@ -56,18 +54,4 @@ TimeEnum? parseStringToEnum(String enumString) {
     case 'SECONDS':
       return TimeEnum.SECONDS;
   }
-}
-
-String convertTimeToString(Time time) {
-  int value = time.value;
-  int hours = value ~/ 60;
-  int minutes = value % 60;
-  String timeToString = '';
-  if (hours > 0) {
-    timeToString = '${hours}h';
-  }
-  if (minutes > 0) {
-    timeToString = '$timeToString${minutes}m';
-  }
-  return timeToString;
 }

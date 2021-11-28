@@ -1,4 +1,3 @@
-import 'package:easy_rich_text/easy_rich_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
@@ -8,6 +7,7 @@ import 'package:pratudo/core/utils/image_helper.dart';
 import 'package:pratudo/core/utils/size_converter.dart';
 import 'package:pratudo/features/models/recipe/summary_recipe.dart';
 import 'package:pratudo/features/screens/shared/filtered_ingredients/filtered_ingredients_enum.dart';
+import 'package:pratudo/features/widgets/custom_text.dart';
 import 'package:pratudo/features/widgets/spacing.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -119,23 +119,7 @@ class _RecipeTileState extends State<RecipeTile> with AutomaticKeepAliveClientMi
                           ],
                         ),
                         if (widget.recipeType == FilteredIngredientsEnum.INGREDIENTS) ...[
-                          EasyRichText(
-                            widget.recipe.formattedIngredients!,
-                            defaultStyle: AppTypo.p5(color: AppColors.darkColor),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            patternList: [
-                              EasyRichTextPattern(
-                                targetString: '(\\*)(.*?)(\\*)',
-                                matchBuilder: (BuildContext context, RegExpMatch? match) {
-                                  return TextSpan(
-                                    text: match![0]?.replaceAll('*', ''),
-                                    style: TextStyle(color: AppColors.highlightColor),
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
+                          CustomText(text: widget.recipe.formattedIngredients!),
                         ]
                       ],
                     ),

@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:pratudo/core/resources/common_exceptions.dart';
 import 'package:pratudo/core/services/http/http_service.dart';
 import 'package:pratudo/features/datasources/recipe/recipe_query_params.dart';
+import 'package:pratudo/features/models/create_recipe/recipe_creation_model.dart';
+import 'package:pratudo/features/models/gamification/experience_gained_model.dart';
 import 'package:pratudo/features/models/recipe/summary_recipe.dart';
 
 class RecipeDatasource {
@@ -30,6 +32,23 @@ class RecipeDatasource {
     } on DioError catch (e) {
       throw ServerException(
           errorText: e.response?.data['message'] != null ? e.response?.data['message'] : "Erro Inesperado");
+    } catch (e) {
+      throw ServerException(errorText: e.toString());
+    }
+  }
+
+  Future<ExperienceGainedModel> createRecipe(RecipeCreationModel recipeCreation) async {
+    try {
+      final response = await _httpService.post(
+        '/recipe',
+        data: recipeCreation.toJson(),
+      );
+      return ExperienceGainedModel.fromJson(response.data);
+    } on DioError catch (e) {
+      print(e.response?.data);
+      final Map<dynamic, dynamic>? response = e.response?.data;
+      throw ServerException(
+          errorText: response?.containsKey('message') ?? false ? response!['message'] : "Erro Inesperado");
     } catch (e) {
       throw ServerException(errorText: e.toString());
     }

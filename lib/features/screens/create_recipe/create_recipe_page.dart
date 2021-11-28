@@ -4,16 +4,21 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:pratudo/core/services/di/service_locator.dart';
 import 'package:pratudo/core/theme/colors.dart';
 import 'package:pratudo/core/theme/typography.dart';
+import 'package:pratudo/core/utils/enums/validate_enum.dart';
+import 'package:pratudo/core/utils/flutter_toast_helper.dart';
 import 'package:pratudo/core/utils/image_helper.dart';
 import 'package:pratudo/core/utils/size_converter.dart';
+import 'package:pratudo/features/models/create_recipe/recipe_info_model.dart';
 import 'package:pratudo/features/models/difficulty_enum.dart';
 import 'package:pratudo/features/models/recipe/recipe_helper_model.dart';
+import 'package:pratudo/features/screens/create_recipe/create_recipe_store.dart';
 import 'package:pratudo/features/screens/create_recipe/form_section_store.dart';
 import 'package:pratudo/features/screens/create_recipe/recipe_form_store.dart';
 import 'package:pratudo/features/screens/create_recipe/widgets/difficulty_dropdown.dart';
 import 'package:pratudo/features/screens/create_recipe/widgets/multi_select_form_field.dart';
 import 'package:pratudo/features/screens/create_recipe/widgets/portions_field.dart';
 import 'package:pratudo/features/screens/create_recipe/widgets/recipe_section.dart';
+import 'package:pratudo/features/screens/main/main_page.dart';
 import 'package:pratudo/features/stores/shared/recipe_helpers_store.dart';
 import 'package:pratudo/features/widgets/app_icon_button.dart';
 import 'package:pratudo/features/widgets/app_outline_button.dart';
@@ -34,6 +39,7 @@ class _CreateRecipePageState extends State<CreateRecipePage> {
   final RecipeHelpersStore _recipeHelpersStore = serviceLocator<RecipeHelpersStore>();
   final RecipeFormStore _recipeFormStore = serviceLocator<RecipeFormStore>();
   final FormSectionStore _formSectionStore = serviceLocator<FormSectionStore>();
+  final CreateRecipeStore _createRecipeStore = serviceLocator<CreateRecipeStore>();
 
   @override
   void initState() {
@@ -56,95 +62,123 @@ class _CreateRecipePageState extends State<CreateRecipePage> {
           ),
           Spacing(width: 8),
           AppSmallButton(
-            onPressed: () {
-              _formSectionStore.checkIfHaveAnErrorOrAFieldNotCompleted();
+            onPressed: () async {
+              final errors = _validateField();
+              if (errors.isEmpty) {
+                final RecipeInfoModel recipe = _recipeFormStore.getRecipeInfo();
+                final isSucceeded = await _createRecipeStore.submitRecipe(recipe, _formSectionStore.sections);
+                if (isSucceeded != null) {
+                  await showDialog(
+                    context: context,
+                    builder: (context) {
+                      return GamificationNotifierModal(
+                        experienceGainedModel: isSucceeded,
+                      );
+                    },
+                  );
+                  Navigator.pop(context);
+                }
+              }
             },
             text: 'Publicar',
           ),
         ],
       ),
-      body: Observer(
-        builder: (context) {
-          return ListView(
+      body: ListView(
+        padding: EdgeInsets.symmetric(
+          vertical: SizeConverter.relativeHeight(16),
+        ),
+        children: [
+          Padding(
             padding: EdgeInsets.symmetric(
-              vertical: SizeConverter.relativeHeight(16),
+              horizontal: SizeConverter.relativeWidth(24),
             ),
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: SizeConverter.relativeWidth(24),
-                ),
-                child: Column(
-                  children: [
-                    ImageField(
+            child: Column(
+              children: [
+                Observer(
+                  builder: (context) {
+                    return ImageField(
                       image: _recipeFormStore.image,
                       onTap: () => _recipeFormStore.setImage(),
                       onTapDelete: () => _recipeFormStore.removeImage(),
-                    ),
-                    Spacing(height: 24),
-                    AppTextField(
-                      labelText: 'Nome da receita',
-                      onChanged: _recipeFormStore.setRecipeName,
-                      textEditingController: _recipeFormStore.recipeNameController,
-                      errorText: _recipeFormStore.errorRecipeName,
-                      hintText: 'Insira nome da receita',
-                    ),
-                    Spacing(height: 16),
-                    AppTextField(
-                      isOptional: true,
-                      labelText: 'Descrição da receita',
-                      onChanged: _recipeFormStore.setDescription,
-                      textEditingController: _recipeFormStore.descriptionController,
-                      hintText: 'Insira uma descrição da receita',
-                    ),
-                    Spacing(height: 16),
-                    MultiSelectFormField<RecipeHelperModel>(
-                      label: 'Categoria da receita',
-                      onConfirm: _recipeFormStore.setCategory,
-                      builderElement: _recipeHelpersStore.categories
-                          .map((e) => CustomMultiSelectItem(
-                                label: e.value,
-                                value: e,
-                              ))
-                          .toList(),
-                      itemsList: _recipeHelpersStore.categories,
-                      onTapChipSelected: _recipeFormStore.unsetCategory,
-                      selectedItems: _recipeFormStore.categories,
-                      hintText: 'Selecione as categorias',
-                      bottomSheetTitle: 'Categorias de comida',
-                    ),
-                    Spacing(height: 16),
-                    DifficultyDropdown(
-                      difficuties: difficultyList,
-                      onChanged: _recipeFormStore.setDifficulty,
-                      value: _recipeFormStore.difficulty,
-                    ),
-                    Spacing(height: 24),
-                    PortionsField(
-                      onTapLess: _recipeFormStore.onTapLess,
-                      onTapMore: _recipeFormStore.onTapMore,
-                      portionValue: _recipeFormStore.portion,
-                    ),
-                    Spacing(height: 24),
-                    AppTextField(
-                      labelText: 'Dica da receita',
-                      onChanged: _recipeFormStore.setChefTip,
-                      textEditingController: _recipeFormStore.chefTipController,
-                      isBigText: true,
-                      hintText: 'Insira alguma dica',
-                      isOptional: true,
-                    ),
-                    Spacing(height: 24),
-                    if (_formSectionStore.sections.isEmpty)
-                      AppOutlinedButton(
-                        onPressed: _formSectionStore.addSection,
-                        text: 'Adicionar Seção',
-                        primaryColor: AppColors.blueColor,
-                      ),
-                  ],
+                    );
+                  },
                 ),
-              ),
-              ListView.builder(
+                Observer(
+                  builder: (context) {
+                    return Column(
+                      children: [
+                        Spacing(height: 24),
+                        AppTextField(
+                          labelText: 'Nome da receita',
+                          onChanged: _recipeFormStore.setRecipeName,
+                          textEditingController: _recipeFormStore.recipeNameController,
+                          errorText: _recipeFormStore.errorRecipeName,
+                          hintText: 'Insira nome da receita',
+                        ),
+                        Spacing(height: 16),
+                        AppTextField(
+                          isOptional: true,
+                          labelText: 'Descrição da receita',
+                          isBigText: true,
+                          onChanged: _recipeFormStore.setDescription,
+                          textEditingController: _recipeFormStore.descriptionController,
+                          hintText: 'Insira uma descrição da receita',
+                        ),
+                        Spacing(height: 16),
+                        MultiSelectFormField<RecipeHelperModel>(
+                          label: 'Categoria da receita',
+                          onConfirm: _recipeFormStore.setCategory,
+                          builderElement: _recipeHelpersStore.categories
+                              .map((e) => CustomMultiSelectItem(
+                                    label: e.value,
+                                    value: e,
+                                  ))
+                              .toList(),
+                          itemsList: _recipeHelpersStore.categories,
+                          onTapChipSelected: _recipeFormStore.unsetCategory,
+                          selectedItems: _recipeFormStore.categories,
+                          hintText: 'Selecione as categorias',
+                          bottomSheetTitle: 'Categorias de comida',
+                        ),
+                        Spacing(height: 16),
+                        DifficultyDropdown(
+                          difficuties: difficultyList,
+                          onChanged: _recipeFormStore.setDifficulty,
+                          value: _recipeFormStore.difficulty,
+                        ),
+                        Spacing(height: 24),
+                        PortionsField(
+                          onTapLess: _recipeFormStore.onTapLess,
+                          onTapMore: _recipeFormStore.onTapMore,
+                          portionValue: _recipeFormStore.portion,
+                        ),
+                        Spacing(height: 24),
+                        AppTextField(
+                          labelText: 'Dica da receita',
+                          onChanged: _recipeFormStore.setChefTip,
+                          textEditingController: _recipeFormStore.chefTipController,
+                          isBigText: true,
+                          hintText: 'Insira alguma dica',
+                          isOptional: true,
+                        ),
+                        Spacing(height: 24),
+                        if (_formSectionStore.sections.isEmpty)
+                          AppOutlinedButton(
+                            onPressed: _formSectionStore.addSection,
+                            text: 'Adicionar Seção',
+                            primaryColor: AppColors.blueColor,
+                          ),
+                      ],
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+          Observer(
+            builder: (context) {
+              return ListView.builder(
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
@@ -160,12 +194,25 @@ class _CreateRecipePageState extends State<CreateRecipePage> {
                   );
                 },
                 itemCount: _formSectionStore.sections.length,
-              ),
-            ],
-          );
-        },
+              );
+            },
+          ),
+        ],
       ),
     );
+  }
+
+  String _validateField() {
+    String errors = _recipeFormStore.getErrors();
+    if (_formSectionStore.checkIfHaveASection()) {
+      errors += _formSectionStore.getErrors() ?? '';
+    } else {
+      errors += ValidateEnum.SECTIONS_EMPTY.validateToString;
+    }
+    if (errors.isNotEmpty) {
+      FlutterToastHelper.failToast(text: errors);
+    }
+    return errors;
   }
 }
 
@@ -257,7 +304,7 @@ class ImageField extends StatelessWidget {
         ),
         Spacing(height: 8),
         Text(
-          'Dica: Tente centralizar bem a foto da sua receita para que fique melhor posicionada na caixa acima',
+          'Dica: Para uma melhor foto, posicione sua câmera na direção horizontal e centralize sua receita na imagem',
           style: AppTypo.p5(color: AppColors.blueColor),
         ),
       ],

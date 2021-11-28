@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:pratudo/core/theme/colors.dart';
 import 'package:pratudo/core/theme/typography.dart';
-import 'package:pratudo/core/utils/enums/time_enum.dart';
 import 'package:pratudo/core/utils/image_helper.dart';
 import 'package:pratudo/core/utils/size_converter.dart';
 import 'package:pratudo/features/models/recipe/preparation_time.dart';
@@ -169,8 +168,7 @@ class _PreparationHeader extends StatelessWidget {
             ),
             Spacing(width: 4),
             Text(
-              "${preparationTime.value} "
-              "${parseStringToEnum(preparationTime.unit)!.parseToStringFront}",
+              preparationTime.convertTimeToString(),
               style: AppTypo.p5(color: AppColors.whiteColor),
             ),
           ],
