@@ -163,7 +163,7 @@ class _IngredientCircle extends StatelessWidget {
             ImageHelper.convertBase64ToImage(widget.recipe.images.first),
           ),
           placeholder: MemoryImage(kTransparentImage),
-          fit: BoxFit.contain,
+          fit: BoxFit.cover,
         ),
       ),
     );
