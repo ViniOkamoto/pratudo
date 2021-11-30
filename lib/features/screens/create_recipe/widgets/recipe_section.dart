@@ -4,7 +4,8 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:pratudo/core/theme/colors.dart';
 import 'package:pratudo/core/theme/typography.dart';
 import 'package:pratudo/core/utils/size_converter.dart';
-import 'package:pratudo/features/models/create_recipe/recipe_creation_model.dart';
+import 'package:pratudo/features/models/recipe/step_model.dart';
+import 'package:pratudo/features/models/time_model.dart';
 import 'package:pratudo/features/screens/create_recipe/form_section_store.dart';
 import 'package:pratudo/features/screens/create_recipe/widgets/ingredients_section.dart';
 import 'package:pratudo/features/screens/create_recipe/widgets/step_by_step/step_by_step_section.dart';
@@ -46,11 +47,15 @@ class RecipeSection extends StatelessWidget {
                         Flexible(
                           child: Container(
                             child: OutlinedTextField(
-                              hintText: 'Insira um título: "Para Massa", "Para cobertura"',
-                              onChanged: (value) => _formSectionStore.setSectionName(value, sectionIndex),
-                              controller: _formSectionStore.sectionNameControllers[sectionIndex],
+                              hintText:
+                                  'Insira um título: "Para Massa", "Para cobertura"',
+                              onChanged: (value) => _formSectionStore
+                                  .setSectionName(value, sectionIndex),
+                              controller: _formSectionStore
+                                  .sectionNameControllers[sectionIndex],
                               textInputAction: TextInputAction.done,
-                              errorText: _formSectionStore.sectionNameErrors[sectionIndex]['error'],
+                              errorText: _formSectionStore
+                                  .sectionNameErrors[sectionIndex]['error'],
                               isBigTextField: true,
                             ),
                           ),
@@ -73,11 +78,14 @@ class RecipeSection extends StatelessWidget {
                           style: AppTypo.p3(color: AppColors.darkColor),
                         ),
                         Visibility(
-                          visible: _formSectionStore.sections[sectionIndex].time > 0,
+                          visible:
+                              _formSectionStore.sections[sectionIndex].time > 0,
                           child: Text(
-                            Time(
-                              value: _formSectionStore.sections[sectionIndex].time,
-                              unit: _formSectionStore.sections[sectionIndex].unit!,
+                            TimeModel(
+                              value:
+                                  _formSectionStore.sections[sectionIndex].time,
+                              unit: _formSectionStore
+                                  .sections[sectionIndex].unit!,
                             ).convertTimeToString(),
                             style: AppTypo.p4(color: AppColors.greyColor),
                           ),
@@ -93,27 +101,36 @@ class RecipeSection extends StatelessWidget {
                       sectionIndex: sectionIndex,
                       recipeHelpersStore: _recipeHelpersStore,
                       formSectionStore: _formSectionStore,
-                      ingredients: _formSectionStore.sections[sectionIndex].ingredients,
-                      ingredientNameControllers: _formSectionStore.ingredientNameControllers[sectionIndex],
-                      quantityControllers: _formSectionStore.quantityControllers[sectionIndex],
+                      ingredients:
+                          _formSectionStore.sections[sectionIndex].ingredients,
+                      ingredientNameControllers: _formSectionStore
+                          .ingredientNameControllers[sectionIndex],
+                      quantityControllers:
+                          _formSectionStore.quantityControllers[sectionIndex],
                       onTapDelete: _formSectionStore.removeIngredient,
-                      onTapAdd: () => _formSectionStore.addIngredient(sectionIndex),
-                      onChangedIngredientName: _formSectionStore.setIngredientName,
-                      onChangedIngredientQuantity: _formSectionStore.setIngredientQuantity,
+                      onTapAdd: () =>
+                          _formSectionStore.addIngredient(sectionIndex),
+                      onChangedIngredientName:
+                          _formSectionStore.setIngredientName,
+                      onChangedIngredientQuantity:
+                          _formSectionStore.setIngredientQuantity,
                     ),
                     Spacing(height: 24),
                     StepByStepSection(
                       sectionIndex: sectionIndex,
                       steps: _formSectionStore.sections[sectionIndex].steps,
-                      controllers: _formSectionStore.stepDescriptionControllers[sectionIndex],
+                      controllers: _formSectionStore
+                          .stepDescriptionControllers[sectionIndex],
                       reorderStep: _formSectionStore.reorderStep,
                       onTapAdd: () => buildShowModalBottomSheet(context),
                       onTapDelete: _formSectionStore.removeStep,
-                      onChangedStepDescription: _formSectionStore.setStepDescription,
+                      onChangedStepDescription:
+                          _formSectionStore.setStepDescription,
                       onChangedTime: _formSectionStore.setStepTime,
                     ),
                     Spacing(height: 24),
-                    if (_formSectionStore.sections.length == (sectionIndex + 1)) ...[
+                    if (_formSectionStore.sections.length ==
+                        (sectionIndex + 1)) ...[
                       AppOutlinedButton(
                         onPressed: _formSectionStore.addSection,
                         text: 'Adicionar Seção',
@@ -190,7 +207,8 @@ class _BottomSheetStepField extends StatelessWidget {
                   Spacing(height: 16),
                   AppOutlinedButton(
                     onPressed: () {
-                      _formSectionStore.addStep(sectionIndex, StepEnum.WITH_TIME);
+                      _formSectionStore.addStep(
+                          sectionIndex, StepEnum.WITH_TIME);
                       Navigator.pop(context);
                     },
                     text: 'Adicionar passo com tempo',

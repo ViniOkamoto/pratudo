@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pratudo/core/theme/colors.dart';
 import 'package:pratudo/core/theme/typography.dart';
-import 'package:pratudo/features/models/create_recipe/recipe_creation_model.dart';
+import 'package:pratudo/features/models/recipe/step_model.dart';
 import 'package:pratudo/features/screens/create_recipe/widgets/recipe_section.dart';
 import 'package:pratudo/features/screens/create_recipe/widgets/step_by_step/step_by_step_tile.dart';
 import 'package:pratudo/features/screens/create_recipe/widgets/step_by_step/step_by_step_with_time_tile.dart';
@@ -58,12 +58,14 @@ class _StepByStepSectionState extends State<StepByStepSection> {
                         if (widget.steps[index] is StepByStepWithTimeCreation) {
                           return StepByStepWithTimeTile(
                             key: ValueKey(widget.steps[index].key),
-                            step: widget.steps[index] as StepByStepWithTimeCreation,
+                            step: widget.steps[index]
+                                as StepByStepWithTimeCreation,
                             onTapDelete: () => widget.onTapDelete(
                               widget.sectionIndex,
                               index,
                             ),
-                            onChanged: (value) => widget.onChangedStepDescription(
+                            onChanged: (value) =>
+                                widget.onChangedStepDescription(
                               value,
                               widget.sectionIndex,
                               index,
@@ -73,7 +75,9 @@ class _StepByStepSectionState extends State<StepByStepSection> {
                               widget.sectionIndex,
                               index,
                             ),
-                            time: (widget.steps[index] as StepByStepWithTimeCreation).time,
+                            time: (widget.steps[index]
+                                    as StepByStepWithTimeCreation)
+                                .time,
                             textEditingController: widget.controllers![index],
                             index: index,
                           );

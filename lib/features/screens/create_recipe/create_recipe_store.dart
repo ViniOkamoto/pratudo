@@ -6,6 +6,11 @@ import 'package:pratudo/features/models/create_recipe/recipe_info_model.dart';
 import 'package:pratudo/features/models/create_recipe/section_model.dart';
 import 'package:pratudo/features/models/difficulty_enum.dart';
 import 'package:pratudo/features/models/gamification/experience_gained_model.dart';
+import 'package:pratudo/features/models/recipe/ingredient_model.dart';
+import 'package:pratudo/features/models/recipe/items_model.dart';
+import 'package:pratudo/features/models/recipe/method_of_preparation_model.dart';
+import 'package:pratudo/features/models/recipe/step_model.dart';
+import 'package:pratudo/features/models/time_model.dart';
 import 'package:pratudo/features/repositories/recipe_repository.dart';
 import 'package:pratudo/features/stores/shared/gamification_observer.dart';
 
@@ -19,8 +24,10 @@ abstract class _CreateRecipeStoreBase with Store {
 
   _CreateRecipeStoreBase(this._gamificationObserver, this._repository);
 
-  Future<ExperienceGainedModel?> submitRecipe(RecipeInfoModel recipe, List<SectionModel> recipeSections) async {
-    final RecipeCreationModel recipeCreation = serializeRecipeCreationModel(recipe, recipeSections);
+  Future<ExperienceGainedModel?> submitRecipe(
+      RecipeInfoModel recipe, List<SectionModel> recipeSections) async {
+    final RecipeCreationModel recipeCreation =
+        serializeRecipeCreationModel(recipe, recipeSections);
 
     final result = await LoadingOverlay.of().during(
       _gamificationObserver.callWithGamificationResponse(
@@ -37,26 +44,27 @@ abstract class _CreateRecipeStoreBase with Store {
     );
   }
 
-  RecipeCreationModel serializeRecipeCreationModel(RecipeInfoModel recipe, List<SectionModel> recipeSections) {
+  RecipeCreationModel serializeRecipeCreationModel(
+      RecipeInfoModel recipe, List<SectionModel> recipeSections) {
     List<String> categories = recipe.categories.map((e) => e.key).toList();
-    List<Ingredient> ingredients = [];
-    List<Step> steps = [];
+    List<IngredientModel> ingredients = [];
+    List<StepModel> steps = [];
     recipeSections.forEach(
       (section) {
-        final step = Step(
+        final step = StepModel(
           step: section.sectionName!,
-          time: Time(
+          time: TimeModel(
             value: section.time,
             unit: section.unit!,
           ),
           items: section.steps,
         );
         steps.add(step);
-        final ingredient = Ingredient(
+        final ingredient = IngredientModel(
           step: section.sectionName,
           items: section.ingredients
               .map(
-                (e) => Items(
+                (e) => ItemsModel(
                   name: e.name!,
                   portion: e.portion!,
                 ),
@@ -74,7 +82,7 @@ abstract class _CreateRecipeStoreBase with Store {
       chefTips: recipe.chefTip ?? '',
       categories: categories,
       ingredients: ingredients,
-      methodOfPreparation: MethodOfPreparation(
+      methodOfPreparation: MethodOfPreparationModel(
         steps: steps,
       ),
     );

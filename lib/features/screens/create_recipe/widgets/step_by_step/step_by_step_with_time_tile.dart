@@ -4,7 +4,8 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:pratudo/core/theme/colors.dart';
 import 'package:pratudo/core/theme/typography.dart';
 import 'package:pratudo/core/utils/size_converter.dart';
-import 'package:pratudo/features/models/create_recipe/recipe_creation_model.dart';
+import 'package:pratudo/features/models/recipe/step_model.dart';
+import 'package:pratudo/features/models/time_model.dart';
 import 'package:pratudo/features/screens/create_recipe/widgets/step_by_step/step_by_step_tile.dart';
 import 'package:pratudo/features/widgets/app_text_field.dart';
 import 'package:pratudo/features/widgets/spacing.dart';
@@ -16,7 +17,7 @@ class StepByStepWithTimeTile extends StatefulWidget {
   final TextEditingController textEditingController;
   final ValueChanged onChanged;
   final Function(Duration) onChangedTime;
-  final Time? time;
+  final TimeModel? time;
 
   StepByStepWithTimeTile({
     Key? key,
@@ -94,7 +95,7 @@ class DurationTextField extends StatelessWidget {
   final TextEditingController textEditingController;
   final ValueChanged onChanged;
   final Function(Duration) onChangedTime;
-  final Time? value;
+  final TimeModel? value;
 
   @override
   Widget build(BuildContext context) {
@@ -139,7 +140,7 @@ class DurationTextField extends StatelessWidget {
           Visibility(
             visible: value != null && value?.value != 0,
             child: Text(
-              'Tempo de preparo: ${(value ?? Time(
+              'Tempo de preparo: ${(value ?? TimeModel(
                     unit: '',
                     value: 0,
                   )).convertTimeToString()}',

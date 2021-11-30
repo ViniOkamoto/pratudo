@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:mobx/mobx.dart';
 import 'package:pratudo/core/utils/enums/time_enum.dart';
 import 'package:pratudo/core/utils/enums/validate_enum.dart';
-import 'package:pratudo/features/models/create_recipe/recipe_creation_model.dart';
+import 'package:pratudo/features/models/recipe/portion_model.dart';
+import 'package:pratudo/features/models/recipe/step_model.dart';
 
 class SectionModel {
   late final Key key;
@@ -26,32 +27,47 @@ class SectionModel {
   }) : this.unit = TimeEnum.MINUTES.parseToString;
 
   //Section base validators
-  Map<String, ValidateEnum> get validateTime =>
-      time > 0 ? {} : {'Tempo da seção': ValidateEnum.FIELD_LESS_THAN_OR_EQUAL_0};
+  Map<String, ValidateEnum> get validateTime => time > 0
+      ? {}
+      : {'Tempo da seção': ValidateEnum.FIELD_LESS_THAN_OR_EQUAL_0};
 
   Map<String, ValidateEnum> get validateSection =>
-      sectionName != null && sectionName!.isNotEmpty ? {} : {'Nome da seção': ValidateEnum.FIELD_EMPTY};
+      sectionName != null && sectionName!.isNotEmpty
+          ? {}
+          : {'Nome da seção': ValidateEnum.FIELD_EMPTY};
 
   // Ingredient validators
   Map<String, ValidateEnum> get validateIfHaveAnyIngredient =>
-      ingredients.isNotEmpty ? {} : {'Ingrediente da seção': ValidateEnum.INGREDIENT_EMPTY};
+      ingredients.isNotEmpty
+          ? {}
+          : {'Ingrediente da seção': ValidateEnum.INGREDIENT_EMPTY};
 
   Map<String, ValidateEnum> get validateIfHaveAnyIngredientWithoutName =>
-      ingredients.any((element) => element.name == null || (element.name != null && element.name!.isEmpty))
+      ingredients.any((element) =>
+              element.name == null ||
+              (element.name != null && element.name!.isEmpty))
           ? {'Nome do ingrediente': ValidateEnum.FIELD_EMPTY}
           : {};
 
   Map<String, ValidateEnum> get validateIfHaveAnyIngredientWithoutPortion =>
-      ingredients.any((element) => element.portion == null) ? {'Porção do ingrediente': ValidateEnum.FIELD_EMPTY} : {};
+      ingredients.any((element) => element.portion == null)
+          ? {'Porção do ingrediente': ValidateEnum.FIELD_EMPTY}
+          : {};
 
-  Map<String, ValidateEnum> get validateIfHaveAnyIngredientWithoutPortionQuantity =>
-      ingredients.any((element) => (element.portion != null && element.portion!.value <= 0))
-          ? {'Quantidade do ingrediente': ValidateEnum.FIELD_LESS_THAN_OR_EQUAL_0}
+  Map<String, ValidateEnum>
+      get validateIfHaveAnyIngredientWithoutPortionQuantity => ingredients.any(
+              (element) =>
+                  (element.portion != null && element.portion!.value <= 0))
+          ? {
+              'Quantidade do ingrediente':
+                  ValidateEnum.FIELD_LESS_THAN_OR_EQUAL_0
+            }
           : {};
 
   Map<String, ValidateEnum> get validateIfHaveAnyIngredientWithoutPortionUnit =>
       ingredients.any((element) => (element.portion!.unitOfMeasure == null ||
-              element.portion!.unitOfMeasure != null && element.portion!.unitOfMeasure!.isEmpty))
+              element.portion!.unitOfMeasure != null &&
+                  element.portion!.unitOfMeasure!.isEmpty))
           ? {'Unidade do ingrediente': ValidateEnum.FIELD_LESS_THAN_OR_EQUAL_0}
           : {};
 
@@ -60,7 +76,9 @@ class SectionModel {
       steps.isNotEmpty ? {} : {'Passo da seção': ValidateEnum.STEP_EMPTY};
 
   Map<String, ValidateEnum> get validateIfHaveAnyStepWithoutDescription =>
-      steps.any((element) => element.description == null || element.description != null && element.description!.isEmpty)
+      steps.any((element) =>
+              element.description == null ||
+              element.description != null && element.description!.isEmpty)
           ? {'Descrição do passo': ValidateEnum.FIELD_EMPTY}
           : {};
 
@@ -112,7 +130,7 @@ class FormIngredientModel {
   @observable
   late final String? name;
   @observable
-  late final Portion? portion;
+  late final PortionModel? portion;
 
   FormIngredientModel({
     this.name,
@@ -121,7 +139,7 @@ class FormIngredientModel {
 
   FormIngredientModel.fromJson(Map<String, dynamic> json) {
     name = json['name'];
-    portion = Portion.fromJson(json['portion']);
+    portion = PortionModel.fromJson(json['portion']);
   }
 
   Map<String, dynamic> toJson() {
@@ -133,7 +151,7 @@ class FormIngredientModel {
 
   FormIngredientModel copyWith({
     String? name,
-    Portion? portion,
+    PortionModel? portion,
   }) {
     return FormIngredientModel(
       name: name ?? this.name,
