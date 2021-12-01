@@ -6,4 +6,5 @@ class Routes {
   static const searchByIngredient = '/searchByIngredient';
   static const filteredIngredients = '/filteredIngredients';
   static const createRecipe = '/createRecipe';
+  static const detailedRecipe = '/detailedRecipe';
 }

@@ -8,6 +8,7 @@ import 'package:pratudo/core/utils/size_converter.dart';
 import 'package:pratudo/features/models/recipe/summary_recipe.dart';
 import 'package:pratudo/features/screens/shared/filtered_ingredients/filtered_ingredients_enum.dart';
 import 'package:pratudo/features/widgets/custom_text.dart';
+import 'package:pratudo/features/widgets/icon_with_text.dart';
 import 'package:pratudo/features/widgets/spacing.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -23,7 +24,8 @@ class RecipeTile extends StatefulWidget {
   _RecipeTileState createState() => _RecipeTileState();
 }
 
-class _RecipeTileState extends State<RecipeTile> with AutomaticKeepAliveClientMixin {
+class _RecipeTileState extends State<RecipeTile>
+    with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -62,13 +64,15 @@ class _RecipeTileState extends State<RecipeTile> with AutomaticKeepAliveClientMi
                                 children: [
                                   Container(
                                     child: Row(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
                                         Flexible(
                                           child: Text(
                                             widget.recipe.name,
                                             overflow: TextOverflow.ellipsis,
-                                            style: AppTypo.h3(color: AppColors.darkestColor),
+                                            style: AppTypo.h3(
+                                                color: AppColors.darkestColor),
                                           ),
                                         ),
                                         Spacing(width: 4),
@@ -81,7 +85,8 @@ class _RecipeTileState extends State<RecipeTile> with AutomaticKeepAliveClientMi
                                             ),
                                             Text(
                                               "(${widget.recipe.rate})",
-                                              style: AppTypo.p5(color: AppColors.yellowColor),
+                                              style: AppTypo.p5(
+                                                  color: AppColors.yellowColor),
                                             ),
                                           ],
                                         ),
@@ -90,13 +95,14 @@ class _RecipeTileState extends State<RecipeTile> with AutomaticKeepAliveClientMi
                                   ),
                                   Row(
                                     children: [
-                                      _RecipeInfo(
+                                      IconWithText(
                                         color: AppColors.blueColor,
                                         icon: LineAwesomeIcons.clock,
-                                        text: widget.recipe.preparationTimeToString,
+                                        text: widget
+                                            .recipe.preparationTimeToString,
                                       ),
                                       Spacing(width: 8),
-                                      _RecipeInfo(
+                                      IconWithText(
                                         color: AppColors.orangeColor,
                                         icon: LineAwesomeIcons.user,
                                         text: widget.recipe.portions,
@@ -105,7 +111,8 @@ class _RecipeTileState extends State<RecipeTile> with AutomaticKeepAliveClientMi
                                   ),
                                   Text(
                                     "Feito por: ${widget.recipe.recipeOwner.name}",
-                                    style: AppTypo.p5(color: AppColors.darkColor),
+                                    style:
+                                        AppTypo.p5(color: AppColors.darkColor),
                                   ),
                                 ],
                               ),
@@ -118,7 +125,8 @@ class _RecipeTileState extends State<RecipeTile> with AutomaticKeepAliveClientMi
                             ),
                           ],
                         ),
-                        if (widget.recipeType == FilteredIngredientsEnum.INGREDIENTS) ...[
+                        if (widget.recipeType ==
+                            FilteredIngredientsEnum.INGREDIENTS) ...[
                           CustomText(text: widget.recipe.formattedIngredients!),
                         ]
                       ],
@@ -166,36 +174,6 @@ class _IngredientCircle extends StatelessWidget {
           fit: BoxFit.cover,
         ),
       ),
-    );
-  }
-}
-
-class _RecipeInfo extends StatelessWidget {
-  final IconData icon;
-  final Color color;
-  final String text;
-
-  const _RecipeInfo({
-    required this.icon,
-    required this.color,
-    required this.text,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Icon(
-          icon,
-          color: color,
-          size: SizeConverter.fontSize(12),
-        ),
-        Spacing(width: 4),
-        Text(
-          text,
-          style: AppTypo.a2(color: color),
-        ),
-      ],
     );
   }
 }

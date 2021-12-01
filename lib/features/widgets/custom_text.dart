@@ -11,6 +11,8 @@ class CustomText extends StatelessWidget {
     this.overflow = TextOverflow.ellipsis,
     this.style,
     this.textAlign = TextAlign.start,
+    this.highlightTextColor = AppColors.highlightColor,
+    this.fontWeight,
   }) : super(key: key);
 
   final String text;
@@ -18,6 +20,8 @@ class CustomText extends StatelessWidget {
   final TextOverflow overflow;
   final TextStyle? style;
   final TextAlign textAlign;
+  final Color highlightTextColor;
+  final FontWeight? fontWeight;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +37,8 @@ class CustomText extends StatelessWidget {
           matchBuilder: (BuildContext context, RegExpMatch? match) {
             return TextSpan(
               text: match![0]?.replaceAll('*', ''),
-              style: TextStyle(color: AppColors.highlightColor),
+              style: TextStyle()
+                  .copyWith(color: highlightTextColor, fontWeight: fontWeight),
             );
           },
         ),

@@ -39,9 +39,19 @@ class DetailedRecipeModel {
   late final List<dynamic> comments;
   late final Null tags;
   late final List<String> categories;
-  late final int rate;
+  late final double rate;
   late final TimeModel totalMethodOfPreparationTime;
   late final bool isNew;
+
+  String get portions => "$serves ${serves > 1 ? 'Porções' : 'Porção'}";
+
+  int get totalIngredients {
+    int total = 0;
+    ingredients.forEach((element) {
+      total += element.items!.length;
+    });
+    return total;
+  }
 
   DetailedRecipeModel.fromJson(Map<String, dynamic> json) {
     id = json['_id'];
@@ -62,7 +72,7 @@ class DetailedRecipeModel {
     comments = List.castFrom<dynamic, dynamic>(json['comments']);
     tags = null;
     categories = List.castFrom<dynamic, String>(json['categories']);
-    rate = json['rate'];
+    rate = json['rate'].toDouble();
     totalMethodOfPreparationTime =
         TimeModel.fromJson(json['totalMethodOfPreparationTime']);
     isNew = json['isNew'];

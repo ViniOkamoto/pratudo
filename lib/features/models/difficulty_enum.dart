@@ -10,6 +10,12 @@ List<DifficultyEnum> difficultyList = [
   DifficultyEnum.HARD,
 ];
 
+Map<String, String> parseStringToEnum = {
+  "EASY": DifficultyEnum.EASY.label,
+  "MEDIUM": DifficultyEnum.MEDIUM.label,
+  "HARD": DifficultyEnum.HARD.label,
+};
+
 extension DifficultyEnumExtension on DifficultyEnum {
   String get label {
     switch (this) {

@@ -17,14 +17,12 @@ class ConditionalWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Visibility(
-      visible: isLoading,
-      child: loadingWidget,
-      replacement: Visibility(
-        visible: hasError,
-        child: errorWidget,
-        replacement: child,
-      ),
-    );
+    if (isLoading) {
+      return loadingWidget;
+    } else if (hasError) {
+      return errorWidget;
+    } else {
+      return child;
+    }
   }
 }

@@ -10,8 +10,14 @@ class PortionModel {
   @observable
   late final String? unitOfMeasure;
 
+  dynamic get quantity {
+    List<String> decimalValue = value.toStringAsPrecision(2).split('.');
+    double decimal = double.parse(decimalValue.last);
+    return decimal > 0 ? value : value.round();
+  }
+
   PortionModel.fromJson(Map<String, dynamic> json) {
-    value = json['value'];
+    value = double.parse(json['value']);
     unitOfMeasure = json['unitOfMeasure'];
   }
 

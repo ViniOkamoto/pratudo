@@ -14,35 +14,7 @@ class CarouselShimmer extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (!withoutFilterRow)
-            SizedBox(
-              height: 25,
-              child: Row(children: [
-                Expanded(
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    children: List.generate(
-                      3,
-                      (index) => Container(
-                        margin: EdgeInsets.symmetric(
-                          horizontal: SizeConverter.relativeWidth(16),
-                        ),
-                        width: 100,
-                        height: 25,
-                        decoration: BoxDecoration(
-                          color: AppColors.whiteColor,
-                          borderRadius: BorderRadius.circular(
-                            15,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ]),
-            ),
+          if (!withoutFilterRow) HorizontalListShimmer(),
           Spacing(height: withoutFilterRow ? 24 : 32),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,

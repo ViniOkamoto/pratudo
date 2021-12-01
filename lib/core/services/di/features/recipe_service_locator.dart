@@ -7,6 +7,7 @@ import 'package:pratudo/features/repositories/recipe_repository.dart';
 import 'package:pratudo/features/screens/create_recipe/create_recipe_store.dart';
 import 'package:pratudo/features/screens/create_recipe/form_section_store.dart';
 import 'package:pratudo/features/screens/create_recipe/recipe_form_store.dart';
+import 'package:pratudo/features/screens/detailed_recipe/detailed_recipe_store.dart';
 import 'package:pratudo/features/stores/shared/gamification_observer.dart';
 
 Future<void> setupRecipeLocator() async {
@@ -37,7 +38,12 @@ Future<void> setupRecipeLocator() async {
     () => FormSectionStore(),
   );
 
+  serviceLocator.registerFactory<DetailedRecipeStore>(
+    () => DetailedRecipeStore(serviceLocator<RecipeRepository>()),
+  );
+
   serviceLocator.registerFactory<CreateRecipeStore>(
-    () => CreateRecipeStore(serviceLocator<GamificationObserver>(), serviceLocator<RecipeRepository>()),
+    () => CreateRecipeStore(serviceLocator<GamificationObserver>(),
+        serviceLocator<RecipeRepository>()),
   );
 }

@@ -25,7 +25,12 @@ class AppTypo {
   static TextStyle h3({
     color = Colors.black,
   }) {
-    return TextStyle(color: color, fontSize: SizeConverter.fontSize(14), fontWeight: FontWeight.w600, height: 1);
+    return TextStyle(
+      color: color,
+      fontSize: SizeConverter.fontSize(14),
+      fontWeight: FontWeight.w600,
+      height: 1,
+    );
   }
 
   static TextStyle p1({
