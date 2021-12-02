@@ -37,8 +37,10 @@ class CustomText extends StatelessWidget {
           matchBuilder: (BuildContext context, RegExpMatch? match) {
             return TextSpan(
               text: match![0]?.replaceAll('*', ''),
-              style: TextStyle()
-                  .copyWith(color: highlightTextColor, fontWeight: fontWeight),
+              style: TextStyle(
+                color: highlightTextColor,
+                fontWeight: fontWeight,
+              ),
             );
           },
         ),

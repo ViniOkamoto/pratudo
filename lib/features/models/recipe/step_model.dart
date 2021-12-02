@@ -18,9 +18,12 @@ class StepModel {
 
   StepModel.fromJson(Map<String, dynamic> json) {
     step = json['step'];
-    items = List.from(json['items'])
-        .map((e) => StepByStepCreation.fromJson(e))
-        .toList();
+    items = List.from(json['items']).map((e) {
+      if (e['time'] != null) {
+        return StepByStepWithTimeCreation.fromJson(e);
+      }
+      return StepByStepCreation.fromJson(e);
+    }).toList();
     time = TimeModel.fromJson(json['time']);
   }
 
@@ -73,7 +76,7 @@ class StepByStepWithTimeCreation extends StepByStepCreation {
   factory StepByStepWithTimeCreation.fromJson(Map<String, dynamic> json) =>
       StepByStepWithTimeCreation(
         time: TimeModel.fromJson(json['time']),
-        description: json['value'],
+        description: json['description'],
       );
 
   @override

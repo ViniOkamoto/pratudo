@@ -1,3 +1,4 @@
+import 'package:pratudo/features/models/recipe/comment_model.dart';
 import 'package:pratudo/features/models/recipe/ingredient_model.dart';
 import 'package:pratudo/features/models/recipe/method_of_preparation_model.dart';
 import 'package:pratudo/features/models/recipe/owner_recipe.dart';
@@ -36,7 +37,7 @@ class DetailedRecipeModel {
   late final bool isUserAllowedToRate;
   late final List<IngredientModel> ingredients;
   late final MethodOfPreparationModel methodOfPreparation;
-  late final List<dynamic> comments;
+  late final List<CommentModel> comments;
   late final Null tags;
   late final List<String> categories;
   late final double rate;
@@ -69,7 +70,9 @@ class DetailedRecipeModel {
         .toList();
     methodOfPreparation =
         MethodOfPreparationModel.fromJson(json['methodOfPreparation']);
-    comments = List.castFrom<dynamic, dynamic>(json['comments']);
+    comments = List.from(json['comments'])
+        .map((e) => CommentModel.fromJson(e))
+        .toList();
     tags = null;
     categories = List.castFrom<dynamic, String>(json['categories']);
     rate = json['rate'].toDouble();

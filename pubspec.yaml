@@ -25,6 +25,7 @@ dependencies:
   duration_picker: ^1.1.0+1
   lottie: ^1.2.1
   image_picker: ^0.8.4+4
+  readmore: ^2.1.0
 
   flutter:
     sdk: flutter
