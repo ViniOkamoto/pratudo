@@ -1,6 +1,15 @@
-class UnitModel {
+import 'package:hive/hive.dart';
+import 'package:pratudo/core/services/hive/hive_names_helper.dart';
+
+part 'unit_model.g.dart';
+
+@HiveType(typeId: HiveNamesHelper.todoBoxName)
+class UnitModel extends HiveObject {
+  @HiveField(HiveNamesHelper.keyUnitField)
   final String key;
+  @HiveField(HiveNamesHelper.abbreviationUnitField)
   final String abbreviation;
+  @HiveField(HiveNamesHelper.translateUnitField)
   final String translate;
 
   UnitModel({

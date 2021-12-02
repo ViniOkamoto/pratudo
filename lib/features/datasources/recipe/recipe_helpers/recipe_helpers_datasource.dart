@@ -16,7 +16,9 @@ class RecipeHelperDatasource {
       return RecipeHelperModel.fromJsonList(response.data);
     } on DioError catch (e) {
       throw ServerException(
-          errorText: e.response?.data['message'] != null ? e.response?.data['message'] : "Erro Inesperado");
+          errorText: e.response?.data['message'] != null
+              ? e.response?.data['message']
+              : "Erro Inesperado");
     } catch (e) {
       throw ServerException(errorText: e.toString());
     }
@@ -29,7 +31,9 @@ class RecipeHelperDatasource {
       return RecipeHelperModel.fromJsonList(response.data);
     } on DioError catch (e) {
       throw ServerException(
-          errorText: e.response?.data['message'] != null ? e.response?.data['message'] : "Erro Inesperado");
+          errorText: e.response?.data['message'] != null
+              ? e.response?.data['message']
+              : "Erro Inesperado");
     } catch (e) {
       throw ServerException(errorText: e.toString());
     }
@@ -38,11 +42,13 @@ class RecipeHelperDatasource {
   Future<List<UnitModel>> getUnitsOfMeasurement() async {
     try {
       final response = await _httpService.get('/recipe/units-of-measure');
-
-      return UnitModel.fromJsonList(response.data);
+      List<UnitModel> units = UnitModel.fromJsonList(response.data);
+      return units;
     } on DioError catch (e) {
       throw ServerException(
-          errorText: e.response?.data['message'] != null ? e.response?.data['message'] : "Erro Inesperado");
+          errorText: e.response?.data['message'] != null
+              ? e.response?.data['message']
+              : "Erro Inesperado");
     } catch (e) {
       throw ServerException(errorText: e.toString());
     }

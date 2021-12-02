@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:pratudo/core/resources/common_exceptions.dart';
-import 'package:pratudo/features/datasources/recipe/recipe_helpers_datasource.dart';
+import 'package:pratudo/features/datasources/recipe/recipe_helpers/recipe_helpers_datasource.dart';
+import 'package:pratudo/features/datasources/recipe/recipe_helpers/recipe_helpers_localsource.dart';
 import 'package:pratudo/features/models/recipe/recipe_helper_model.dart';
 import 'package:pratudo/features/models/unit_model.dart';
 
@@ -12,8 +13,9 @@ abstract class RecipeHelperRepository {
 
 class RecipeHelperRepositoryImpl implements RecipeHelperRepository {
   final RecipeHelperDatasource _datasource;
+  final RecipeHelperLocalSource _localSource;
 
-  RecipeHelperRepositoryImpl(this._datasource);
+  RecipeHelperRepositoryImpl(this._datasource, this._localSource);
 
   @override
   Future<Either<Failure, List<RecipeHelperModel>>> getCategories() async {
@@ -48,7 +50,12 @@ class RecipeHelperRepositoryImpl implements RecipeHelperRepository {
   @override
   Future<Either<Failure, List<UnitModel>>> getUnitsOfMeasurement() async {
     try {
-      return Right(await _datasource.getUnitsOfMeasurement());
+      List<UnitModel> units = _localSource.getUnitsOfMeasurement();
+      if (units.isEmpty) {
+        units = await _datasource.getUnitsOfMeasurement();
+        await _localSource.saveUnitsOfMeasure(units);
+      }
+      return Right(units);
     } on ServerException catch (e) {
       return Left(ServerFailure(errorText: e.errorText));
     } on Exception catch (e) {

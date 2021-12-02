@@ -1,7 +1,9 @@
 import 'package:pratudo/core/services/di/service_locator.dart';
+import 'package:pratudo/core/services/hive/hive_service.dart';
 import 'package:pratudo/core/services/http/http_service.dart';
 import 'package:pratudo/features/datasources/recipe/recipe_datasource.dart';
-import 'package:pratudo/features/datasources/recipe/recipe_helpers_datasource.dart';
+import 'package:pratudo/features/datasources/recipe/recipe_helpers/recipe_helpers_datasource.dart';
+import 'package:pratudo/features/datasources/recipe/recipe_helpers/recipe_helpers_localsource.dart';
 import 'package:pratudo/features/repositories/recipe_helpers_repository.dart';
 import 'package:pratudo/features/repositories/recipe_repository.dart';
 import 'package:pratudo/features/screens/create_recipe/create_recipe_store.dart';
@@ -19,6 +21,10 @@ Future<void> setupRecipeLocator() async {
     () => RecipeHelperDatasource(serviceLocator.get<HttpService>()),
   );
 
+  serviceLocator.registerFactory<RecipeHelperLocalSource>(
+    () => RecipeHelperLocalSource(serviceLocator.get<HiveService>()),
+  );
+
   serviceLocator.registerFactory<RecipeRepository>(
     () => RecipeRepositoryImpl(
       serviceLocator.get<RecipeDatasource>(),
@@ -27,6 +33,7 @@ Future<void> setupRecipeLocator() async {
   serviceLocator.registerFactory<RecipeHelperRepository>(
     () => RecipeHelperRepositoryImpl(
       serviceLocator.get<RecipeHelperDatasource>(),
+      serviceLocator.get<RecipeHelperLocalSource>(),
     ),
   );
 
