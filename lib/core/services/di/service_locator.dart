@@ -1,12 +1,15 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hive/hive.dart';
 import 'package:pratudo/core/services/di/features/authentication_service_locator.dart';
 import 'package:pratudo/core/services/di/features/gamification_service_locator.dart';
 import 'package:pratudo/core/services/di/features/main_service_locator.dart';
 import 'package:pratudo/core/services/di/features/recipe_service_locator.dart';
 import 'package:pratudo/core/services/di/features/search_service_locator.dart';
 import 'package:pratudo/core/services/di/features/stores_service_locator.dart';
+import 'package:pratudo/core/services/hive/boxes.dart';
+import 'package:pratudo/core/services/hive/hive_service.dart';
 import 'package:pratudo/core/services/http/bearer_interceptor.dart';
 import 'package:pratudo/core/services/http/http_service.dart';
 import 'package:pratudo/core/services/storage_service.dart';
@@ -28,8 +31,12 @@ Future<void> setupLocator() async {
 Future<void> _setupServices() async {
   serviceLocator.registerSingleton(Dio());
   serviceLocator.registerFactory(() => FlutterSecureStorage());
+  serviceLocator.registerSingleton<HiveService>(
+    (HiveService(hive: Hive, boxes: Boxes())),
+  );
   serviceLocator.registerFactory(() => NavigationWithoutContext());
-  serviceLocator.registerSingleton(StorageService(secureStorage: serviceLocator<FlutterSecureStorage>()));
+  serviceLocator.registerSingleton(
+      StorageService(secureStorage: serviceLocator<FlutterSecureStorage>()));
   serviceLocator.registerFactory(
     () => BearerInterceptor(
       dio: serviceLocator<Dio>(),
