@@ -3,8 +3,11 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:pratudo/core/services/di/service_locator.dart';
 import 'package:pratudo/core/theme/colors.dart';
+import 'package:pratudo/core/theme/typography.dart';
+import 'package:pratudo/core/utils/date_helper.dart';
 import 'package:pratudo/core/utils/image_helper.dart';
 import 'package:pratudo/core/utils/size_converter.dart';
+import 'package:pratudo/features/models/recipe/comment_model.dart';
 import 'package:pratudo/features/models/recipe/detailed_recipe_model.dart';
 import 'package:pratudo/features/screens/detailed_recipe/detailed_recipe_store.dart';
 import 'package:pratudo/features/screens/detailed_recipe/widgets/chef_tip_section.dart';
@@ -15,10 +18,13 @@ import 'package:pratudo/features/screens/detailed_recipe/widgets/recipe_header.d
 import 'package:pratudo/features/screens/detailed_recipe/widgets/recipe_parameters.dart';
 import 'package:pratudo/features/screens/detailed_recipe/widgets/step_list.dart';
 import 'package:pratudo/features/screens/detailed_recipe/widgets/tag_category_list.dart';
+import 'package:pratudo/features/screens/main/views/profile/widgets/profile_circle.dart';
 import 'package:pratudo/features/stores/shared/recipe_helpers_store.dart';
 import 'package:pratudo/features/widgets/app_default_error.dart';
+import 'package:pratudo/features/widgets/app_field.dart';
 import 'package:pratudo/features/widgets/app_icon_button.dart';
 import 'package:pratudo/features/widgets/app_outline_button.dart';
+import 'package:pratudo/features/widgets/app_primary_button.dart';
 import 'package:pratudo/features/widgets/conditional_widget.dart';
 import 'package:pratudo/features/widgets/loading_shimmer.dart';
 import 'package:pratudo/features/widgets/spacing.dart';
@@ -40,8 +46,13 @@ class _DetailedRecipePageState extends State<DetailedRecipePage> {
   final RecipeHelpersStore helpersStore = serviceLocator<RecipeHelpersStore>();
   @override
   void initState() {
-    store.getRecipe(widget.id);
+    initializePage();
     super.initState();
+  }
+
+  initializePage() async {
+    await helpersStore.getUnitsOfMeasure();
+    store.getRecipe(widget.id);
   }
 
   @override
@@ -196,6 +207,12 @@ class _DetailedRecipePageState extends State<DetailedRecipePage> {
                           ),
                           Spacing(height: 16),
                         ],
+                        AppPrimaryButton(
+                          text: 'Modo passo a passo',
+                          icon: LineAwesomeIcons.mortar_pestle,
+                          onPressed: () {},
+                        ),
+                        Spacing(height: 16),
                         IngredientsListSection(
                           ingredients: recipe.ingredients,
                           unitsOfMeasure: helpersStore.units,
@@ -206,7 +223,9 @@ class _DetailedRecipePageState extends State<DetailedRecipePage> {
                         Spacing(height: 24),
                         ChefTipSection(text: recipe.chefTips),
                         Spacing(height: 32),
-                        CommentsSection()
+                        CommentsSection(
+                          comments: recipe.comments,
+                        )
                       ],
                     ),
                   ),
@@ -223,8 +242,10 @@ class _DetailedRecipePageState extends State<DetailedRecipePage> {
 class CommentsSection extends StatelessWidget {
   const CommentsSection({
     Key? key,
+    required this.comments,
   }) : super(key: key);
 
+  final List<CommentModel> comments;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -234,9 +255,83 @@ class CommentsSection extends StatelessWidget {
           icon: LineAwesomeIcons.sms,
           text: 'Comentários',
         ),
-        // Padding(
-        //   child: ListView.separated(itemBuilder: (context, index) => Container(), separatorBuilder: separatorBuilder, itemCount: itemCount),
-        // ),
+        if (comments.isNotEmpty) Spacing(height: 16),
+        ListView.separated(
+          padding: EdgeInsets.only(left: 8),
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemBuilder: (context, index) {
+            CommentModel comment = comments[index];
+            return Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ProfileCircle(size: 32),
+                Spacing(width: 8),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Spacing(height: 8),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              comment.owner,
+                              style: AppTypo.h3(color: AppColors.darkerColor),
+                            ),
+                          ),
+                          Text(
+                            'em ${DateHelper.formatDateToString(DateTime.parse(comment.creationDate))}',
+                            style: AppTypo.a2(color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                      Spacing(height: 8),
+                      Text(
+                        comment.content,
+                        style: AppTypo.p4(color: AppColors.darkColor),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            );
+          },
+          separatorBuilder: (context, index) => Column(
+            children: [
+              Divider(
+                color: AppColors.greyColor,
+              ),
+            ],
+          ),
+          itemCount: comments.length,
+        ),
+        Spacing(height: 16),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: AppField(
+                focusNode: FocusNode(),
+                onChanged: (value) {},
+                isBigTextField: true,
+                onSubmitted: (text) {
+                  // if (canSubmit) onSubmit();
+                },
+                controller: TextEditingController(),
+                hintText: 'Adicione um comentário',
+              ),
+            ),
+            IconButton(
+              iconSize: SizeConverter.fontSize(24),
+              color: AppColors.highlightColor,
+              icon: Icon(
+                LineAwesomeIcons.paper_plane,
+              ),
+              onPressed: () {},
+            ),
+          ],
+        ),
       ],
     );
   }
