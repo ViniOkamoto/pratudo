@@ -20,7 +20,12 @@ class RecipeHelperRepositoryImpl implements RecipeHelperRepository {
   @override
   Future<Either<Failure, List<RecipeHelperModel>>> getCategories() async {
     try {
-      return Right(await _datasource.getCategories());
+      List<RecipeHelperModel> categories = _localSource.getCategories();
+      if (categories.isEmpty) {
+        categories = await _datasource.getCategories();
+        await _localSource.saveCategories(categories);
+      }
+      return Right(categories);
     } on ServerException catch (e) {
       return Left(ServerFailure(errorText: e.errorText));
     } on Exception catch (e) {

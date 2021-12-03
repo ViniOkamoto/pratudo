@@ -3,13 +3,13 @@ import 'package:pratudo/core/services/hive/hive_names_helper.dart';
 
 part 'unit_model.g.dart';
 
-@HiveType(typeId: HiveNamesHelper.todoBoxName)
+@HiveType(typeId: UnitHiveHelper.type)
 class UnitModel extends HiveObject {
-  @HiveField(HiveNamesHelper.keyUnitField)
+  @HiveField(UnitHiveHelper.keyUnitField)
   final String key;
-  @HiveField(HiveNamesHelper.abbreviationUnitField)
+  @HiveField(UnitHiveHelper.abbreviationUnitField)
   final String abbreviation;
-  @HiveField(HiveNamesHelper.translateUnitField)
+  @HiveField(UnitHiveHelper.translateUnitField)
   final String translate;
 
   UnitModel({

@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:pratudo/core/resources/common_exceptions.dart';
-import 'package:pratudo/features/datasources/recipe/recipe_datasource.dart';
+import 'package:pratudo/features/datasources/recipe/recipe/recipe_datasource.dart';
 import 'package:pratudo/features/datasources/recipe/recipe_query_params.dart';
 import 'package:pratudo/features/models/create_recipe/recipe_creation_model.dart';
 import 'package:pratudo/features/models/gamification/experience_gained_model.dart';
@@ -15,6 +15,9 @@ abstract class RecipeRepository {
   Future<Either<Failure, ExperienceGainedModel>> createRecipe(
       RecipeCreationModel recipeCreation);
   Future<Either<Failure, DetailedRecipeModel>> getRecipeById(String id);
+  // Future<Either<Failure, void>> saveRecipe(DetailedRecipeModel recipeModel);
+  // Future<Either<Failure, void>> deleteRecipe(DetailedRecipeModel recipeModel);
+  // Future<Either<Failure, List<DetailedRecipeModel>>> getSavedRecipes();
 }
 
 class RecipeRepositoryImpl implements RecipeRepository {

@@ -5,6 +5,8 @@ import 'package:path_provider/path_provider.dart' as pathProvider;
 import 'package:pratudo/core/resources/common_exceptions.dart';
 import 'package:pratudo/core/services/hive/boxes.dart';
 import 'package:pratudo/core/services/hive/hive_names_helper.dart';
+import 'package:pratudo/features/models/recipe/cache_recipe_model.dart';
+import 'package:pratudo/features/models/recipe/recipe_helper_model.dart';
 import 'package:pratudo/features/models/unit_model.dart';
 
 class HiveService {
@@ -16,17 +18,27 @@ class HiveService {
     Directory directory = await pathProvider.getApplicationDocumentsDirectory();
     hive
       ..init(directory.path)
+      ..registerAdapter(RecipeHelperModelAdapter())
+      ..registerAdapter(CacheRecipeModelAdapter())
       ..registerAdapter(UnitModelAdapter());
 
-    await hive.openBox<UnitModel>(HiveNamesHelper.pratudoDatabase);
+    await hive.openBox<UnitModel>(UnitHiveHelper.boxName);
+    await hive.openBox<CacheRecipeModel>(RecipeHiveHelper.boxName);
+    await hive.openBox<RecipeHelperModel>(CategoryHiveHelper.boxName);
   }
 
   Future<Box> getBox({required String typeString}) async {
     try {
       Box box;
       switch (typeString) {
-        case HiveNamesHelper.pratudoDatabase:
+        case UnitHiveHelper.boxName:
           box = boxes.getUnitsOfMeasure();
+          break;
+        case RecipeHiveHelper.boxName:
+          box = boxes.getCacheRecipes();
+          break;
+        case CategoryHiveHelper.boxName:
+          box = boxes.getCategories();
           break;
         default:
           throw LocalCacheException(errorText: "Error interno");

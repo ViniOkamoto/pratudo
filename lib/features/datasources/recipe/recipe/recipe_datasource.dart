@@ -20,11 +20,12 @@ class RecipeDatasource {
 
       return SummaryRecipe.fromJsonList(response.data["content"]);
     } on DioError catch (e) {
-      dynamic error = e.response?.data;
+      final Map<dynamic, dynamic>? response = e.response?.data;
       throw ServerException(
-          errorText: !(error is String) && error['message'] != null
-              ? error['message']
-              : "Erro Inesperado");
+        errorText: response?.containsKey('message') ?? false
+            ? response!['message']
+            : "Erro Inesperado",
+      );
     } catch (e) {
       throw ServerException(errorText: e.toString());
     }
@@ -37,10 +38,12 @@ class RecipeDatasource {
           queryParameters: recipeQueryParams.toJson());
       return SummaryRecipe.fromJsonList(response.data["content"]);
     } on DioError catch (e) {
+      final Map<dynamic, dynamic>? response = e.response?.data;
       throw ServerException(
-          errorText: e.response?.data['message'] != null
-              ? e.response?.data['message']
-              : "Erro Inesperado");
+        errorText: response?.containsKey('message') ?? false
+            ? response!['message']
+            : "Erro Inesperado",
+      );
     } catch (e) {
       throw ServerException(errorText: e.toString());
     }

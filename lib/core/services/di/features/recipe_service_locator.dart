@@ -1,7 +1,7 @@
 import 'package:pratudo/core/services/di/service_locator.dart';
 import 'package:pratudo/core/services/hive/hive_service.dart';
 import 'package:pratudo/core/services/http/http_service.dart';
-import 'package:pratudo/features/datasources/recipe/recipe_datasource.dart';
+import 'package:pratudo/features/datasources/recipe/recipe/recipe_datasource.dart';
 import 'package:pratudo/features/datasources/recipe/recipe_helpers/recipe_helpers_datasource.dart';
 import 'package:pratudo/features/datasources/recipe/recipe_helpers/recipe_helpers_localsource.dart';
 import 'package:pratudo/features/repositories/recipe_helpers_repository.dart';
