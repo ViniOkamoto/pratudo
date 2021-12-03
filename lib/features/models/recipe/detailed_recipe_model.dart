@@ -14,16 +14,15 @@ class DetailedRecipeModel {
     required this.serves,
     required this.creationDate,
     required this.chefTips,
-    required this.ratings,
     required this.isUserAllowedToRate,
     required this.ingredients,
     required this.methodOfPreparation,
     required this.comments,
-    this.tags,
     required this.categories,
     required this.rate,
     required this.totalMethodOfPreparationTime,
     required this.isNew,
+    required this.preparations,
   });
   late final String id;
   late final String name;
@@ -33,7 +32,6 @@ class DetailedRecipeModel {
   late final int serves;
   late final String creationDate;
   late final String chefTips;
-  late final List<dynamic> ratings;
   late final bool isUserAllowedToRate;
   late final List<IngredientModel> ingredients;
   late final MethodOfPreparationModel methodOfPreparation;
@@ -43,6 +41,7 @@ class DetailedRecipeModel {
   late final double rate;
   late final TimeModel totalMethodOfPreparationTime;
   late final bool isNew;
+  late final int preparations;
 
   String get portions => "$serves ${serves > 1 ? 'Porções' : 'Porção'}";
 
@@ -63,7 +62,6 @@ class DetailedRecipeModel {
     serves = json['serves'];
     creationDate = json['creationDate'];
     chefTips = json['chefTips'];
-    ratings = List.castFrom<dynamic, dynamic>(json['ratings']);
     isUserAllowedToRate = json['isUserAllowedToRate'];
     ingredients = List.from(json['ingredients'])
         .map((e) => IngredientModel.fromJson(e))
@@ -73,12 +71,12 @@ class DetailedRecipeModel {
     comments = List.from(json['comments'])
         .map((e) => CommentModel.fromJson(e))
         .toList();
-    tags = null;
-    categories = List.castFrom<dynamic, String>(json['categories']);
+    categories = List.castFrom<dynamic, String>(json['categoriesValues']);
     rate = json['rate'].toDouble();
     totalMethodOfPreparationTime =
         TimeModel.fromJson(json['totalMethodOfPreparationTime']);
     isNew = json['isNew'];
+    preparations = json['preparations'];
   }
 
   Map<String, dynamic> toJson() {
@@ -91,7 +89,6 @@ class DetailedRecipeModel {
     _data['serves'] = serves;
     _data['creationDate'] = creationDate;
     _data['chefTips'] = chefTips;
-    _data['ratings'] = ratings;
     _data['isUserAllowedToRate'] = isUserAllowedToRate;
     _data['ingredients'] = ingredients.map((e) => e.toJson()).toList();
     _data['methodOfPreparation'] = methodOfPreparation.toJson();

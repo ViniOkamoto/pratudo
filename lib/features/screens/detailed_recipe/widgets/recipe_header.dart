@@ -3,7 +3,6 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:pratudo/core/theme/colors.dart';
 import 'package:pratudo/core/theme/typography.dart';
 import 'package:pratudo/core/utils/size_converter.dart';
-import 'package:pratudo/features/models/recipe/detailed_recipe_model.dart';
 import 'package:pratudo/features/widgets/custom_text.dart';
 import 'package:pratudo/features/widgets/icon_with_text.dart';
 import 'package:pratudo/features/widgets/spacing.dart';
@@ -11,9 +10,19 @@ import 'package:pratudo/features/widgets/spacing.dart';
 class RecipeHeader extends StatelessWidget {
   const RecipeHeader({
     Key? key,
-    required this.detailedRecipeModel,
+    required this.name,
+    required this.rate,
+    required this.ownerName,
+    this.preparations,
+    required this.portions,
+    this.comments,
   }) : super(key: key);
-  final DetailedRecipeModel detailedRecipeModel;
+  final String name;
+  final double rate;
+  final String ownerName;
+  final int? preparations;
+  final String portions;
+  final int? comments;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -23,7 +32,7 @@ class RecipeHeader extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              detailedRecipeModel.name,
+              name,
               style: AppTypo.h1(color: AppColors.darkestColor),
             ),
             Spacing(width: 4),
@@ -33,35 +42,38 @@ class RecipeHeader extends StatelessWidget {
               color: AppColors.yellowColor,
             ),
             Text(
-              '(${detailedRecipeModel.rate})',
+              '($rate)',
               style: AppTypo.p3(color: AppColors.greyColor),
             ),
           ],
         ),
         CustomText(
-          text: 'Feito por: *${detailedRecipeModel.owner.name}*',
+          text: 'Feito por: *$ownerName*',
           style: AppTypo.p4(color: AppColors.darkColor),
         ),
-        Text(
-          '40 visualizações',
-          style: AppTypo.p4(color: AppColors.darkColor),
-        ),
+        if (preparations != null)
+          Text(
+            '$preparations visualizações',
+            style: AppTypo.p4(color: AppColors.darkColor),
+          ),
         Spacing(height: 8),
         IconWithText(
           icon: LineAwesomeIcons.user,
           color: AppColors.orangeColor,
-          text: detailedRecipeModel.portions,
+          text: portions,
           textStyle: AppTypo.p5(color: AppColors.orangeColor),
           iconSize: 20,
         ),
-        Spacing(height: 4),
-        IconWithText(
-          icon: LineAwesomeIcons.sms,
-          color: AppColors.blueColor,
-          text: '${detailedRecipeModel.comments.length} Comentários',
-          textStyle: AppTypo.p5(color: AppColors.blueColor),
-          iconSize: 20,
-        ),
+        if (comments != null) ...[
+          Spacing(height: 4),
+          IconWithText(
+            icon: LineAwesomeIcons.sms,
+            color: AppColors.blueColor,
+            text: '$comments Comentários',
+            textStyle: AppTypo.p5(color: AppColors.blueColor),
+            iconSize: 20,
+          ),
+        ]
       ],
     );
   }

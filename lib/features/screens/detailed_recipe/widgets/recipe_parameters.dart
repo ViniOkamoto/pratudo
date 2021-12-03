@@ -2,12 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:pratudo/core/theme/colors.dart';
 import 'package:pratudo/core/theme/typography.dart';
 import 'package:pratudo/features/models/difficulty_enum.dart';
-import 'package:pratudo/features/models/recipe/detailed_recipe_model.dart';
+import 'package:pratudo/features/models/time_model.dart';
 
 class RecipeParameters extends StatelessWidget {
-  const RecipeParameters({Key? key, required this.detailedRecipeModel})
-      : super(key: key);
-  final DetailedRecipeModel detailedRecipeModel;
+  const RecipeParameters({
+    Key? key,
+    required this.difficulty,
+    required this.time,
+    required this.totalIngredients,
+  }) : super(key: key);
+
+  final String difficulty;
+  final TimeModel time;
+  final int totalIngredients;
 
   @override
   Widget build(BuildContext context) {
@@ -15,18 +22,17 @@ class RecipeParameters extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         RecipeParameter(
-          value: parseStringToEnum[detailedRecipeModel.difficulty]!,
+          value: parseStringToEnum[difficulty]!,
           label: 'Dificuldade',
         ),
         CustomVerticalDivider(),
         RecipeParameter(
-          value: detailedRecipeModel.totalMethodOfPreparationTime
-              .convertTimeToString(),
+          value: time.convertTimeToString(),
           label: 'Tempo',
         ),
         CustomVerticalDivider(),
         RecipeParameter(
-          value: '${detailedRecipeModel.totalIngredients}',
+          value: '$totalIngredients',
           label: 'Ingredientes',
         ),
       ],

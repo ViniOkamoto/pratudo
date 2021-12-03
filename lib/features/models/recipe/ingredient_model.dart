@@ -1,12 +1,19 @@
+import 'package:hive/hive.dart';
 import 'package:pratudo/features/models/recipe/items_model.dart';
 
+part 'ingredient_model.g.dart';
+
+@HiveType(typeId: 4)
 class IngredientModel {
+  @HiveField(0)
+  late final String? step;
+  @HiveField(1)
+  late final List<ItemsModel>? items;
+
   IngredientModel({
     this.step,
     this.items,
   });
-  late final String? step;
-  late final List<ItemsModel>? items;
 
   IngredientModel.fromJson(Map<String, dynamic> json) {
     step = json['step'];

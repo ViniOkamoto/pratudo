@@ -6,7 +6,14 @@ import 'package:pratudo/core/resources/common_exceptions.dart';
 import 'package:pratudo/core/services/hive/boxes.dart';
 import 'package:pratudo/core/services/hive/hive_names_helper.dart';
 import 'package:pratudo/features/models/recipe/cache_recipe_model.dart';
+import 'package:pratudo/features/models/recipe/ingredient_model.dart';
+import 'package:pratudo/features/models/recipe/items_model.dart';
+import 'package:pratudo/features/models/recipe/method_of_preparation_model.dart';
+import 'package:pratudo/features/models/recipe/owner_recipe.dart';
+import 'package:pratudo/features/models/recipe/portion_model.dart';
 import 'package:pratudo/features/models/recipe/recipe_helper_model.dart';
+import 'package:pratudo/features/models/recipe/step_model.dart';
+import 'package:pratudo/features/models/time_model.dart';
 import 'package:pratudo/features/models/unit_model.dart';
 
 class HiveService {
@@ -18,6 +25,15 @@ class HiveService {
     Directory directory = await pathProvider.getApplicationDocumentsDirectory();
     hive
       ..init(directory.path)
+      ..registerAdapter(TimeModelAdapter())
+      ..registerAdapter(RecipeOwnerAdapter())
+      ..registerAdapter(IngredientModelAdapter())
+      ..registerAdapter(ItemsModelAdapter())
+      ..registerAdapter(PortionModelAdapter())
+      ..registerAdapter(MethodOfPreparationModelAdapter())
+      ..registerAdapter(StepModelAdapter())
+      ..registerAdapter(StepByStepCreationAdapter())
+      ..registerAdapter(StepByStepWithTimeCreationAdapter())
       ..registerAdapter(RecipeHelperModelAdapter())
       ..registerAdapter(CacheRecipeModelAdapter())
       ..registerAdapter(UnitModelAdapter());

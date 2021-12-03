@@ -7,4 +7,5 @@ class Routes {
   static const filteredIngredients = '/filteredIngredients';
   static const createRecipe = '/createRecipe';
   static const detailedRecipe = '/detailedRecipe';
+  static const cachedRecipe = '/cachedDetailedRecipe';
 }

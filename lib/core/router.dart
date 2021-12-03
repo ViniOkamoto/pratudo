@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pratudo/core/resources/routes.dart';
+import 'package:pratudo/features/models/recipe/cache_recipe_model.dart';
+import 'package:pratudo/features/screens/cache_recipe/cache_recipe_page.dart';
 import 'package:pratudo/features/screens/create_recipe/create_recipe_page.dart';
 import 'package:pratudo/features/screens/detailed_recipe/detailed_recipe_page.dart';
 import 'package:pratudo/features/screens/login/login_page.dart';
@@ -53,6 +55,12 @@ class Router {
         String id = settings.arguments as String;
         return MaterialPageRoute(
           builder: (_) => DetailedRecipePage(id: id),
+          settings: settings,
+        );
+      case Routes.cachedRecipe:
+        CacheRecipeModel recipe = settings.arguments as CacheRecipeModel;
+        return MaterialPageRoute(
+          builder: (_) => CacheRecipePage(recipe: recipe),
           settings: settings,
         );
       default:

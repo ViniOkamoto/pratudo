@@ -1,20 +1,28 @@
 import 'package:flutter/cupertino.dart';
+import 'package:hive/hive.dart';
 import 'package:pratudo/features/models/time_model.dart';
+
+part 'step_model.g.dart';
 
 enum StepEnum {
   DEFAULT,
   WITH_TIME,
 }
 
+@HiveType(typeId: 10)
 class StepModel {
+  @HiveField(0)
+  late final String step;
+  @HiveField(1)
+  late final List<StepByStepCreation> items;
+  @HiveField(2)
+  late final TimeModel time;
+
   StepModel({
     required this.step,
     required this.items,
     required this.time,
   });
-  late final String step;
-  late final List<StepByStepCreation> items;
-  late final TimeModel time;
 
   StepModel.fromJson(Map<String, dynamic> json) {
     step = json['step'];
@@ -37,8 +45,10 @@ class StepModel {
   }
 }
 
+@HiveType(typeId: 11)
 class StepByStepCreation {
   late final Key? key;
+  @HiveField(4)
   late final String? description;
   StepByStepCreation({
     this.key,
@@ -65,7 +75,9 @@ class StepByStepCreation {
   }
 }
 
+@HiveType(typeId: 12)
 class StepByStepWithTimeCreation extends StepByStepCreation {
+  @HiveField(5)
   late final TimeModel? time;
   StepByStepWithTimeCreation({
     Key? key,

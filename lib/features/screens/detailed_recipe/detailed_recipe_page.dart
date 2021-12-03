@@ -61,36 +61,36 @@ class _DetailedRecipePageState extends State<DetailedRecipePage> {
       body: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return [
-            Observer(
-              builder: (context) {
-                return SliverAppBar(
-                  expandedHeight: SizeConverter.relativeHeight(200),
-                  backgroundColor: AppColors.whiteColor,
-                  floating: true,
-                  pinned: false,
-                  snap: true,
-                  collapsedHeight: SizeConverter.relativeHeight(50),
-                  shape: ContinuousRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(30),
-                      bottomRight: Radius.circular(30),
-                    ),
+            SliverAppBar(
+              expandedHeight: SizeConverter.relativeHeight(200),
+              backgroundColor: AppColors.whiteColor,
+              floating: true,
+              pinned: false,
+              snap: true,
+              collapsedHeight: SizeConverter.relativeHeight(50),
+              shape: ContinuousRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(30),
+                  bottomRight: Radius.circular(30),
+                ),
+              ),
+              leading: Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    left: SizeConverter.relativeWidth(16),
                   ),
-                  leading: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        left: SizeConverter.relativeWidth(16),
-                      ),
-                      child: _AppBarAction(
-                        onTap: () => Navigator.pop(context),
-                        iconData: LineAwesomeIcons.arrow_left,
-                      ),
-                    ),
+                  child: _AppBarAction(
+                    onTap: () => Navigator.pop(context),
+                    iconData: LineAwesomeIcons.arrow_left,
                   ),
-                  actions: [
+                ),
+              ),
+              actions: [
+                Observer(
+                  builder: (context) {
                     if (!store.isLoading && !store.hasError)
-                      Row(
+                      return Row(
                         children: [
                           Align(
                             alignment: Alignment.centerRight,
@@ -103,61 +103,67 @@ class _DetailedRecipePageState extends State<DetailedRecipePage> {
                           Align(
                             alignment: Alignment.centerRight,
                             child: _AppBarAction(
-                              onTap: () {},
-                              iconData: LineAwesomeIcons.bookmark,
+                              onTap: () {
+                                store.isCachedRecipe
+                                    ? store.removeCachedRecipe()
+                                    : store.cacheRecipe();
+                              },
+                              iconData: store.isCachedRecipe
+                                  ? Icons.bookmark
+                                  : Icons.bookmark_border,
                             ),
                           ),
                           Spacing(width: 16),
                         ],
-                      ),
-                  ],
-                  flexibleSpace: Container(
-                    clipBehavior: Clip.hardEdge,
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.vertical(
-                        bottom: Radius.circular(15.0),
-                      ),
-                    ),
-                    child: Stack(
-                      children: <Widget>[
-                        Positioned.fill(
-                          child: Observer(
-                            builder: (context) {
-                              return ConditionalWidget(
-                                isLoading: store.isLoading,
-                                loadingWidget: LoadingShimmer(
-                                  child: ShimmerBox(),
-                                ),
-                                hasError: store.hasError,
-                                errorWidget: Container(
-                                  color: AppColors.lightestGrayColor,
-                                  child: Center(
-                                    child: Icon(
-                                      LineAwesomeIcons.wifi,
-                                      color: AppColors.highlightColor,
-                                      size: SizeConverter.fontSize(80),
-                                    ),
-                                  ),
-                                ),
-                                child: FadeInImage(
-                                  fit: BoxFit.cover,
-                                  placeholder: MemoryImage(kTransparentImage),
-                                  image: MemoryImage(
-                                    ImageHelper.convertBase64ToImage(
-                                      store.detailedRecipeModel?.images.first ??
-                                          '',
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
+                      );
+                    return Container();
+                  },
+                ),
+              ],
+              flexibleSpace: Container(
+                clipBehavior: Clip.hardEdge,
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.vertical(
+                    bottom: Radius.circular(15.0),
                   ),
-                );
-              },
+                ),
+                child: Stack(
+                  children: <Widget>[
+                    Positioned.fill(
+                      child: Observer(
+                        builder: (context) {
+                          return ConditionalWidget(
+                            isLoading: store.isLoading,
+                            loadingWidget: LoadingShimmer(
+                              child: ShimmerBox(),
+                            ),
+                            hasError: store.hasError,
+                            errorWidget: Container(
+                              color: AppColors.lightestGrayColor,
+                              child: Center(
+                                child: Icon(
+                                  LineAwesomeIcons.wifi,
+                                  color: AppColors.highlightColor,
+                                  size: SizeConverter.fontSize(80),
+                                ),
+                              ),
+                            ),
+                            child: FadeInImage(
+                              fit: BoxFit.cover,
+                              placeholder: MemoryImage(kTransparentImage),
+                              image: MemoryImage(
+                                ImageHelper.convertBase64ToImage(
+                                  store.detailedRecipeModel?.images.first ?? '',
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ];
         },
@@ -193,11 +199,18 @@ class _DetailedRecipePageState extends State<DetailedRecipePage> {
                         ),
                         Spacing(height: 8),
                         RecipeHeader(
-                          detailedRecipeModel: recipe,
+                          portions: recipe.portions,
+                          name: recipe.name,
+                          rate: recipe.rate,
+                          ownerName: recipe.owner.name,
+                          comments: recipe.comments.length,
+                          preparations: recipe.preparations,
                         ),
                         Spacing(height: 24),
                         RecipeParameters(
-                          detailedRecipeModel: recipe,
+                          time: recipe.totalMethodOfPreparationTime,
+                          difficulty: recipe.difficulty,
+                          totalIngredients: recipe.totalIngredients,
                         ),
                         Spacing(height: 16),
                         if (recipe.isUserAllowedToRate) ...[

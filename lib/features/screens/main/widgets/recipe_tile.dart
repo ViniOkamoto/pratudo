@@ -138,7 +138,9 @@ class _RecipeTileState extends State<RecipeTile>
                           if (widget.recipeType ==
                               FilteredIngredientsEnum.INGREDIENTS) ...[
                             CustomText(
-                                text: widget.recipe.formattedIngredients!),
+                              text: widget.recipe.formattedIngredients!,
+                              textAlign: TextAlign.left,
+                            ),
                           ]
                         ],
                       ),

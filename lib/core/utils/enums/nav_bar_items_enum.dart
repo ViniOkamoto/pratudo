@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:pratudo/features/screens/main/views/cached_recipes/cached_recipes_view.dart';
 import 'package:pratudo/features/screens/main/views/explore/explore_view.dart';
-import 'package:pratudo/features/screens/main/views/favorites_view.dart';
 import 'package:pratudo/features/screens/main/views/profile/profile_view.dart';
 import 'package:pratudo/features/screens/main/views/search/search_view.dart';
 
@@ -33,7 +33,7 @@ extension NavBarItemEnumExtension on NavBarItemEnum {
       case NavBarItemEnum.SEARCH:
         return SearchView();
       case NavBarItemEnum.FAVORITES:
-        return FavoritesView();
+        return CachedRecipesView();
       case NavBarItemEnum.PROFILE:
         return ProfileView();
     }
@@ -60,6 +60,6 @@ extension NavBarItemEnumExtension on NavBarItemEnum {
 Map<NavBarItemEnum, Widget> navPage = {
   NavBarItemEnum.EXPLORE: ExploreView(),
   NavBarItemEnum.SEARCH: SearchView(),
-  NavBarItemEnum.FAVORITES: FavoritesView(),
+  NavBarItemEnum.FAVORITES: CachedRecipesView(),
   NavBarItemEnum.PROFILE: ProfileView(),
 };

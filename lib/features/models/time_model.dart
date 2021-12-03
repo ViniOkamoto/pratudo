@@ -1,10 +1,18 @@
+import 'package:hive/hive.dart';
+
+part 'time_model.g.dart';
+
+@HiveType(typeId: 8)
 class TimeModel {
+  @HiveField(0)
+  late final String unit;
+  @HiveField(1)
+  late final int value;
+
   TimeModel({
     required this.unit,
     required this.value,
   });
-  late final String unit;
-  late final int value;
 
   TimeModel.fromJson(Map<String, dynamic> json) {
     unit = json['unit'];

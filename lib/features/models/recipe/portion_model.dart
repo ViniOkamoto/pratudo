@@ -1,14 +1,21 @@
+import 'package:hive/hive.dart';
 import 'package:mobx/mobx.dart';
 
+part 'portion_model.g.dart';
+
+@HiveType(typeId: 6)
 class PortionModel {
+  @HiveField(0)
+  @observable
+  late final double value;
+  @HiveField(1)
+  @observable
+  late final String? unitOfMeasure;
+
   PortionModel({
     this.value = 0,
     this.unitOfMeasure,
   });
-  @observable
-  late final double value;
-  @observable
-  late final String? unitOfMeasure;
 
   dynamic get quantity {
     List<String> decimalValue = value.toStringAsPrecision(2).split('.');

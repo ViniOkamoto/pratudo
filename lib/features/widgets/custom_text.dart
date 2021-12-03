@@ -30,7 +30,7 @@ class CustomText extends StatelessWidget {
       defaultStyle: style ?? AppTypo.p5(color: AppColors.darkColor),
       maxLines: maxLines,
       overflow: overflow,
-      textAlign: TextAlign.center,
+      textAlign: textAlign,
       patternList: [
         EasyRichTextPattern(
           targetString: '(\\*)(.*?)(\\*)',
