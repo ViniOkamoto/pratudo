@@ -8,7 +8,7 @@ import 'package:pratudo/features/datasources/recipe/recipe_helpers/recipe_helper
 import 'package:pratudo/features/repositories/cache_recipe_repository.dart';
 import 'package:pratudo/features/repositories/recipe_helpers_repository.dart';
 import 'package:pratudo/features/repositories/recipe_repository.dart';
-import 'package:pratudo/features/screens/cache_recipe/cache_recipe_store.dart';
+import 'package:pratudo/features/screens/cached_recipe/detailed_cache_recipe_store.dart';
 import 'package:pratudo/features/screens/create_recipe/create_recipe_store.dart';
 import 'package:pratudo/features/screens/create_recipe/form_section_store.dart';
 import 'package:pratudo/features/screens/create_recipe/recipe_form_store.dart';
@@ -72,8 +72,8 @@ Future<void> setupRecipeLocator() async {
     ),
   );
 
-  serviceLocator.registerFactory<CacheRecipeStore>(
-    () => CacheRecipeStore(
+  serviceLocator.registerFactory<DetailedCacheRecipeStore>(
+    () => DetailedCacheRecipeStore(
       serviceLocator<CacheRecipeRepository>(),
     ),
   );

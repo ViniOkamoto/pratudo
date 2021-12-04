@@ -3,13 +3,14 @@ import 'package:pratudo/core/utils/flutter_toast_helper.dart';
 import 'package:pratudo/features/models/recipe/cache_recipe_model.dart';
 import 'package:pratudo/features/repositories/cache_recipe_repository.dart';
 
-part 'cache_recipe_store.g.dart';
+part 'detailed_cache_recipe_store.g.dart';
 
-class CacheRecipeStore = _CacheRecipeStoreBase with _$CacheRecipeStore;
+class DetailedCacheRecipeStore = _DetailedCacheRecipeStoreBase
+    with _$DetailedCacheRecipeStore;
 
-abstract class _CacheRecipeStoreBase with Store {
+abstract class _DetailedCacheRecipeStoreBase with Store {
   final CacheRecipeRepository _cacheRecipe;
-  _CacheRecipeStoreBase(this._cacheRecipe);
+  _DetailedCacheRecipeStoreBase(this._cacheRecipe);
 
   @observable
   bool isCachedRecipe = false;

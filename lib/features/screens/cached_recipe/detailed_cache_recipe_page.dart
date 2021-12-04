@@ -6,7 +6,7 @@ import 'package:pratudo/core/theme/colors.dart';
 import 'package:pratudo/core/utils/image_helper.dart';
 import 'package:pratudo/core/utils/size_converter.dart';
 import 'package:pratudo/features/models/recipe/cache_recipe_model.dart';
-import 'package:pratudo/features/screens/cache_recipe/cache_recipe_store.dart';
+import 'package:pratudo/features/screens/cached_recipe/detailed_cache_recipe_store.dart';
 import 'package:pratudo/features/screens/detailed_recipe/widgets/chef_tip_section.dart';
 import 'package:pratudo/features/screens/detailed_recipe/widgets/ingredient_list.dart';
 import 'package:pratudo/features/screens/detailed_recipe/widgets/recipe_header.dart';
@@ -19,19 +19,21 @@ import 'package:pratudo/features/widgets/app_primary_button.dart';
 import 'package:pratudo/features/widgets/spacing.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-class CacheRecipePage extends StatefulWidget {
+class DetailedCacheRecipePage extends StatefulWidget {
   final CacheRecipeModel recipe;
-  const CacheRecipePage({
+  const DetailedCacheRecipePage({
     Key? key,
     required this.recipe,
   }) : super(key: key);
 
   @override
-  State<CacheRecipePage> createState() => _CacheRecipePageState();
+  State<DetailedCacheRecipePage> createState() =>
+      _DetailedCacheRecipePageState();
 }
 
-class _CacheRecipePageState extends State<CacheRecipePage> {
-  final CacheRecipeStore store = serviceLocator<CacheRecipeStore>();
+class _DetailedCacheRecipePageState extends State<DetailedCacheRecipePage> {
+  final DetailedCacheRecipeStore store =
+      serviceLocator<DetailedCacheRecipeStore>();
   final RecipeHelpersStore helpersStore = serviceLocator<RecipeHelpersStore>();
 
   @override
