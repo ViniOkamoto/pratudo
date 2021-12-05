@@ -35,6 +35,7 @@ class _SteByStepPageState extends State<SteByStepPage> {
   late final List<Widget> pages;
   @override
   void initState() {
+    _store.model = widget.stepByStepModel;
     List<Widget> steps = _loadSteps();
     pages = [
       IngredientCheckListView(
@@ -181,6 +182,7 @@ class HeaderStep extends StatelessWidget {
                                 color: AppColors.darkestColor,
                               ),
                             ),
+                            Spacing(height: 4),
                             LinearPercentIndicator(
                               lineHeight: 8.0,
                               padding: EdgeInsets.zero,

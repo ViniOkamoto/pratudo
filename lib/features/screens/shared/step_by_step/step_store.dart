@@ -39,7 +39,10 @@ abstract class _StepStoreBase with Store {
   }
 
   restartTimer() {
-    controller = CountdownController(duration: stepTime, onEnd: onEnd);
+    if (controller!.isRunning) {
+      controller?.stop();
+    }
+    controller!.value = stepTime!.inMilliseconds;
   }
 
   onEnd() async {

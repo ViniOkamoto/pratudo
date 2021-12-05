@@ -58,53 +58,55 @@ class _StepViewState extends State<StepView> {
                     style: AppTypo.p3(color: AppColors.darkColor),
                   ),
                   if (stepStore.stepWithTime != null) ...[
-                    Observer(builder: (context) {
-                      return Column(
-                        children: [
-                          Spacing(height: 40),
-                          Icon(
-                            LineAwesomeIcons.clock,
-                            size: SizeConverter.fontSize(132),
-                            color: AppColors.blueColor,
-                          ),
-                          Countdown(
-                            countdownController: stepStore.controller!,
-                            builder: (context, duration) {
-                              return Text(
-                                _getTime(duration),
-                                style: AppTypo.p1(
-                                  color: AppColors.blueColor,
+                    Observer(
+                      builder: (context) {
+                        return Column(
+                          children: [
+                            Spacing(height: 40),
+                            Icon(
+                              LineAwesomeIcons.clock,
+                              size: SizeConverter.fontSize(132),
+                              color: AppColors.blueColor,
+                            ),
+                            Countdown(
+                              countdownController: stepStore.controller!,
+                              builder: (context, duration) {
+                                return Text(
+                                  _getTime(duration),
+                                  style: AppTypo.p1(
+                                    color: AppColors.blueColor,
+                                  ),
+                                );
+                              },
+                            ),
+                            Spacing(height: 16),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                AppIconButton(
+                                  onTap: () => stepStore.startTimer(),
+                                  iconData: LineAwesomeIcons.play,
+                                  borderColor: Colors.green,
+                                  iconColor: Colors.green,
                                 ),
-                              );
-                            },
-                          ),
-                          Spacing(height: 16),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              AppIconButton(
-                                onTap: () => stepStore.startTimer(),
-                                iconData: LineAwesomeIcons.play,
-                                borderColor: Colors.green,
-                                iconColor: Colors.green,
-                              ),
-                              Spacing(width: 24),
-                              AppIconButton(
-                                onTap: () => stepStore.pauseTimer(),
-                                iconData: LineAwesomeIcons.pause,
-                              ),
-                              Spacing(width: 24),
-                              AppIconButton(
-                                onTap: () => stepStore.restartTimer(),
-                                iconData: LineAwesomeIcons.stop,
-                                iconColor: AppColors.greyColor,
-                                borderColor: AppColors.greyColor,
-                              ),
-                            ],
-                          ),
-                        ],
-                      );
-                    }),
+                                Spacing(width: 24),
+                                AppIconButton(
+                                  onTap: () => stepStore.pauseTimer(),
+                                  iconData: LineAwesomeIcons.pause,
+                                ),
+                                Spacing(width: 24),
+                                AppIconButton(
+                                  onTap: () => stepStore.restartTimer(),
+                                  iconData: LineAwesomeIcons.stop,
+                                  iconColor: AppColors.greyColor,
+                                  borderColor: AppColors.greyColor,
+                                ),
+                              ],
+                            ),
+                          ],
+                        );
+                      },
+                    ),
                   ],
                 ],
               ),

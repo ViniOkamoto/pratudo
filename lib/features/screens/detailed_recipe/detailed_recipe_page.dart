@@ -265,6 +265,7 @@ class _DetailedRecipePageState extends State<DetailedRecipePage> {
         chefTips: store.detailedRecipeModel!.chefTips,
         ingredients: store.detailedRecipeModel!.ingredients,
         steps: store.detailedRecipeModel!.methodOfPreparation.steps,
+        userIsAllowedToRate: store.detailedRecipeModel!.isUserAllowedToRate,
       ),
     );
   }

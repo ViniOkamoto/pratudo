@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:mobx/mobx.dart';
+import 'package:pratudo/features/screens/shared/step_by_step/step_by_step_model.dart';
 
 part 'step_by_step_store.g.dart';
 
@@ -10,6 +11,9 @@ abstract class _StepByStepStoreBase with Store {
 
   @observable
   int page = 0;
+
+  @observable
+  StepByStepModel? model;
 
   @observable
   Map<String, int> stepLength = {};
@@ -72,17 +76,30 @@ abstract class _StepByStepStoreBase with Store {
 
   @computed
   bool get hasNextSection {
-    int currentlySection = pageIntervals.keys.toList().indexOf(titlePage!);
+    try {
+      int currentlySection = pageIntervals.keys.toList().indexOf(titlePage!);
 
-    return currentlySection < pageIntervals.length - 1;
+      return currentlySection < pageIntervals.length - 1;
+    } catch (e) {
+      return false;
+    }
   }
 
   @computed
   bool get hasPreviousSection {
-    int currentlyStep = pageIntervals.keys.toList().indexOf(titlePage!);
+    try {
+      int currentlyStep = pageIntervals.keys.toList().indexOf(titlePage!);
 
-    return pageIntervals.keys.first !=
-        pageIntervals.keys.elementAt(currentlyStep);
+      return pageIntervals.keys.first !=
+          pageIntervals.keys.elementAt(currentlyStep);
+    } catch (e) {
+      return false;
+    }
+  }
+
+  @computed
+  bool get canFinishRecipe {
+    return !hasNextSection && !hasStepInSection && page > 0;
   }
 
   jumpToNextSection() {
@@ -136,5 +153,10 @@ abstract class _StepByStepStoreBase with Store {
       duration: Duration(milliseconds: 500),
       curve: Curves.ease,
     );
+  }
+
+  finishRecipe(BuildContext context) {
+    if (model!.userIsAllowedToRate) {}
+    return Navigator.pop(context);
   }
 }

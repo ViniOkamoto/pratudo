@@ -35,7 +35,11 @@ class StepByStepNavigation extends StatelessWidget {
                 replacement: Container(),
               ),
               NextView(
-                onTap: () => _store.nextPage(),
+                onTap: () {
+                  _store.canFinishRecipe
+                      ? _store.finishRecipe(context)
+                      : _store.nextPage();
+                },
                 title: _getTitleButton(),
               ),
             ],
@@ -55,7 +59,7 @@ class StepByStepNavigation extends StatelessWidget {
     if (!_store.hasStepInSection && _store.hasNextSection) {
       return 'Próxima seção';
     }
-    if (!_store.hasStepInSection && !_store.hasNextSection) {
+    if (_store.canFinishRecipe) {
       return 'Finalizar receita';
     }
   }
