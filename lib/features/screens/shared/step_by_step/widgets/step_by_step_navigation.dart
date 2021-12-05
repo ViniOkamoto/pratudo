@@ -52,10 +52,10 @@ class StepByStepNavigation extends StatelessWidget {
     if (_store.hasStepInSection) {
       return 'Próximo passo';
     }
-    if (!_store.hasStepInSection && _store.hasSection) {
+    if (!_store.hasStepInSection && _store.hasNextSection) {
       return 'Próxima seção';
     }
-    if (!_store.hasStepInSection && !_store.hasSection) {
+    if (!_store.hasStepInSection && !_store.hasNextSection) {
       return 'Finalizar receita';
     }
   }

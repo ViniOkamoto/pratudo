@@ -71,10 +71,29 @@ abstract class _StepByStepStoreBase with Store {
   }
 
   @computed
-  bool get hasSection {
+  bool get hasNextSection {
+    int currentlySection = pageIntervals.keys.toList().indexOf(titlePage!);
+
+    return currentlySection < pageIntervals.length - 1;
+  }
+
+  @computed
+  bool get hasPreviousSection {
     int currentlyStep = pageIntervals.keys.toList().indexOf(titlePage!);
 
-    return currentlyStep < pageIntervals.length - 1;
+    return pageIntervals.keys.first !=
+        pageIntervals.keys.elementAt(currentlyStep);
+  }
+
+  jumpToNextSection() {
+    pageController.jumpToPage(currentlyStepEndsIn + 1);
+  }
+
+  jumpToPreviousSection() {
+    int indexPreviousSection =
+        pageIntervals.keys.toList().indexOf(titlePage!) - 1;
+    pageController.jumpToPage(
+        pageIntervals.values.elementAt(indexPreviousSection)['startsIn']!);
   }
 
   @observable

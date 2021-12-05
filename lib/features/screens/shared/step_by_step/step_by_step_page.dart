@@ -83,80 +83,7 @@ class _SteByStepPageState extends State<SteByStepPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Expanded(
-                  flex: 2,
-                  child: Observer(
-                    builder: (context) {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: SizeConverter.relativeWidth(16),
-                        ),
-                        child: Column(
-                          children: [
-                            Text(
-                              'Vamos ao preparo!',
-                              style: AppTypo.h2(color: AppColors.darkestColor),
-                            ),
-                            if (_store.page == 0) ...[
-                              Spacing(
-                                height: 16,
-                              ),
-                              Text(
-                                'Hora de conferir o que tem na sua cozinha',
-                                textAlign: TextAlign.center,
-                                style:
-                                    AppTypo.h2(color: AppColors.darkestColor),
-                              ),
-                            ],
-                            if (_store.page > 0) ...[
-                              Spacing(height: 4),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  BackView(title: 'Voltar seção', onTap: () {}),
-                                  Spacing(width: 8),
-                                  NextView(
-                                      title: 'Próxima seção', onTap: () {}),
-                                ],
-                              ),
-                            ],
-                            if (_store.page > 0) ...[
-                              Spacing(height: 4),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          '${_store.currentlyPositionInStep} de'
-                                          ' ${_store.stepLength[_store.titlePage]}',
-                                          style: AppTypo.p3(
-                                            color: AppColors.darkestColor,
-                                          ),
-                                        ),
-                                        LinearPercentIndicator(
-                                          lineHeight: 8.0,
-                                          padding: EdgeInsets.zero,
-                                          animation: true,
-                                          animateFromLastPercent: true,
-                                          percent: _store.percentProgress,
-                                          progressColor:
-                                              AppColors.highlightColor,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ]
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
+                HeaderStep(store: _store),
                 Expanded(
                   flex: 8,
                   child: PageView(
@@ -172,6 +99,106 @@ class _SteByStepPageState extends State<SteByStepPage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class HeaderStep extends StatelessWidget {
+  const HeaderStep({
+    Key? key,
+    required StepByStepStore store,
+  })  : _store = store,
+        super(key: key);
+
+  final StepByStepStore _store;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      flex: 2,
+      child: Observer(
+        builder: (context) {
+          return Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: SizeConverter.relativeWidth(16),
+            ),
+            child: Column(
+              children: [
+                Text(
+                  'Vamos ao preparo!',
+                  style: AppTypo.h2(color: AppColors.darkestColor),
+                ),
+                if (_store.page == 0) ...[
+                  Spacing(
+                    height: 16,
+                  ),
+                  Text(
+                    'Hora de conferir o que tem na sua cozinha',
+                    textAlign: TextAlign.center,
+                    style: AppTypo.h2(color: AppColors.darkestColor),
+                  ),
+                ],
+                if (_store.page > 0) ...[
+                  Spacing(height: 4),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Visibility(
+                        visible: _store.hasPreviousSection,
+                        child: BackView(
+                          title: 'Voltar seção',
+                          onTap: () => _store.jumpToPreviousSection(),
+                          color: AppColors.blueColor,
+                        ),
+                        replacement: Container(),
+                      ),
+                      Spacing(width: 8),
+                      Visibility(
+                        visible: _store.hasNextSection,
+                        child: NextView(
+                          title: 'Próxima seção',
+                          onTap: () => _store.jumpToNextSection(),
+                          color: AppColors.blueColor,
+                        ),
+                        replacement: Container(),
+                      ),
+                    ],
+                  ),
+                ],
+                if (_store.page > 0) ...[
+                  Spacing(height: 4),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '${_store.currentlyPositionInStep} de'
+                              ' ${_store.stepLength[_store.titlePage]}',
+                              style: AppTypo.p3(
+                                color: AppColors.darkestColor,
+                              ),
+                            ),
+                            LinearPercentIndicator(
+                              lineHeight: 8.0,
+                              padding: EdgeInsets.zero,
+                              animation: true,
+                              animateFromLastPercent: true,
+                              percent: _store.percentProgress,
+                              progressColor: AppColors.highlightColor,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ]
+              ],
+            ),
+          );
+        },
       ),
     );
   }
