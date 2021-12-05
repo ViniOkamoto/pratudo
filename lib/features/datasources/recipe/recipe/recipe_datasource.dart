@@ -16,7 +16,7 @@ class RecipeDatasource {
       {String filterValue = 'latest'}) async {
     try {
       final response = await _httpService
-          .get('/recipe', queryParameters: {"filter": filterValue});
+          .get('/recipe/trend', queryParameters: {"filter": filterValue});
 
       return SummaryRecipe.fromJsonList(response.data["content"]);
     } on DioError catch (e) {
@@ -32,7 +32,8 @@ class RecipeDatasource {
   }
 
   Future<List<SummaryRecipe>> getRecipes(
-      RecipeQueryParams recipeQueryParams) async {
+    RecipeQueryParams recipeQueryParams,
+  ) async {
     try {
       final response = await _httpService.get('/recipe',
           queryParameters: recipeQueryParams.toJson());
@@ -58,7 +59,6 @@ class RecipeDatasource {
       );
       return ExperienceGainedModel.fromJson(response.data);
     } on DioError catch (e) {
-      print(e.response?.data);
       final Map<dynamic, dynamic>? response = e.response?.data;
       throw ServerException(
           errorText: response?.containsKey('message') ?? false
