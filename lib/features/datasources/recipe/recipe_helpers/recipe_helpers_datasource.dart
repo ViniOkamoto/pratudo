@@ -11,20 +11,15 @@ class RecipeHelperDatasource {
 
   Future<List<RecipeHelperModel>> getCategories() async {
     try {
-      print('aqui api?');
-
       final response = await _httpService.get('/recipe/categories');
 
       return RecipeHelperModel.fromJsonList(response.data);
     } on DioError catch (e) {
-      print('aqui? ${e.type}');
-
       throw ServerException(
           errorText: e.response?.data['message'] != null
               ? e.response?.data['message']
               : "Erro Inesperado");
     } catch (e) {
-      print('aqui? genérico');
       throw ServerException(errorText: e.toString());
     }
   }

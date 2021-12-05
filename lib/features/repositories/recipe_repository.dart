@@ -32,7 +32,8 @@ class RecipeRepositoryImpl implements RecipeRepository {
       {String filterValue = 'latest'}) async {
     try {
       return Right(
-          await _datasource.getRecipeByFilters(filterValue: filterValue));
+        await _datasource.getRecipeByFilters(filterValue: filterValue),
+      );
     } on ServerException catch (e) {
       return Left(ServerFailure(errorText: e.errorText));
     } on Exception catch (e) {

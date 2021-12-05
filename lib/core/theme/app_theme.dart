@@ -3,6 +3,8 @@ import 'package:pratudo/core/resources/constants.dart';
 import 'package:pratudo/core/theme/colors.dart';
 
 final ThemeData appTheme = ThemeData(
+  primaryColor: AppColors.highlightColor,
+  unselectedWidgetColor: AppColors.highlightColor,
   fontFamily: Constants.fontFamily,
   scrollbarTheme: ScrollbarThemeData(
     thumbColor: MaterialStateProperty.all(AppColors.highlightColor),

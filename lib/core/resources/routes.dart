@@ -8,4 +8,5 @@ class Routes {
   static const createRecipe = '/createRecipe';
   static const detailedRecipe = '/detailedRecipe';
   static const cachedRecipe = '/cachedDetailedRecipe';
+  static const stepByStep = '/stepByStep';
 }

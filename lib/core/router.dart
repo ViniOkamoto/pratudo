@@ -9,6 +9,8 @@ import 'package:pratudo/features/screens/main/main_page.dart';
 import 'package:pratudo/features/screens/register/register_page.dart';
 import 'package:pratudo/features/screens/search_by_ingredient/search_by_ingredient_page.dart';
 import 'package:pratudo/features/screens/shared/filtered_ingredients/filtered_ingredients_page.dart';
+import 'package:pratudo/features/screens/shared/step_by_step/step_by_step_model.dart';
+import 'package:pratudo/features/screens/shared/step_by_step/step_by_step_page.dart';
 import 'package:pratudo/features/screens/splash/splash_page.dart';
 
 class Router {
@@ -61,6 +63,12 @@ class Router {
         CacheRecipeModel recipe = settings.arguments as CacheRecipeModel;
         return MaterialPageRoute(
           builder: (_) => DetailedCacheRecipePage(recipe: recipe),
+          settings: settings,
+        );
+      case Routes.stepByStep:
+        StepByStepModel stepByStepModel = settings.arguments as StepByStepModel;
+        return MaterialPageRoute(
+          builder: (_) => SteByStepPage(stepByStepModel: stepByStepModel),
           settings: settings,
         );
       default:

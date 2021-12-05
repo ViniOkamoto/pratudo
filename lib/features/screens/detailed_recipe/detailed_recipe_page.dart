@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:pratudo/core/resources/routes.dart';
 import 'package:pratudo/core/services/di/service_locator.dart';
 import 'package:pratudo/core/theme/colors.dart';
 import 'package:pratudo/core/theme/typography.dart';
@@ -19,6 +20,7 @@ import 'package:pratudo/features/screens/detailed_recipe/widgets/recipe_paramete
 import 'package:pratudo/features/screens/detailed_recipe/widgets/step_list.dart';
 import 'package:pratudo/features/screens/detailed_recipe/widgets/tag_category_list.dart';
 import 'package:pratudo/features/screens/main/views/profile/widgets/profile_circle.dart';
+import 'package:pratudo/features/screens/shared/step_by_step/step_by_step_model.dart';
 import 'package:pratudo/features/stores/shared/recipe_helpers_store.dart';
 import 'package:pratudo/features/widgets/app_default_error.dart';
 import 'package:pratudo/features/widgets/app_field.dart';
@@ -44,6 +46,7 @@ class DetailedRecipePage extends StatefulWidget {
 class _DetailedRecipePageState extends State<DetailedRecipePage> {
   final DetailedRecipeStore store = serviceLocator<DetailedRecipeStore>();
   final RecipeHelpersStore helpersStore = serviceLocator<RecipeHelpersStore>();
+
   @override
   void initState() {
     initializePage();
@@ -223,7 +226,7 @@ class _DetailedRecipePageState extends State<DetailedRecipePage> {
                         AppPrimaryButton(
                           text: 'Modo passo a passo',
                           icon: LineAwesomeIcons.mortar_pestle,
-                          onPressed: () {},
+                          onPressed: () => _detailedRecipe(),
                         ),
                         Spacing(height: 16),
                         IngredientsListSection(
@@ -232,7 +235,8 @@ class _DetailedRecipePageState extends State<DetailedRecipePage> {
                         ),
                         Spacing(height: 24),
                         StepListSection(
-                            steps: recipe.methodOfPreparation.steps),
+                          steps: recipe.methodOfPreparation.steps,
+                        ),
                         Spacing(height: 24),
                         ChefTipSection(text: recipe.chefTips),
                         Spacing(height: 32),
@@ -247,6 +251,20 @@ class _DetailedRecipePageState extends State<DetailedRecipePage> {
             );
           },
         ),
+      ),
+    );
+  }
+
+  _detailedRecipe() {
+    Navigator.pushNamed(
+      context,
+      Routes.stepByStep,
+      arguments: StepByStepModel(
+        recipeId: store.detailedRecipeModel!.id,
+        name: store.detailedRecipeModel!.name,
+        chefTips: store.detailedRecipeModel!.chefTips,
+        ingredients: store.detailedRecipeModel!.ingredients,
+        steps: store.detailedRecipeModel!.methodOfPreparation.steps,
       ),
     );
   }

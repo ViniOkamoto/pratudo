@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:pratudo/core/resources/routes.dart';
 import 'package:pratudo/core/services/di/service_locator.dart';
 import 'package:pratudo/core/theme/colors.dart';
 import 'package:pratudo/core/utils/image_helper.dart';
@@ -13,6 +14,7 @@ import 'package:pratudo/features/screens/detailed_recipe/widgets/recipe_header.d
 import 'package:pratudo/features/screens/detailed_recipe/widgets/recipe_parameters.dart';
 import 'package:pratudo/features/screens/detailed_recipe/widgets/step_list.dart';
 import 'package:pratudo/features/screens/detailed_recipe/widgets/tag_category_list.dart';
+import 'package:pratudo/features/screens/shared/step_by_step/step_by_step_model.dart';
 import 'package:pratudo/features/stores/shared/recipe_helpers_store.dart';
 import 'package:pratudo/features/widgets/app_icon_button.dart';
 import 'package:pratudo/features/widgets/app_primary_button.dart';
@@ -178,7 +180,7 @@ class _DetailedCacheRecipePageState extends State<DetailedCacheRecipePage> {
                         AppPrimaryButton(
                           text: 'Modo passo a passo',
                           icon: LineAwesomeIcons.mortar_pestle,
-                          onPressed: () {},
+                          onPressed: () => _detailedRecipe(),
                         ),
                         Spacing(height: 16),
                         IngredientsListSection(
@@ -198,6 +200,20 @@ class _DetailedCacheRecipePageState extends State<DetailedCacheRecipePage> {
             );
           },
         ),
+      ),
+    );
+  }
+
+  _detailedRecipe() {
+    Navigator.pushNamed(
+      context,
+      Routes.stepByStep,
+      arguments: StepByStepModel(
+        recipeId: widget.recipe.id,
+        name: widget.recipe.name,
+        chefTips: widget.recipe.chefTips,
+        ingredients: widget.recipe.ingredients,
+        steps: widget.recipe.methodOfPreparation.steps,
       ),
     );
   }
