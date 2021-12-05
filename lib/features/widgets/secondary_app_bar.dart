@@ -8,11 +8,13 @@ class SecondaryAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? text;
   final List<Widget>? children;
   final VoidCallback? onPressedBackButton;
+  final Widget? title;
 
   SecondaryAppBar({
     this.text,
     this.children,
     this.onPressedBackButton,
+    this.title,
   });
 
   @override
@@ -45,6 +47,11 @@ class SecondaryAppBar extends StatelessWidget implements PreferredSizeWidget {
                 text!,
                 style: AppTypo.p2(color: AppColors.highlightColor),
               ),
+            ),
+          if (title != null)
+            Align(
+              alignment: Alignment.center,
+              child: title,
             ),
         ],
       ),

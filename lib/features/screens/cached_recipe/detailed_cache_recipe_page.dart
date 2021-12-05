@@ -9,6 +9,7 @@ import 'package:pratudo/core/utils/size_converter.dart';
 import 'package:pratudo/features/models/recipe/cache_recipe_model.dart';
 import 'package:pratudo/features/screens/cached_recipe/detailed_cache_recipe_store.dart';
 import 'package:pratudo/features/screens/detailed_recipe/widgets/chef_tip_section.dart';
+import 'package:pratudo/features/screens/detailed_recipe/widgets/detailed_recipe_loading.dart';
 import 'package:pratudo/features/screens/detailed_recipe/widgets/ingredient_list.dart';
 import 'package:pratudo/features/screens/detailed_recipe/widgets/recipe_header.dart';
 import 'package:pratudo/features/screens/detailed_recipe/widgets/recipe_parameters.dart';
@@ -146,6 +147,7 @@ class _DetailedCacheRecipePageState extends State<DetailedCacheRecipePage> {
         body: Observer(
           builder: (context) {
             CacheRecipeModel recipe = store.recipeModel!;
+            if (helpersStore.isLoadingUnits) return DetailedRecipeLoading();
             return SingleChildScrollView(
               physics: BouncingScrollPhysics(),
               padding: EdgeInsets.only(
