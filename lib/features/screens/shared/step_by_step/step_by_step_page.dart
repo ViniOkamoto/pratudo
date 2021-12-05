@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:pratudo/core/services/di/service_locator.dart';
 import 'package:pratudo/core/theme/colors.dart';
 import 'package:pratudo/core/theme/typography.dart';
@@ -9,9 +10,11 @@ import 'package:pratudo/features/screens/shared/step_by_step/step_by_step_store.
 import 'package:pratudo/features/screens/shared/step_by_step/widgets/back_view.dart';
 import 'package:pratudo/features/screens/shared/step_by_step/widgets/ingredient_check_list_view.dart';
 import 'package:pratudo/features/screens/shared/step_by_step/widgets/next_view.dart';
+import 'package:pratudo/features/screens/shared/step_by_step/widgets/step_by_step_navigation.dart';
 import 'package:pratudo/features/screens/shared/step_by_step/widgets/step_view.dart';
 import 'package:pratudo/features/stores/shared/recipe_helpers_store.dart';
 import 'package:pratudo/features/widgets/secondary_app_bar.dart';
+import 'package:pratudo/features/widgets/spacing.dart';
 
 class SteByStepPage extends StatefulWidget {
   final StepByStepModel stepByStepModel;
@@ -54,7 +57,7 @@ class _SteByStepPageState extends State<SteByStepPage> {
               .map((e) => StepView(step: e, sectionName: section.step))
               .toList(),
         ];
-        stepsLength[section.step] = steps.length;
+        stepsLength[section.step] = section.items.length;
       },
     );
     _store.setStepLength(stepsLength);
@@ -82,13 +85,76 @@ class _SteByStepPageState extends State<SteByStepPage> {
               children: [
                 Expanded(
                   flex: 2,
-                  child: Column(
-                    children: [
-                      Text(
-                        'Vamos ao preparo!',
-                        style: AppTypo.h2(color: AppColors.darkestColor),
-                      ),
-                    ],
+                  child: Observer(
+                    builder: (context) {
+                      return Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: SizeConverter.relativeWidth(16),
+                        ),
+                        child: Column(
+                          children: [
+                            Text(
+                              'Vamos ao preparo!',
+                              style: AppTypo.h2(color: AppColors.darkestColor),
+                            ),
+                            if (_store.page == 0) ...[
+                              Spacing(
+                                height: 16,
+                              ),
+                              Text(
+                                'Hora de conferir o que tem na sua cozinha',
+                                textAlign: TextAlign.center,
+                                style:
+                                    AppTypo.h2(color: AppColors.darkestColor),
+                              ),
+                            ],
+                            if (_store.page > 0) ...[
+                              Spacing(height: 4),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  BackView(title: 'Voltar seção', onTap: () {}),
+                                  Spacing(width: 8),
+                                  NextView(
+                                      title: 'Próxima seção', onTap: () {}),
+                                ],
+                              ),
+                            ],
+                            if (_store.page > 0) ...[
+                              Spacing(height: 4),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '${_store.currentlyPositionInStep} de'
+                                          ' ${_store.stepLength[_store.titlePage]}',
+                                          style: AppTypo.p3(
+                                            color: AppColors.darkestColor,
+                                          ),
+                                        ),
+                                        LinearPercentIndicator(
+                                          lineHeight: 8.0,
+                                          padding: EdgeInsets.zero,
+                                          animation: true,
+                                          animateFromLastPercent: true,
+                                          percent: _store.percentProgress,
+                                          progressColor:
+                                              AppColors.highlightColor,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ]
+                          ],
+                        ),
+                      );
+                    },
                   ),
                 ),
                 Expanded(
@@ -107,47 +173,6 @@ class _SteByStepPageState extends State<SteByStepPage> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class StepByStepNavigation extends StatelessWidget {
-  const StepByStepNavigation({
-    Key? key,
-    required StepByStepStore store,
-  })  : _store = store,
-        super(key: key);
-
-  final StepByStepStore _store;
-
-  @override
-  Widget build(BuildContext context) {
-    return Observer(
-      builder: (context) {
-        return Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: SizeConverter.relativeWidth(16),
-            vertical: SizeConverter.relativeHeight(32),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Visibility(
-                visible: _store.page > 0,
-                child: BackView(
-                  onTap: () => _store.backPage(),
-                  title: 'Voltar',
-                ),
-                replacement: Container(),
-              ),
-              NextView(
-                onTap: () => _store.nextPage(),
-                title: 'Preparar receita',
-              ),
-            ],
-          ),
-        );
-      },
     );
   }
 }

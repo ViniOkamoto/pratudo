@@ -38,12 +38,6 @@ class IngredientCheckListView extends StatelessWidget {
           Expanded(
             child: Column(
               children: [
-                Text(
-                  'Hora de conferir o que tem na sua cozinha',
-                  textAlign: TextAlign.center,
-                  style: AppTypo.h2(color: AppColors.darkestColor),
-                ),
-                Spacing(height: 16),
                 CustomText(
                   text: 'Sinta-se a vontade para realizar um *checklist* '
                       'ou *pule para o próximo passo*.',
