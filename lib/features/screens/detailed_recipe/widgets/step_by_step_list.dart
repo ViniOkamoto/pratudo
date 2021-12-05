@@ -78,6 +78,7 @@ class StepRow extends StatelessWidget {
         Spacing(width: 4),
         Flexible(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 step.description!,

@@ -53,7 +53,7 @@ class RecipeHeader extends StatelessWidget {
         ),
         if (preparations != null)
           Text(
-            '$preparations visualizações',
+            '$preparations Já realizaram',
             style: AppTypo.p4(color: AppColors.darkColor),
           ),
         Spacing(height: 8),

@@ -18,7 +18,7 @@ class CheckBoxState {
   });
 }
 
-class IngredientCheckListView extends StatelessWidget {
+class IngredientCheckListView extends StatefulWidget {
   const IngredientCheckListView({
     Key? key,
     required this.ingredients,
@@ -27,6 +27,13 @@ class IngredientCheckListView extends StatelessWidget {
   final List<IngredientModel> ingredients;
   final List<UnitModel> unitsOfMeasure;
 
+  @override
+  State<IngredientCheckListView> createState() =>
+      _IngredientCheckListViewState();
+}
+
+class _IngredientCheckListViewState extends State<IngredientCheckListView>
+    with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -57,7 +64,8 @@ class IngredientCheckListView extends StatelessWidget {
                     child: ListView.separated(
                       physics: BouncingScrollPhysics(),
                       itemBuilder: (context, index) {
-                        IngredientModel ingredientList = ingredients[index];
+                        IngredientModel ingredientList =
+                            widget.ingredients[index];
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -67,13 +75,13 @@ class IngredientCheckListView extends StatelessWidget {
                             ),
                             _CheckboxList(
                               items: ingredientList.items!,
-                              unitsOfMeasure: unitsOfMeasure,
+                              unitsOfMeasure: widget.unitsOfMeasure,
                             ),
                           ],
                         );
                       },
                       separatorBuilder: (context, index) => Spacing(height: 16),
-                      itemCount: ingredients.length,
+                      itemCount: widget.ingredients.length,
                     ),
                   ),
                 ),
@@ -84,6 +92,9 @@ class IngredientCheckListView extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class _CheckboxList extends StatefulWidget {
