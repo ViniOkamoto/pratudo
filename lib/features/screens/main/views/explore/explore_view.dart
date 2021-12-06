@@ -28,9 +28,11 @@ class ExploreView extends StatefulWidget {
   _ExploreViewState createState() => _ExploreViewState();
 }
 
-class _ExploreViewState extends State<ExploreView> with AutomaticKeepAliveClientMixin {
+class _ExploreViewState extends State<ExploreView>
+    with AutomaticKeepAliveClientMixin {
   final ExploreStore _exploreStore = serviceLocator<ExploreStore>();
-  final RecipeHelpersStore _recipeHelpersStore = serviceLocator<RecipeHelpersStore>();
+  final RecipeHelpersStore _recipeHelpersStore =
+      serviceLocator<RecipeHelpersStore>();
   final SearchStore _searchStore = serviceLocator<SearchStore>();
 
   @override
@@ -69,12 +71,14 @@ class _ExploreViewState extends State<ExploreView> with AutomaticKeepAliveClient
             pageContent: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Spacing(height: 24),
                 Observer(
                   builder: (context) {
                     return ConditionalWidget(
                       isLoading: _recipeHelpersStore.isLoadingFilters,
                       loadingWidget: CarouselShimmer(),
-                      hasError: _recipeHelpersStore.hasErrorInFilters && _exploreStore.recipes.isEmpty,
+                      hasError: _recipeHelpersStore.hasErrorInFilters &&
+                          _exploreStore.recipes.isEmpty,
                       errorWidget: AppDefaultError(
                         onPressed: () => _fetchData(),
                       ),
@@ -87,11 +91,15 @@ class _ExploreViewState extends State<ExploreView> with AutomaticKeepAliveClient
                             filterSelected: _exploreStore.filterSelected,
                           ),
                           ConditionalWidget(
-                            isLoading: _exploreStore.isLoading && !_recipeHelpersStore.isLoadingFilters,
-                            loadingWidget: CarouselShimmer(withoutFilterRow: true),
-                            hasError: _exploreStore.hasError || _exploreStore.recipes.isEmpty,
+                            isLoading: _exploreStore.isLoading &&
+                                !_recipeHelpersStore.isLoadingFilters,
+                            loadingWidget:
+                                CarouselShimmer(withoutFilterRow: true),
+                            hasError: _exploreStore.hasError ||
+                                _exploreStore.recipes.isEmpty,
                             errorWidget: AppDefaultError(
-                              onPressed: () => _exploreStore.getLatestRecipe(_exploreStore.filterSelected!),
+                              onPressed: () => _exploreStore.getLatestRecipe(
+                                  _exploreStore.filterSelected!),
                             ),
                             child: Column(
                               children: [
@@ -109,8 +117,10 @@ class _ExploreViewState extends State<ExploreView> with AutomaticKeepAliveClient
                                       _exploreStore.currentIndex = index;
                                     },
                                   ),
-                                  itemBuilder: (BuildContext context, int index, int pageViewIndex) {
-                                    SummaryRecipe recipe = _exploreStore.recipes[index];
+                                  itemBuilder: (BuildContext context, int index,
+                                      int pageViewIndex) {
+                                    SummaryRecipe recipe =
+                                        _exploreStore.recipes[index];
                                     return CarouselItem(recipe: recipe);
                                   },
                                 ),

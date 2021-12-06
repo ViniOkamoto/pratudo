@@ -10,6 +10,7 @@ import 'package:pratudo/features/screens/main/widgets/base_page.dart';
 import 'package:pratudo/features/screens/main/widgets/search_section.dart';
 import 'package:pratudo/features/stores/shared/recipe_helpers_store.dart';
 import 'package:pratudo/features/stores/shared/search_store.dart';
+import 'package:pratudo/features/widgets/spacing.dart';
 
 class SearchView extends StatefulWidget {
   @override
@@ -18,7 +19,8 @@ class SearchView extends StatefulWidget {
 
 class _SearchViewState extends State<SearchView> {
   final SearchStore _searchStore = serviceLocator<SearchStore>();
-  final RecipeHelpersStore _recipeHelpersStore = serviceLocator<RecipeHelpersStore>();
+  final RecipeHelpersStore _recipeHelpersStore =
+      serviceLocator<RecipeHelpersStore>();
 
   _fetchData({bool isRefreshing = false}) async {
     if (isRefreshing) _searchStore.clearSearch();
@@ -44,6 +46,7 @@ class _SearchViewState extends State<SearchView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Spacing(height: 24),
               SearchByIngredientsCard(),
               Text(
                 'Categorias',

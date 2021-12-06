@@ -4,6 +4,7 @@ import 'package:pratudo/core/theme/colors.dart';
 import 'package:pratudo/core/theme/typography.dart';
 import 'package:pratudo/core/utils/size_converter.dart';
 import 'package:pratudo/features/screens/detailed_recipe/widgets/recipe_detailed_sections_title.dart';
+import 'package:pratudo/features/widgets/custom_text.dart';
 import 'package:pratudo/features/widgets/spacing.dart';
 import 'package:readmore/readmore.dart';
 
@@ -30,15 +31,20 @@ class ChefTipSection extends StatelessWidget {
           padding: EdgeInsets.only(
             left: SizeConverter.relativeWidth(16),
           ),
-          child: ReadMoreText(
-            text,
-            trimLines: trimLines,
-            trimMode: TrimMode.Line,
-            colorClickableText: AppColors.highlightColor,
-            style: AppTypo.p3(color: AppColors.darkColor),
-            trimCollapsedText: 'Mostrar mais',
-            trimExpandedText: 'Mostrar menos',
-          ),
+          child: text.isEmpty
+              ? CustomText(
+                  text: 'Esta receita não possui *dicas*.',
+                  style: AppTypo.p3(color: AppColors.darkColor),
+                )
+              : ReadMoreText(
+                  text,
+                  trimLines: trimLines,
+                  trimMode: TrimMode.Line,
+                  colorClickableText: AppColors.highlightColor,
+                  style: AppTypo.p3(color: AppColors.darkColor),
+                  trimCollapsedText: 'Mostrar mais',
+                  trimExpandedText: 'Mostrar menos',
+                ),
         ),
       ],
     );

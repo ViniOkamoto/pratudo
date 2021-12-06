@@ -15,9 +15,6 @@ abstract class RecipeRepository {
   Future<Either<Failure, ExperienceGainedModel>> createRecipe(
       RecipeCreationModel recipeCreation);
   Future<Either<Failure, DetailedRecipeModel>> getRecipeById(String id);
-  // Future<Either<Failure, void>> saveRecipe(DetailedRecipeModel recipeModel);
-  // Future<Either<Failure, void>> deleteRecipe(DetailedRecipeModel recipeModel);
-  // Future<Either<Failure, List<DetailedRecipeModel>>> getSavedRecipes();
 }
 
 class RecipeRepositoryImpl implements RecipeRepository {

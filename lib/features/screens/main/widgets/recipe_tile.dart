@@ -127,12 +127,6 @@ class _RecipeTileState extends State<RecipeTile>
                                   ],
                                 ),
                               ),
-                              IconButton(
-                                onPressed: () {},
-                                color: AppColors.lightGrayColor,
-                                iconSize: SizeConverter.fontSize(20),
-                                icon: Icon(LineAwesomeIcons.bookmark),
-                              ),
                             ],
                           ),
                           if (widget.recipeType ==
