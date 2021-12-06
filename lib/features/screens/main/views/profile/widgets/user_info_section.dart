@@ -26,15 +26,15 @@ class UserInfoSection extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Lorem Ipsum',
-                style: AppTypo.h2(color: AppColors.darkColor),
-              ),
               Visibility(
-                visible: userProgressStore.userProgress != null,
+                visible: !userProgressStore.isLoading,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Text(
+                      userProgressStore.userInformationModel!.name,
+                      style: AppTypo.h2(color: AppColors.darkColor),
+                    ),
                     Text(
                       userProgressStore.userProgress?.title ?? '',
                       style: AppTypo.p3(color: AppColors.highlightColor),

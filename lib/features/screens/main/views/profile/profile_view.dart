@@ -10,8 +10,10 @@ import 'package:pratudo/features/stores/shared/user_progress_store.dart';
 import 'package:pratudo/features/widgets/spacing.dart';
 
 class ProfileView extends StatelessWidget {
-  final UserInformationStore _userInformationStore = serviceLocator<UserInformationStore>();
-  final UserProgressStore _userProgressStore = serviceLocator<UserProgressStore>();
+  final UserInformationStore _userInformationStore =
+      serviceLocator<UserInformationStore>();
+  final UserProgressStore _userProgressStore =
+      serviceLocator<UserProgressStore>();
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -29,7 +31,7 @@ class ProfileView extends StatelessWidget {
           ProfileButton(
             label: 'Meu Desempenho',
             icon: LineAwesomeIcons.trophy,
-            onTap: () {},
+            onTap: () => Navigator.pushNamed(context, Routes.myPerformance),
           ),
           ProfileButton(
             label: 'Minhas Receitas',
@@ -46,7 +48,8 @@ class ProfileView extends StatelessWidget {
             icon: LineAwesomeIcons.door_open,
             onTap: () async {
               await _userInformationStore.logout();
-              Navigator.pushNamedAndRemoveUntil(context, Routes.splash, (route) => false);
+              Navigator.pushNamedAndRemoveUntil(
+                  context, Routes.splash, (route) => false);
             },
           ),
         ],

@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:pratudo/core/resources/common_exceptions.dart';
 import 'package:pratudo/core/services/http/http_service.dart';
+import 'package:pratudo/features/models/user_information_model.dart';
 import 'package:pratudo/features/models/user_progress/user_progress_model.dart';
 
 class GamificationDatasource {
@@ -15,7 +16,25 @@ class GamificationDatasource {
       return UserProgressModel.fromJson(response.data);
     } on DioError catch (e) {
       throw ServerException(
-        errorText: e.response?.data['message'] != null ? e.response?.data['message'] : "Erro Inesperado",
+        errorText: e.response?.data['message'] != null
+            ? e.response?.data['message']
+            : "Erro Inesperado",
+      );
+    } catch (e) {
+      throw ServerException(errorText: e.toString());
+    }
+  }
+
+  Future<UserInformationModel> getUserInformation() async {
+    try {
+      final response = await _httpService.get('/user');
+
+      return UserInformationModel.fromJson(response.data);
+    } on DioError catch (e) {
+      throw ServerException(
+        errorText: e.response?.data['message'] != null
+            ? e.response?.data['message']
+            : "Erro Inesperado",
       );
     } catch (e) {
       throw ServerException(errorText: e.toString());

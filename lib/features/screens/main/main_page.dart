@@ -84,7 +84,10 @@ class _MainPageState extends State<MainPage> {
                           iconSize: SizeConverter.fontSize(24),
                         ),
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () => Navigator.pushNamed(
+                            context,
+                            Routes.myPerformance,
+                          ),
                           icon: Icon(LineAwesomeIcons.trophy),
                           color: AppColors.yellowColor,
                           iconSize: SizeConverter.fontSize(24),
@@ -123,7 +126,7 @@ class GamificationNotifierModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseModal(
-      title: 'Gamificação',
+      title: '',
       body: Row(
         children: [
           Expanded(

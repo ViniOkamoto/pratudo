@@ -31,7 +31,7 @@ class _RateAndCommentModalState extends State<RateAndCommentModal> {
   @override
   Widget build(BuildContext context) {
     return BaseModal(
-      height: 450,
+      height: 600,
       title: '',
       body: Observer(
         builder: (context) {
@@ -43,6 +43,7 @@ class _RateAndCommentModalState extends State<RateAndCommentModal> {
                     Text(
                       'Avaliando ${widget.recipeName}',
                       style: AppTypo.h2(color: AppColors.darkerColor),
+                      textAlign: TextAlign.center,
                     ),
                     Spacing(height: 24),
                     RateRow(

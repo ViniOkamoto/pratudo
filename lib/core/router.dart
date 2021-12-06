@@ -6,6 +6,7 @@ import 'package:pratudo/features/screens/create_recipe/create_recipe_page.dart';
 import 'package:pratudo/features/screens/detailed_recipe/detailed_recipe_page.dart';
 import 'package:pratudo/features/screens/login/login_page.dart';
 import 'package:pratudo/features/screens/main/main_page.dart';
+import 'package:pratudo/features/screens/perfomance/my_perfomance_page.dart';
 import 'package:pratudo/features/screens/register/register_page.dart';
 import 'package:pratudo/features/screens/search_by_ingredient/search_by_ingredient_page.dart';
 import 'package:pratudo/features/screens/shared/filtered_ingredients/filtered_ingredients_page.dart';
@@ -69,6 +70,11 @@ class Router {
         StepByStepModel stepByStepModel = settings.arguments as StepByStepModel;
         return MaterialPageRoute(
           builder: (_) => SteByStepPage(stepByStepModel: stepByStepModel),
+          settings: settings,
+        );
+      case Routes.myPerformance:
+        return MaterialPageRoute(
+          builder: (_) => MyPerformancePage(),
           settings: settings,
         );
       default:

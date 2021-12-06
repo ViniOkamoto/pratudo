@@ -10,7 +10,7 @@ extension FilteredIngredientsExtension on FilteredIngredientsEnum {
       case FilteredIngredientsEnum.CATEGORY:
         return 'Resultado $complement';
       case FilteredIngredientsEnum.INGREDIENTS:
-        return 'Resultado ingredients';
+        return 'Resultado ingredientes';
       default:
         return '';
     }

@@ -30,7 +30,8 @@ class _RegisterPageState extends State<RegisterPage> {
 
   final TextEditingController passwordController = TextEditingController();
 
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
 
   late FToast fToast;
   @override
@@ -93,9 +94,10 @@ class _RegisterPageState extends State<RegisterPage> {
                     textEditingController: confirmPasswordController,
                     errorText: _registerStore.confirmPasswordError,
                     labelText: "Confirme sua senha",
-                    hintText: "Inira a sua senha para confirmar",
+                    hintText: "Insira a sua senha para confirmar",
                     isPassword: true,
-                    onPressedIcon: () => _registerStore.setObscureConfirmPassword(),
+                    onPressedIcon: () =>
+                        _registerStore.setObscureConfirmPassword(),
                     isObscure: _registerStore.isObscureConfirmPassword,
                   ),
                   Spacing(height: 32),
@@ -105,18 +107,22 @@ class _RegisterPageState extends State<RegisterPage> {
                     onPressed: _registerStore.isValid
                         ? () async {
                             if (!_registerStore.isLoading) {
-                              final isRegistered = await _registerStore.registerUser();
+                              final isRegistered =
+                                  await _registerStore.registerUser();
                               if (isRegistered) {
                                 final result = await _registerStore.login();
                                 if (result) {
-                                  Navigator.pushNamedAndRemoveUntil(context, Routes.main, (route) => false);
+                                  Navigator.pushNamedAndRemoveUntil(
+                                      context, Routes.main, (route) => false);
                                   return;
                                 }
                                 fToast.showToast(
                                   child: Container(
                                     padding: EdgeInsets.symmetric(
-                                      horizontal: SizeConverter.relativeWidth(24),
-                                      vertical: SizeConverter.relativeHeight(12),
+                                      horizontal:
+                                          SizeConverter.relativeWidth(24),
+                                      vertical:
+                                          SizeConverter.relativeHeight(12),
                                     ),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(25.0),

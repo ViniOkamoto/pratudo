@@ -1,5 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:pratudo/features/models/gamification/experience_gained_model.dart';
+import 'package:pratudo/features/models/user_information_model.dart';
 import 'package:pratudo/features/models/user_progress/user_progress_model.dart';
 import 'package:pratudo/features/repositories/gamefication_repository.dart';
 
@@ -16,6 +17,9 @@ abstract class _UserProgressStoreBase with Store {
 
   @observable
   UserProgressModel? prevUserProgress;
+
+  @observable
+  UserInformationModel? userInformationModel;
 
   @observable
   ExperienceGainedModel? experienceGainedModel;
@@ -36,6 +40,7 @@ abstract class _UserProgressStoreBase with Store {
     hasError = false;
     isLoading = true;
     final result = await _repository.getUserProgress();
+    final userInformation = await _repository.getUserInformation();
 
     result.fold(
       (l) => hasError = true,
@@ -44,6 +49,12 @@ abstract class _UserProgressStoreBase with Store {
         prevUserProgress = r;
       },
     );
+
+    userInformation.fold(
+      (l) => null,
+      (r) => userInformationModel = r,
+    );
+
     isLoading = false;
   }
 }
