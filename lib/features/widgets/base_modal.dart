@@ -10,11 +10,13 @@ class BaseModal extends StatelessWidget {
     required this.body,
     this.bottom,
     required this.title,
+    this.height = 340,
   });
 
   final String title;
   final Widget body;
   final Widget? bottom;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,7 @@ class BaseModal extends StatelessWidget {
           horizontal: SizeConverter.relativeWidth(24),
         ),
         constraints: BoxConstraints(
-          maxHeight: 340,
+          maxHeight: height,
         ),
         decoration: BoxDecoration(
           color: Colors.white,

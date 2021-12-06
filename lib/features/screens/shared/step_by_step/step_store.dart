@@ -18,6 +18,7 @@ abstract class _StepStoreBase with Store {
 
   @observable
   Duration? stepTime;
+
   checkIfIsAStepWithTime(StepByStepCreation step) {
     if (step is StepByStepWithTimeCreation) {
       stepWithTime = step;

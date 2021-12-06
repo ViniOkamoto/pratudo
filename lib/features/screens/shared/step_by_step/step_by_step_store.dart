@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:pratudo/features/screens/shared/step_by_step/step_by_step_model.dart';
+import 'package:pratudo/features/screens/shared/step_by_step/widgets/rate_and_comment/rate_and_comment_modal.dart';
 
 part 'step_by_step_store.g.dart';
 
@@ -155,8 +157,21 @@ abstract class _StepByStepStoreBase with Store {
     );
   }
 
-  finishRecipe(BuildContext context) {
-    if (model!.userIsAllowedToRate) {}
+  finishRecipe(BuildContext context, String recipeName, String recipeId) async {
+    if (model!.userIsAllowedToRate) {
+      final result = await showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) {
+          return RateAndCommentModal(
+            recipeId: recipeId,
+            recipeName: recipeName,
+          );
+        },
+      ) as bool?;
+      if (result ?? false) model!.userIsAllowedToRate = false;
+      return;
+    }
     return Navigator.pop(context);
   }
 }

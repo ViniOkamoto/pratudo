@@ -59,7 +59,9 @@ class AppTextField extends StatelessWidget {
               Text(
                 labelText!,
                 style: AppTypo.p3(
-                  color: errorText != null ? AppColors.redColor : AppColors.darkColor,
+                  color: errorText != null
+                      ? AppColors.redColor
+                      : AppColors.darkColor,
                 ),
               ),
               if (isOptional)
@@ -92,7 +94,9 @@ class AppTextField extends StatelessWidget {
                   child: GestureDetector(
                     onTap: onPressedIcon,
                     child: Icon(
-                      isObscure ? LineAwesomeIcons.eye_1 : LineAwesomeIcons.eye_slash,
+                      isObscure
+                          ? LineAwesomeIcons.eye_1
+                          : LineAwesomeIcons.eye_slash,
                       color: AppColors.lightGrayColor,
                       size: SizeConverter.relativeWidth(24),
                     ),

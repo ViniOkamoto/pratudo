@@ -25,7 +25,8 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   final MainStore _mainStore = serviceLocator<MainStore>();
-  final UserProgressStore _userProgressStore = serviceLocator<UserProgressStore>();
+  final UserProgressStore _userProgressStore =
+      serviceLocator<UserProgressStore>();
   late final disposeReaction;
   List<Widget> pages = navPage.entries.map((e) => e.value).toList();
 
@@ -74,7 +75,8 @@ class _MainPageState extends State<MainPage> {
                       child: Image.asset('assets/images/letters.png'),
                     ),
                     actions: [
-                      if (_mainStore.pageSelected != NavBarItemEnum.PROFILE) ...[
+                      if (_mainStore.pageSelected !=
+                          NavBarItemEnum.PROFILE) ...[
                         IconButton(
                           onPressed: () {},
                           icon: Icon(LineAwesomeIcons.list),
@@ -113,9 +115,11 @@ class GamificationNotifierModal extends StatelessWidget {
   const GamificationNotifierModal({
     Key? key,
     required this.experienceGainedModel,
+    this.bottom,
   }) : super(key: key);
 
   final ExperienceGainedModel experienceGainedModel;
+  final Widget? bottom;
   @override
   Widget build(BuildContext context) {
     return BaseModal(
@@ -129,7 +133,7 @@ class GamificationNotifierModal extends StatelessWidget {
               children: [
                 CustomText(
                   text: 'Opa, você ganhou *xp*!!',
-                  style: AppTypo.h2(color: AppColors.darkerColor),
+                  style: AppTypo.h2(color: AppColors.darkColor),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(
@@ -142,7 +146,8 @@ class GamificationNotifierModal extends StatelessWidget {
                   ),
                 ),
                 CustomText(
-                  text: 'Você ganhou *${experienceGainedModel.gainedExperience}xp* '
+                  text:
+                      'Você ganhou *${experienceGainedModel.gainedExperience}xp* '
                       'por *${experienceGainedModel.reason.toLowerCase()}*',
                   style: AppTypo.h3(color: AppColors.darkerColor),
                 ),
@@ -151,18 +156,19 @@ class GamificationNotifierModal extends StatelessWidget {
           ),
         ],
       ),
-      bottom: Row(
-        children: [
-          Expanded(
-            child: AppPrimaryButton(
-              text: 'Voltar',
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-          )
-        ],
-      ),
+      bottom: bottom ??
+          Row(
+            children: [
+              Expanded(
+                child: AppPrimaryButton(
+                  text: 'Voltar',
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              )
+            ],
+          ),
     );
   }
 }

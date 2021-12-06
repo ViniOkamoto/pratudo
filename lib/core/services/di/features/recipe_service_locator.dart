@@ -1,11 +1,13 @@
 import 'package:pratudo/core/services/di/service_locator.dart';
 import 'package:pratudo/core/services/hive/hive_service.dart';
 import 'package:pratudo/core/services/http/http_service.dart';
+import 'package:pratudo/features/datasources/recipe/recipe/detailed_recipe_datasource.dart';
 import 'package:pratudo/features/datasources/recipe/recipe/recipe_datasource.dart';
 import 'package:pratudo/features/datasources/recipe/recipe/recipe_localsource.dart';
 import 'package:pratudo/features/datasources/recipe/recipe_helpers/recipe_helpers_datasource.dart';
 import 'package:pratudo/features/datasources/recipe/recipe_helpers/recipe_helpers_localsource.dart';
 import 'package:pratudo/features/repositories/cache_recipe_repository.dart';
+import 'package:pratudo/features/repositories/detailed_recipe_repository.dart';
 import 'package:pratudo/features/repositories/recipe_helpers_repository.dart';
 import 'package:pratudo/features/repositories/recipe_repository.dart';
 import 'package:pratudo/features/screens/cached_recipe/detailed_cache_recipe_store.dart';
@@ -35,9 +37,19 @@ Future<void> setupRecipeLocator() async {
     () => RecipeHelperLocalSource(serviceLocator.get<HiveService>()),
   );
 
+  serviceLocator.registerFactory<DetailedRecipeDatasource>(
+    () => DetailedRecipeDatasource(serviceLocator.get<HttpService>()),
+  );
+
   serviceLocator.registerFactory<RecipeRepository>(
     () => RecipeRepositoryImpl(
       serviceLocator.get<RecipeDatasource>(),
+    ),
+  );
+
+  serviceLocator.registerFactory<DetailedRecipeRepository>(
+    () => DetailedRecipeRepositoryImpl(
+      serviceLocator.get<DetailedRecipeDatasource>(),
     ),
   );
   serviceLocator.registerFactory<RecipeHelperRepository>(
@@ -89,7 +101,9 @@ Future<void> setupRecipeLocator() async {
   );
 
   serviceLocator.registerFactory<CreateRecipeStore>(
-    () => CreateRecipeStore(serviceLocator<GamificationObserver>(),
-        serviceLocator<RecipeRepository>()),
+    () => CreateRecipeStore(
+      serviceLocator<GamificationObserver>(),
+      serviceLocator<RecipeRepository>(),
+    ),
   );
 }

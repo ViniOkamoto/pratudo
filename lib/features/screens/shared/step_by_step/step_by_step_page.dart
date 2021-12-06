@@ -95,7 +95,10 @@ class _SteByStepPageState extends State<SteByStepPage> {
                     controller: _store.pageController,
                   ),
                 ),
-                StepByStepNavigation(store: _store),
+                StepByStepNavigation(
+                  store: _store,
+                  step: widget.stepByStepModel,
+                ),
               ],
             ),
           ),
