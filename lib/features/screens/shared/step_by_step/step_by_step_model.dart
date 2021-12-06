@@ -7,7 +7,7 @@ class StepByStepModel {
   final String chefTips;
   final List<IngredientModel> ingredients;
   final List<StepModel> steps;
-  bool userIsAllowedToRate;
+  bool userIsAllowedToRate = false;
 
   StepByStepModel({
     required this.recipeId,
@@ -15,6 +15,6 @@ class StepByStepModel {
     required this.chefTips,
     required this.ingredients,
     required this.steps,
-    this.userIsAllowedToRate = false,
+    required this.userIsAllowedToRate,
   });
 }

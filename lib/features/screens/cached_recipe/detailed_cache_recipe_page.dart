@@ -216,6 +216,7 @@ class _DetailedCacheRecipePageState extends State<DetailedCacheRecipePage> {
         chefTips: widget.recipe.chefTips,
         ingredients: widget.recipe.ingredients,
         steps: widget.recipe.methodOfPreparation.steps,
+        userIsAllowedToRate: false,
       ),
     );
   }

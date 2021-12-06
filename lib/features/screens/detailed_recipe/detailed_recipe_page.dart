@@ -255,8 +255,8 @@ class _DetailedRecipePageState extends State<DetailedRecipePage> {
     );
   }
 
-  _detailedRecipe() {
-    Navigator.pushNamed(
+  _detailedRecipe() async {
+    final result = await Navigator.pushNamed(
       context,
       Routes.stepByStep,
       arguments: StepByStepModel(
@@ -267,7 +267,10 @@ class _DetailedRecipePageState extends State<DetailedRecipePage> {
         steps: store.detailedRecipeModel!.methodOfPreparation.steps,
         userIsAllowedToRate: store.detailedRecipeModel!.isUserAllowedToRate,
       ),
-    );
+    ) as bool?;
+    if (result ?? false) {
+      store.getRecipe(store.detailedRecipeModel!.id);
+    }
   }
 }
 

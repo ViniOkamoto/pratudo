@@ -32,7 +32,7 @@ class DetailedRecipeModel {
   late final int serves;
   late final String creationDate;
   late final String chefTips;
-  late final bool isUserAllowedToRate;
+  bool isUserAllowedToRate = false;
   late final List<IngredientModel> ingredients;
   late final MethodOfPreparationModel methodOfPreparation;
   late final List<CommentModel> comments;
