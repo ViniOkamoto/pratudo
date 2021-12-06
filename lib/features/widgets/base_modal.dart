@@ -32,7 +32,7 @@ class BaseModal extends StatelessWidget {
           horizontal: SizeConverter.relativeWidth(24),
         ),
         constraints: BoxConstraints(
-          maxHeight: height,
+          maxHeight: SizeConverter.relativeHeight(height),
         ),
         decoration: BoxDecoration(
           color: Colors.white,

@@ -7,6 +7,7 @@ import 'package:pratudo/core/theme/typography.dart';
 import 'package:pratudo/core/utils/size_converter.dart';
 import 'package:pratudo/features/models/unit_model.dart';
 import 'package:pratudo/features/screens/create_recipe/form_section_store.dart';
+import 'package:pratudo/features/widgets/app_small_button.dart';
 import 'package:pratudo/features/widgets/base_modal.dart';
 
 class UnitDropdown extends StatelessWidget {
@@ -86,7 +87,9 @@ class SelectableFieldWithModal extends StatelessWidget {
               Text(
                 _catchUnitSelected()?.abbreviation ?? 'un',
                 style: AppTypo.p3(
-                  color: _catchUnitSelected() != null ? AppColors.darkestColor : AppColors.lightGrayColor,
+                  color: _catchUnitSelected() != null
+                      ? AppColors.darkestColor
+                      : AppColors.lightGrayColor,
                 ),
               ),
               Icon(
@@ -105,7 +108,9 @@ class SelectableFieldWithModal extends StatelessWidget {
     try {
       return modalItems.firstWhere(
         (element) =>
-            element.key == formSectionStore.sections[sectionIndex].ingredients[ingredientIndex].portion!.unitOfMeasure,
+            element.key ==
+            formSectionStore.sections[sectionIndex].ingredients[ingredientIndex]
+                .portion!.unitOfMeasure,
       );
     } catch (e) {
       return null;
@@ -129,6 +134,8 @@ class _OptionsModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseModal(
+      title: "Unidades de medida",
+      height: 400,
       body: Expanded(
         child: Scrollbar(
           isAlwaysShown: true,
@@ -139,9 +146,10 @@ class _OptionsModal extends StatelessWidget {
               return Observer(
                 builder: (context) {
                   return RadioItemWidget<String>(
-                    groupValue:
-                        formSectionStore.sections[sectionIndex].ingredients[ingredientIndex].portion!.unitOfMeasure,
-                    onChanged: (value) => formSectionStore.setIngredientUnit(value, sectionIndex, ingredientIndex),
+                    groupValue: formSectionStore.sections[sectionIndex]
+                        .ingredients[ingredientIndex].portion!.unitOfMeasure,
+                    onChanged: (value) => formSectionStore.setIngredientUnit(
+                        value, sectionIndex, ingredientIndex),
                     value: unit.key,
                     text: '${unit.translate} (${unit.abbreviation})',
                   );
@@ -152,7 +160,22 @@ class _OptionsModal extends StatelessWidget {
           ),
         ),
       ),
-      title: "Unidades de medida",
+      bottom: Padding(
+        padding: EdgeInsets.symmetric(
+          vertical: SizeConverter.relativeHeight(16),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            AppSmallButton(
+              text: 'Sair',
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            )
+          ],
+        ),
+      ),
     );
   }
 }
