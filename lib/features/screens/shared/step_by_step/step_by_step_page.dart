@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:pratudo/core/services/di/service_locator.dart';
 import 'package:pratudo/core/theme/colors.dart';
 import 'package:pratudo/core/theme/typography.dart';
 import 'package:pratudo/core/utils/size_converter.dart';
+import 'package:pratudo/features/models/recipe/ingredient_model.dart';
+import 'package:pratudo/features/screens/create_recipe/widgets/recipe_section.dart';
+import 'package:pratudo/features/screens/detailed_recipe/widgets/chef_tip_section.dart';
+import 'package:pratudo/features/screens/detailed_recipe/widgets/ingredient_list.dart';
 import 'package:pratudo/features/screens/shared/step_by_step/step_by_step_model.dart';
 import 'package:pratudo/features/screens/shared/step_by_step/step_by_step_store.dart';
 import 'package:pratudo/features/screens/shared/step_by_step/widgets/back_view.dart';
@@ -77,6 +82,35 @@ class _SteByStepPageState extends State<SteByStepPage> {
             );
           },
         ),
+        children: [
+          InkWell(
+            onTap: () {
+              buildChefTipBottomSheet(
+                context,
+                widget.stepByStepModel.chefTips,
+              );
+            },
+            child: Icon(
+              LineAwesomeIcons.hand_holding_heart,
+              size: SizeConverter.fontSize(24),
+              color: AppColors.greyColor,
+            ),
+          ),
+          Spacing(width: 16),
+          InkWell(
+            onTap: () {
+              buildIngredientsBottomSheet(
+                context,
+                widget.stepByStepModel.ingredients,
+              );
+            },
+            child: Icon(
+              LineAwesomeIcons.blender,
+              size: SizeConverter.fontSize(24),
+              color: AppColors.greyColor,
+            ),
+          ),
+        ],
       ),
       body: Row(
         children: [
@@ -104,6 +138,71 @@ class _SteByStepPageState extends State<SteByStepPage> {
           ),
         ],
       ),
+    );
+  }
+
+  Future<dynamic> buildChefTipBottomSheet(
+    BuildContext context,
+    String chefTip,
+  ) {
+    return showModalBottomSheet(
+      context: context,
+      isDismissible: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(15),
+        ),
+      ),
+      builder: (builder) {
+        return BaseBottomSheet(
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ChefTipSection(
+                      text: chefTip,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future<dynamic> buildIngredientsBottomSheet(
+    BuildContext context,
+    List<IngredientModel> ingredients,
+  ) {
+    return showModalBottomSheet(
+      context: context,
+      isDismissible: true,
+      constraints: BoxConstraints(maxHeight: 400),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(15),
+        ),
+      ),
+      builder: (builder) {
+        return BaseBottomSheet(
+          child: SingleChildScrollView(
+            child: Row(
+              children: [
+                Expanded(
+                  child: IngredientsListSection(
+                    ingredients: ingredients,
+                    unitsOfMeasure: recipeHelpersStore.units,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

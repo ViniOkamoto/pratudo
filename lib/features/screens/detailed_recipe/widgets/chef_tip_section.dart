@@ -11,9 +11,11 @@ class ChefTipSection extends StatelessWidget {
   const ChefTipSection({
     Key? key,
     required this.text,
+    this.trimLines = 3,
   }) : super(key: key);
 
   final String text;
+  final int trimLines;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -30,7 +32,7 @@ class ChefTipSection extends StatelessWidget {
           ),
           child: ReadMoreText(
             text,
-            trimLines: 3,
+            trimLines: trimLines,
             trimMode: TrimMode.Line,
             colorClickableText: AppColors.highlightColor,
             style: AppTypo.p3(color: AppColors.darkColor),

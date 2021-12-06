@@ -179,45 +179,58 @@ class _BottomSheetStepField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return BaseBottomSheet(
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Campos do passo a passo',
+                  style: AppTypo.p3(color: AppColors.darkColor),
+                ),
+                Spacing(height: 16),
+                AppOutlinedButton(
+                  onPressed: () {
+                    _formSectionStore.addStep(sectionIndex, StepEnum.DEFAULT);
+                    Navigator.pop(context);
+                  },
+                  text: 'Adicionar passo',
+                ),
+                Spacing(height: 16),
+                AppOutlinedButton(
+                  onPressed: () {
+                    _formSectionStore.addStep(sectionIndex, StepEnum.WITH_TIME);
+                    Navigator.pop(context);
+                  },
+                  text: 'Adicionar passo com tempo',
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class BaseBottomSheet extends StatelessWidget {
+  const BaseBottomSheet({
+    Key? key,
+    required this.child,
+  }) : super(key: key);
+  final Widget child;
+  @override
+  Widget build(BuildContext context) {
     return Material(
       child: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: 24,
           vertical: 16,
         ),
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    'Campos do passo a passo',
-                    style: AppTypo.p3(color: AppColors.darkColor),
-                  ),
-                  Spacing(height: 16),
-                  AppOutlinedButton(
-                    onPressed: () {
-                      _formSectionStore.addStep(sectionIndex, StepEnum.DEFAULT);
-                      Navigator.pop(context);
-                    },
-                    text: 'Adicionar passo',
-                  ),
-                  Spacing(height: 16),
-                  AppOutlinedButton(
-                    onPressed: () {
-                      _formSectionStore.addStep(
-                          sectionIndex, StepEnum.WITH_TIME);
-                      Navigator.pop(context);
-                    },
-                    text: 'Adicionar passo com tempo',
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+        child: child,
       ),
     );
   }
