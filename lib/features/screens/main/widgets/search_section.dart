@@ -89,11 +89,15 @@ class _RecipeSearchResultState extends State<RecipeSearchResult> {
             if (widget._searchStore.searchText != null &&
                     widget._searchStore.searchText!.isNotEmpty ||
                 widget.searchType != SearchTypeEnum.TEXT) {
+              if ((widget.searchType == SearchTypeEnum.TEXT &&
+                  !widget._searchStore.isSearching)) {
+                return Container();
+              }
               return Column(
                 children: [
                   Spacing(height: 16),
                   SizedBox(
-                    height: 25,
+                    height: 30,
                     child: Row(
                       children: [
                         Expanded(
@@ -108,9 +112,11 @@ class _RecipeSearchResultState extends State<RecipeSearchResult> {
                                   _showAddFilter(context);
                                 },
                                 icon: LineAwesomeIcons.filter,
+                                iconSize: 16,
                                 text: 'Adicionar filtros',
                                 buttonColor: AppColors.whiteColor,
-                                textColor: AppColors.darkColor,
+                                textColor: AppColors.darkerColor,
+                                borderColor: AppColors.darkerColor,
                               ),
                               if (widget
                                   ._searchStore.difficulties.isNotEmpty) ...[
@@ -122,9 +128,9 @@ class _RecipeSearchResultState extends State<RecipeSearchResult> {
                                   icon: LineAwesomeIcons.times,
                                   text: 'Dificuldades '
                                       '${widget._searchStore.difficulties.length}',
-                                  buttonColor: AppColors.highlightColor,
+                                  buttonColor: AppColors.darkHighlightColor,
                                   textColor: AppColors.whiteColor,
-                                  borderColor: AppColors.highlightColor,
+                                  borderColor: AppColors.whiteColor,
                                 ),
                               ],
                               if (widget._searchStore.categories.isNotEmpty &&
@@ -138,9 +144,9 @@ class _RecipeSearchResultState extends State<RecipeSearchResult> {
                                   icon: LineAwesomeIcons.times,
                                   text: 'Categorias '
                                       '${widget._searchStore.categories.length}',
-                                  buttonColor: AppColors.highlightColor,
+                                  buttonColor: AppColors.darkHighlightColor,
                                   textColor: AppColors.whiteColor,
-                                  borderColor: AppColors.highlightColor,
+                                  borderColor: AppColors.whiteColor,
                                 ),
                               ],
                               if (widget._searchStore.portions.isNotEmpty) ...[
@@ -152,9 +158,9 @@ class _RecipeSearchResultState extends State<RecipeSearchResult> {
                                   icon: LineAwesomeIcons.times,
                                   text: 'Porções '
                                       '${widget._searchStore.portions}',
-                                  buttonColor: AppColors.highlightColor,
+                                  buttonColor: AppColors.darkHighlightColor,
                                   textColor: AppColors.whiteColor,
-                                  borderColor: AppColors.highlightColor,
+                                  borderColor: AppColors.whiteColor,
                                 ),
                               ],
                             ],

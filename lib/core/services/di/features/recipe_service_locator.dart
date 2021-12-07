@@ -18,6 +18,7 @@ import 'package:pratudo/features/screens/detailed_recipe/comment_recipe_store.da
 import 'package:pratudo/features/screens/detailed_recipe/detailed_recipe_store.dart';
 import 'package:pratudo/features/screens/detailed_recipe/rate_recipe_store.dart';
 import 'package:pratudo/features/screens/main/views/cached_recipes/cached_recipes_store.dart';
+import 'package:pratudo/features/screens/my_recipes/my_recipes_store.dart';
 import 'package:pratudo/features/screens/shared/step_by_step/step_by_step_store.dart';
 import 'package:pratudo/features/screens/shared/step_by_step/step_store.dart';
 import 'package:pratudo/features/stores/shared/gamification_observer.dart';
@@ -114,6 +115,10 @@ Future<void> setupRecipeLocator() async {
 
   serviceLocator.registerFactory<StepStore>(
     () => StepStore(),
+  );
+
+  serviceLocator.registerFactory<MyRecipesStore>(
+    () => MyRecipesStore(serviceLocator<RecipeRepository>()),
   );
 
   serviceLocator.registerFactory<CreateRecipeStore>(

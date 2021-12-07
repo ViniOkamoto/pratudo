@@ -154,16 +154,17 @@ class FilterButton extends StatelessWidget {
   final Color inactiveBorderColor;
   final Color textColor;
   final IconData? icon;
+  final double iconSize;
 
-  const FilterButton({
-    this.onPressed,
-    this.icon,
-    required this.text,
-    this.buttonColor = AppColors.darkColor,
-    this.borderColor = AppColors.darkColor,
-    this.textColor = AppColors.darkColor,
-    this.inactiveBorderColor = AppColors.lightestHighlightColor,
-  });
+  const FilterButton(
+      {this.onPressed,
+      this.icon,
+      required this.text,
+      this.buttonColor = AppColors.darkColor,
+      this.borderColor = AppColors.darkColor,
+      this.textColor = AppColors.darkColor,
+      this.inactiveBorderColor = AppColors.lightestHighlightColor,
+      this.iconSize = 8});
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -194,7 +195,7 @@ class FilterButton extends StatelessWidget {
               Spacing(width: 8),
               Icon(
                 icon!,
-                size: SizeConverter.fontSize(8),
+                size: SizeConverter.fontSize(iconSize),
                 color: textColor,
               ),
             ],

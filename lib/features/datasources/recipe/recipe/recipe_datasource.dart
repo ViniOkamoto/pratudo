@@ -55,6 +55,22 @@ class RecipeDatasource {
     }
   }
 
+  Future<List<SummaryRecipe>> myRecipes() async {
+    try {
+      final response = await _httpService.get('/recipe/my-recipes');
+      return SummaryRecipe.fromJsonList(response.data["content"]);
+    } on DioError catch (e) {
+      final Map<dynamic, dynamic>? response = e.response?.data;
+      throw ServerException(
+        errorText: response?.containsKey('message') ?? false
+            ? response!['message']
+            : "Erro Inesperado",
+      );
+    } catch (e) {
+      throw ServerException(errorText: e.toString());
+    }
+  }
+
   Future<ExperienceGainedModel> createRecipe(
       RecipeCreationModel recipeCreation) async {
     try {

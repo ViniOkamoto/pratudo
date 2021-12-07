@@ -12,6 +12,8 @@ abstract class RecipeRepository {
       {String filterValue});
   Future<Either<Failure, List<SummaryRecipe>>> getRecipe(
       RecipeQueryParams recipeQueryParams);
+
+  Future<Either<Failure, List<SummaryRecipe>>> myRecipes();
   Future<Either<Failure, ExperienceGainedModel>> createRecipe(
       RecipeCreationModel recipeCreation);
   Future<Either<Failure, DetailedRecipeModel>> getRecipeById(String id);
@@ -78,6 +80,21 @@ class RecipeRepositoryImpl implements RecipeRepository {
   Future<Either<Failure, DetailedRecipeModel>> getRecipeById(String id) async {
     try {
       return Right(await _datasource.getRecipeById(id));
+    } on ServerException catch (e) {
+      return Left(ServerFailure(errorText: e.errorText));
+    } on Exception catch (e) {
+      return Left(
+        ServerFailure(
+          errorText: e.toString(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<SummaryRecipe>>> myRecipes() async {
+    try {
+      return Right(await _datasource.myRecipes());
     } on ServerException catch (e) {
       return Left(ServerFailure(errorText: e.errorText));
     } on Exception catch (e) {

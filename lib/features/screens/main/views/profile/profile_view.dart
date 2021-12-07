@@ -36,7 +36,7 @@ class ProfileView extends StatelessWidget {
           ProfileButton(
             label: 'Minhas Receitas',
             icon: LineAwesomeIcons.list,
-            onTap: () {},
+            onTap: () => Navigator.pushNamed(context, Routes.myRecipes),
           ),
           ProfileButton(
             label: 'Minhas Informações',

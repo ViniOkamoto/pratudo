@@ -10,4 +10,5 @@ class Routes {
   static const cachedRecipe = '/cachedDetailedRecipe';
   static const stepByStep = '/stepByStep';
   static const myPerformance = '/myPerformance';
+  static const myRecipes = '/myRecipes';
 }

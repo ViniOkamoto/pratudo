@@ -78,7 +78,10 @@ class _MainPageState extends State<MainPage> {
                       if (_mainStore.pageSelected !=
                           NavBarItemEnum.PROFILE) ...[
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () => Navigator.pushNamed(
+                            context,
+                            Routes.myRecipes,
+                          ),
                           icon: Icon(LineAwesomeIcons.list),
                           color: AppColors.lightHighlightColor,
                           iconSize: SizeConverter.fontSize(24),
