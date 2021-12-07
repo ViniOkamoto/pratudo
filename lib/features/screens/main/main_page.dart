@@ -159,19 +159,22 @@ class GamificationNotifierModal extends StatelessWidget {
           ),
         ],
       ),
-      bottom: bottom ??
-          Row(
-            children: [
-              Expanded(
-                child: AppPrimaryButton(
-                  text: 'Voltar',
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              )
-            ],
-          ),
+      bottom: Padding(
+        padding: EdgeInsets.symmetric(vertical: 16),
+        child: bottom ??
+            Row(
+              children: [
+                Expanded(
+                  child: AppPrimaryButton(
+                    text: 'Voltar',
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                )
+              ],
+            ),
+      ),
     );
   }
 }

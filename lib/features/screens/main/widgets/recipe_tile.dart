@@ -93,7 +93,7 @@ class _RecipeTileState extends State<RecipeTile>
                                                     SizeConverter.fontSize(12),
                                               ),
                                               Text(
-                                                "(${widget.recipe.rate})",
+                                                "(${widget.recipe.rate.toStringAsFixed(1)})",
                                                 style: AppTypo.p5(
                                                     color:
                                                         AppColors.yellowColor),

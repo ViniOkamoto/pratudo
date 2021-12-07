@@ -35,6 +35,7 @@ class RecipeDatasource {
     RecipeQueryParams recipeQueryParams,
   ) async {
     try {
+      print(recipeQueryParams.toJson());
       final response = await _httpService.get('/recipe',
           queryParameters: recipeQueryParams.toJson());
       return SummaryRecipe.fromJsonList(response.data["content"]);

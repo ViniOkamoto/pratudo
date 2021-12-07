@@ -29,21 +29,30 @@ class RecipeHeader extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              name,
-              style: AppTypo.h1(color: AppColors.darkestColor),
+            Expanded(
+              child: Text(
+                name,
+                style: AppTypo.h1(color: AppColors.darkestColor),
+              ),
             ),
             Spacing(width: 4),
-            Icon(
-              LineAwesomeIcons.star_1,
-              size: SizeConverter.fontSize(20),
-              color: AppColors.yellowColor,
-            ),
-            Text(
-              '($rate)',
-              style: AppTypo.p3(color: AppColors.greyColor),
+            Padding(
+              padding: EdgeInsets.only(top: SizeConverter.relativeHeight(4)),
+              child: Row(
+                children: [
+                  Icon(
+                    LineAwesomeIcons.star_1,
+                    size: SizeConverter.fontSize(20),
+                    color: AppColors.yellowColor,
+                  ),
+                  Text(
+                    '(${rate.toStringAsFixed(1)})',
+                    style: AppTypo.p3(color: AppColors.greyColor),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

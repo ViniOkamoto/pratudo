@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pratudo/core/services/di/service_locator.dart';
+import 'package:pratudo/features/datasources/recipe/recipe_query_params.dart';
 import 'package:pratudo/features/models/recipe/recipe_helper_model.dart';
 import 'package:pratudo/features/screens/main/widgets/search_section.dart';
 import 'package:pratudo/features/screens/shared/filtered_ingredients/filtered_ingredients_enum.dart';
@@ -10,7 +11,8 @@ class FilteredIngredientsPageParams {
   final FilteredIngredientsEnum pageType;
   final List<String>? ingredients;
   final RecipeHelperModel? category;
-  FilteredIngredientsPageParams(this.pageType, {this.ingredients, this.category});
+  FilteredIngredientsPageParams(this.pageType,
+      {this.ingredients, this.category});
 }
 
 class FilteredIngredientsPage extends StatefulWidget {
@@ -18,7 +20,8 @@ class FilteredIngredientsPage extends StatefulWidget {
   final FilteredIngredientsPageParams params;
 
   @override
-  State<FilteredIngredientsPage> createState() => _FilteredIngredientsPageState();
+  State<FilteredIngredientsPage> createState() =>
+      _FilteredIngredientsPageState();
 }
 
 class _FilteredIngredientsPageState extends State<FilteredIngredientsPage> {
@@ -27,10 +30,15 @@ class _FilteredIngredientsPageState extends State<FilteredIngredientsPage> {
   @override
   void initState() {
     super.initState();
+    List<String> categories = [];
+    if (widget.params.category != null) {
+      categories.add(widget.params.category!.key);
+    }
     _store.getFilteredRecipes(
-      searchType: widget.params.pageType,
-      ingredients: widget.params.ingredients,
-      category: widget.params.category,
+      RecipeQueryParams(
+        categories: categories,
+        ingredients: widget.params.ingredients,
+      ),
     );
   }
 
@@ -42,9 +50,11 @@ class _FilteredIngredientsPageState extends State<FilteredIngredientsPage> {
           widget.params.category?.value,
         ),
       ),
-      body: RecipeSearchResult(
-        searchStore: _store,
-        recipeType: widget.params.pageType,
+      body: SingleChildScrollView(
+        child: RecipeSearchResult(
+          searchStore: _store,
+          recipeType: widget.params.pageType,
+        ),
       ),
     );
   }

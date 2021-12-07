@@ -27,18 +27,21 @@ class PortionsField extends StatelessWidget {
         Container(
           child: Row(
             children: [
-              AppIconButton(
-                onTap: onTapLess,
-                iconSize: 16,
-                iconData: LineAwesomeIcons.minus,
-              ),
+              if (portionValue > 0)
+                AppIconButton(
+                  onTap: onTapLess,
+                  iconSize: 16,
+                  iconData: LineAwesomeIcons.minus,
+                ),
               Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: SizeConverter.relativeWidth(16),
                 ),
                 child: Text(
-                  "$portionValue ${portionValue > 1 ? 'Pessoas' : 'Pessoa'}",
-                  style: AppTypo.p3(color: AppColors.darkerColor),
+                  _getString(),
+                  style: portionValue > 0
+                      ? AppTypo.p3(color: AppColors.darkerColor)
+                      : AppTypo.p4(color: AppColors.greyColor),
                 ),
               ),
               AppIconButton(
@@ -51,5 +54,12 @@ class PortionsField extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  _getString() {
+    if (portionValue > 0) {
+      return '$portionValue ${portionValue > 1 ? 'Pessoas' : 'Pessoa'}';
+    }
+    return 'Pressione para adicionar';
   }
 }
