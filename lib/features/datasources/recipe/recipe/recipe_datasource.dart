@@ -15,8 +15,13 @@ class RecipeDatasource {
   Future<List<SummaryRecipe>> getRecipeByFilters(
       {String filterValue = 'latest'}) async {
     try {
-      final response = await _httpService
-          .get('/recipe/trend', queryParameters: {"filter": filterValue});
+      final response = await _httpService.get(
+        '/recipe/trend',
+        queryParameters: {
+          "filter": filterValue,
+          "size": 5,
+        },
+      );
 
       return SummaryRecipe.fromJsonList(response.data["content"]);
     } on DioError catch (e) {
@@ -35,7 +40,6 @@ class RecipeDatasource {
     RecipeQueryParams recipeQueryParams,
   ) async {
     try {
-      print(recipeQueryParams.toJson());
       final response = await _httpService.get('/recipe',
           queryParameters: recipeQueryParams.toJson());
       return SummaryRecipe.fromJsonList(response.data["content"]);

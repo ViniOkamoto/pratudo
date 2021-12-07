@@ -252,8 +252,8 @@ class _DetailedRecipePageState extends State<DetailedRecipePage> {
                         ChefTipSection(text: recipe.chefTips),
                         Spacing(height: 32),
                         CommentsSection(
-                          comments: recipe.comments,
-                        )
+                          recipeId: recipe.id,
+                        ),
                       ],
                     ),
                   ),

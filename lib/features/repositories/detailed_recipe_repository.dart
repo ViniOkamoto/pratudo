@@ -10,6 +10,12 @@ abstract class DetailedRecipeRepository {
     String id,
   );
 
+  Future<Either<Failure, void>> replyComment(
+    String content,
+    String recipeId,
+    String commentId,
+  );
+
   Future<Either<Failure, List<CommentModel>>> getRecipeComments(String id);
 
   Future<Either<Failure, ExperienceGainedModel>> rateAndCommentRecipe(
@@ -82,8 +88,40 @@ class DetailedRecipeRepositoryImpl implements DetailedRecipeRepository {
   }
 
   @override
-  Future<Either<Failure, List<CommentModel>>> getRecipeComments(String id) {
-    // TODO: implement getRecipeComments
-    throw UnimplementedError();
+  Future<Either<Failure, List<CommentModel>>> getRecipeComments(
+    String id,
+  ) async {
+    try {
+      return Right(await _datasource.getRecipeComments(id));
+    } on ServerException catch (e) {
+      return Left(ServerFailure(errorText: e.errorText));
+    } on Exception catch (e) {
+      return Left(
+        ServerFailure(
+          errorText: e.toString(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> replyComment(
+    String content,
+    String recipeId,
+    String commentId,
+  ) async {
+    try {
+      return Right(
+        await _datasource.replyComment(content, recipeId, commentId),
+      );
+    } on ServerException catch (e) {
+      return Left(ServerFailure(errorText: e.errorText));
+    } on Exception catch (e) {
+      return Left(
+        ServerFailure(
+          errorText: e.toString(),
+        ),
+      );
+    }
   }
 }

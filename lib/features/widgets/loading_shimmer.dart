@@ -22,15 +22,17 @@ class LoadingShimmer extends StatelessWidget {
 }
 
 class ShimmerBox extends StatelessWidget {
-  const ShimmerBox({
-    Key? key,
-    this.margin,
-    this.height = 25,
-    this.width = 100,
-  }) : super(key: key);
+  const ShimmerBox(
+      {Key? key,
+      this.margin,
+      this.height = 25,
+      this.width = 100,
+      this.shape = BoxShape.rectangle})
+      : super(key: key);
   final EdgeInsets? margin;
   final double width;
   final double height;
+  final BoxShape shape;
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +41,13 @@ class ShimmerBox extends StatelessWidget {
       width: width,
       height: height,
       decoration: BoxDecoration(
+        shape: shape,
         color: AppColors.whiteColor,
-        borderRadius: BorderRadius.circular(
-          15,
-        ),
+        borderRadius: shape == BoxShape.circle
+            ? null
+            : BorderRadius.circular(
+                15,
+              ),
       ),
     );
   }
