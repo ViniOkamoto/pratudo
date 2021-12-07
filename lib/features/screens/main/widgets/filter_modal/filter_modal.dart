@@ -27,7 +27,7 @@ class FilterModal extends StatelessWidget {
 
   final RecipeHelpersStore helpersStore;
   final Function(RecipeQueryParams) onPressToFilter;
-  final FilteredIngredientsEnum? type;
+  final SearchTypeEnum? type;
   final FilterStore filterStore = serviceLocator<FilterStore>();
 
   @override
@@ -50,7 +50,7 @@ class FilterModal extends StatelessWidget {
                       Expanded(
                         child: Column(
                           children: [
-                            if (type != FilteredIngredientsEnum.CATEGORY)
+                            if (type != SearchTypeEnum.CATEGORY)
                               MultiSelectFormField<RecipeHelperModel>(
                                 label: 'Filtros de categoria',
                                 onConfirm: filterStore.setCategory,
@@ -120,7 +120,7 @@ class FilterModal extends StatelessWidget {
               text: 'Filtrar receitas',
               onPressed: () {
                 List<String>? categories;
-                if (type != FilteredIngredientsEnum.CATEGORY) {
+                if (type != SearchTypeEnum.CATEGORY) {
                   categories = filterStore.categories
                       .map((element) => element.key)
                       .toList();

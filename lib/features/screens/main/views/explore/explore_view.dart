@@ -15,6 +15,7 @@ import 'package:pratudo/features/screens/main/views/explore/widgets/carousel_shi
 import 'package:pratudo/features/screens/main/views/explore/widgets/filter_row.dart';
 import 'package:pratudo/features/screens/main/widgets/base_page.dart';
 import 'package:pratudo/features/screens/main/widgets/search_section.dart';
+import 'package:pratudo/features/screens/shared/filtered_ingredients/filtered_ingredients_enum.dart';
 import 'package:pratudo/features/stores/shared/recipe_helpers_store.dart';
 import 'package:pratudo/features/stores/shared/search_store.dart';
 import 'package:pratudo/features/widgets/app_default_error.dart';
@@ -67,6 +68,7 @@ class _ExploreViewState extends State<ExploreView>
           ),
           Spacing(height: 16),
           SearchSection(
+            searchTypeEnum: SearchTypeEnum.TEXT,
             searchStore: _searchStore,
             pageContent: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

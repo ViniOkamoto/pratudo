@@ -8,6 +8,7 @@ import 'package:pratudo/features/screens/main/views/search/widgets/category_list
 import 'package:pratudo/features/screens/main/views/search/widgets/search_by_ingredients_card.dart';
 import 'package:pratudo/features/screens/main/widgets/base_page.dart';
 import 'package:pratudo/features/screens/main/widgets/search_section.dart';
+import 'package:pratudo/features/screens/shared/filtered_ingredients/filtered_ingredients_enum.dart';
 import 'package:pratudo/features/stores/shared/recipe_helpers_store.dart';
 import 'package:pratudo/features/stores/shared/search_store.dart';
 import 'package:pratudo/features/widgets/spacing.dart';
@@ -38,6 +39,7 @@ class _SearchViewState extends State<SearchView> {
     return BasePage(
       onRefresh: () => _fetchData(isRefreshing: true),
       child: SearchSection(
+        searchTypeEnum: SearchTypeEnum.ALL,
         searchStore: _searchStore,
         pageContent: Padding(
           padding: EdgeInsets.symmetric(

@@ -15,7 +15,7 @@ import 'package:transparent_image/transparent_image.dart';
 
 class RecipeTile extends StatefulWidget {
   final SummaryRecipe recipe;
-  final FilteredIngredientsEnum? recipeType;
+  final SearchTypeEnum? recipeType;
   const RecipeTile({
     required this.recipe,
     this.recipeType,
@@ -130,7 +130,7 @@ class _RecipeTileState extends State<RecipeTile>
                             ],
                           ),
                           if (widget.recipeType ==
-                              FilteredIngredientsEnum.INGREDIENTS) ...[
+                              SearchTypeEnum.INGREDIENTS) ...[
                             CustomText(
                               text: widget.recipe.formattedIngredients!,
                               textAlign: TextAlign.left,

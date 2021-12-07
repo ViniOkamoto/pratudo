@@ -1,15 +1,16 @@
-enum FilteredIngredientsEnum {
+enum SearchTypeEnum {
   CATEGORY,
   INGREDIENTS,
   TEXT,
+  ALL,
 }
 
-extension FilteredIngredientsExtension on FilteredIngredientsEnum {
+extension FilteredIngredientsExtension on SearchTypeEnum {
   String getTopBarName([String? complement]) {
     switch (this) {
-      case FilteredIngredientsEnum.CATEGORY:
+      case SearchTypeEnum.CATEGORY:
         return 'Resultado $complement';
-      case FilteredIngredientsEnum.INGREDIENTS:
+      case SearchTypeEnum.INGREDIENTS:
         return 'Resultado ingredientes';
       default:
         return '';

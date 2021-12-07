@@ -6,7 +6,8 @@ import 'package:pratudo/features/screens/shared/filtered_ingredients/filtered_in
 
 part 'search_by_ingredient_store.g.dart';
 
-class SearchByIngredientStore = _SearchByIngredientStoreBase with _$SearchByIngredientStore;
+class SearchByIngredientStore = _SearchByIngredientStoreBase
+    with _$SearchByIngredientStore;
 
 abstract class _SearchByIngredientStoreBase with Store {
   final TextEditingController ingredientField = TextEditingController();
@@ -52,7 +53,7 @@ abstract class _SearchByIngredientStoreBase with Store {
       context,
       Routes.filteredIngredients,
       arguments: FilteredIngredientsPageParams(
-        FilteredIngredientsEnum.INGREDIENTS,
+        SearchTypeEnum.INGREDIENTS,
         ingredients: ingredients,
       ),
     );

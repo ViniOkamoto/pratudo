@@ -8,7 +8,7 @@ import 'package:pratudo/features/stores/shared/search_store.dart';
 import 'package:pratudo/features/widgets/secondary_app_bar.dart';
 
 class FilteredIngredientsPageParams {
-  final FilteredIngredientsEnum pageType;
+  final SearchTypeEnum pageType;
   final List<String>? ingredients;
   final RecipeHelperModel? category;
   FilteredIngredientsPageParams(this.pageType,
@@ -53,7 +53,7 @@ class _FilteredIngredientsPageState extends State<FilteredIngredientsPage> {
       body: SingleChildScrollView(
         child: RecipeSearchResult(
           searchStore: _store,
-          recipeType: widget.params.pageType,
+          searchType: widget.params.pageType,
         ),
       ),
     );

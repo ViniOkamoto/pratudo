@@ -55,7 +55,7 @@ class CategoryList extends StatelessWidget {
                 context,
                 Routes.filteredIngredients,
                 arguments: FilteredIngredientsPageParams(
-                  FilteredIngredientsEnum.CATEGORY,
+                  SearchTypeEnum.CATEGORY,
                   category: category,
                 ),
               );

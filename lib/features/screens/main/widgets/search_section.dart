@@ -20,10 +20,12 @@ class SearchSection extends StatelessWidget {
     Key? key,
     required SearchStore searchStore,
     required this.pageContent,
+    required this.searchTypeEnum,
   })  : _searchStore = searchStore,
         super(key: key);
 
   final SearchStore _searchStore;
+  final SearchTypeEnum searchTypeEnum;
   final Widget pageContent;
 
   @override
@@ -45,6 +47,7 @@ class SearchSection extends StatelessWidget {
         RecipeSearchResult(
           searchStore: _searchStore,
           pageContent: pageContent,
+          searchType: searchTypeEnum,
         ),
       ],
     );
@@ -55,12 +58,12 @@ class RecipeSearchResult extends StatefulWidget {
   RecipeSearchResult({
     Key? key,
     required SearchStore searchStore,
-    this.recipeType,
+    required this.searchType,
     this.pageContent,
   })  : _searchStore = searchStore,
         super(key: key);
 
-  final FilteredIngredientsEnum? recipeType;
+  final SearchTypeEnum searchType;
   final SearchStore _searchStore;
   final Widget? pageContent;
 
@@ -85,7 +88,7 @@ class _RecipeSearchResultState extends State<RecipeSearchResult> {
           builder: (context) {
             if (widget._searchStore.searchText != null &&
                     widget._searchStore.searchText!.isNotEmpty ||
-                widget.recipeType != FilteredIngredientsEnum.TEXT) {
+                widget.searchType != SearchTypeEnum.TEXT) {
               return Column(
                 children: [
                   Spacing(height: 16),
@@ -125,8 +128,8 @@ class _RecipeSearchResultState extends State<RecipeSearchResult> {
                                 ),
                               ],
                               if (widget._searchStore.categories.isNotEmpty &&
-                                  widget.recipeType !=
-                                      FilteredIngredientsEnum.CATEGORY) ...[
+                                  widget.searchType !=
+                                      SearchTypeEnum.CATEGORY) ...[
                                 Spacing(width: 8),
                                 FilterButton(
                                   onPressed: () {
@@ -187,7 +190,7 @@ class _RecipeSearchResultState extends State<RecipeSearchResult> {
                           widget._searchStore.filteredRecipes[index];
                       return RecipeTile(
                         recipe: recipe,
-                        recipeType: widget.recipeType,
+                        recipeType: widget.searchType,
                       );
                     },
                     separatorBuilder: (BuildContext context, int index) {
@@ -210,7 +213,7 @@ class _RecipeSearchResultState extends State<RecipeSearchResult> {
       builder: (context) => FilterModal(
         helpersStore: helpersStore,
         onPressToFilter: widget._searchStore.getFilteredRecipes,
-        type: widget.recipeType,
+        type: widget.searchType,
       ),
     );
   }
