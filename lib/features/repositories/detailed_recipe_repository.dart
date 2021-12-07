@@ -2,12 +2,15 @@ import 'package:dartz/dartz.dart';
 import 'package:pratudo/core/resources/common_exceptions.dart';
 import 'package:pratudo/features/datasources/recipe/recipe/detailed_recipe_datasource.dart';
 import 'package:pratudo/features/models/gamification/experience_gained_model.dart';
+import 'package:pratudo/features/models/recipe/comment_model.dart';
 
 abstract class DetailedRecipeRepository {
   Future<Either<Failure, ExperienceGainedModel>> commentRecipe(
     String content,
     String id,
   );
+
+  Future<Either<Failure, List<CommentModel>>> getRecipeComments(String id);
 
   Future<Either<Failure, ExperienceGainedModel>> rateAndCommentRecipe(
     String content,
@@ -76,5 +79,11 @@ class DetailedRecipeRepositoryImpl implements DetailedRecipeRepository {
         ),
       );
     }
+  }
+
+  @override
+  Future<Either<Failure, List<CommentModel>>> getRecipeComments(String id) {
+    // TODO: implement getRecipeComments
+    throw UnimplementedError();
   }
 }

@@ -14,7 +14,9 @@ import 'package:pratudo/features/screens/cached_recipe/detailed_cache_recipe_sto
 import 'package:pratudo/features/screens/create_recipe/create_recipe_store.dart';
 import 'package:pratudo/features/screens/create_recipe/form_section_store.dart';
 import 'package:pratudo/features/screens/create_recipe/recipe_form_store.dart';
+import 'package:pratudo/features/screens/detailed_recipe/comment_recipe_store.dart';
 import 'package:pratudo/features/screens/detailed_recipe/detailed_recipe_store.dart';
+import 'package:pratudo/features/screens/detailed_recipe/rate_recipe_store.dart';
 import 'package:pratudo/features/screens/main/views/cached_recipes/cached_recipes_store.dart';
 import 'package:pratudo/features/screens/shared/step_by_step/step_by_step_store.dart';
 import 'package:pratudo/features/screens/shared/step_by_step/step_store.dart';
@@ -77,6 +79,20 @@ Future<void> setupRecipeLocator() async {
     () => DetailedRecipeStore(
       serviceLocator<RecipeRepository>(),
       serviceLocator<CacheRecipeRepository>(),
+    ),
+  );
+
+  serviceLocator.registerFactory<RecipeCommentStore>(
+    () => RecipeCommentStore(
+      serviceLocator<DetailedRecipeRepository>(),
+      serviceLocator<GamificationObserver>(),
+    ),
+  );
+
+  serviceLocator.registerFactory<RecipeRateStore>(
+    () => RecipeRateStore(
+      serviceLocator<DetailedRecipeRepository>(),
+      serviceLocator<GamificationObserver>(),
     ),
   );
 

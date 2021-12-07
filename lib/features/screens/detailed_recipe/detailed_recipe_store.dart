@@ -13,7 +13,10 @@ abstract class _DetailedRecipeStoreBase with Store {
   final RecipeRepository _repository;
   final CacheRecipeRepository _cacheRecipe;
 
-  _DetailedRecipeStoreBase(this._repository, this._cacheRecipe);
+  _DetailedRecipeStoreBase(
+    this._repository,
+    this._cacheRecipe,
+  );
 
   @observable
   bool isLoading = true;

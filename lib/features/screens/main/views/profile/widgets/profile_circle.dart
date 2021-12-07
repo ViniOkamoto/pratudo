@@ -23,7 +23,7 @@ class ProfileCircle extends StatelessWidget {
         ],
         image: DecorationImage(
           fit: BoxFit.scaleDown,
-          scale: size == 64 ? 1.4 : 2,
+          scale: size == 64 ? 1.4 :size == 24 ? 3 : 2,
           image: MemoryImage(
             ImageHelper.convertBase64ToImage(profileTest),
           ),
